@@ -44,7 +44,7 @@ struct BoardTracker {
         guard candidateCount >= 2 else { return .confirming }
         guard !rejectedCandidate else { return .needsSynchronization }
 
-        // 刚启动时允许追上电脑已走的一步/两步；不把任意中局按上次选择的轮次直接交给引擎。
+        // 刚启动时允许追上对方已走的一步/两步；不把任意中局按上次选择的轮次直接交给引擎。
         let previous = position ?? .standard
         if let transition = Self.provenTransition(from: previous, to: recognized) {
             position = transition.position

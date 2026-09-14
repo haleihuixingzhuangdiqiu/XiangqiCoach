@@ -33,7 +33,7 @@ struct ContentView: View {
                     .font(.system(size: 28, weight: .bold))
                     .foregroundStyle(.green)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("人机练习，实时给招")
+                    Text("对局棋盘，实时给招")
                         .font(.title3.bold())
                     Text("录屏帧、局面和计算全部留在本机")
                         .font(.footnote)
@@ -59,7 +59,7 @@ struct ContentView: View {
 
     private var practiceSettingsCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Label("练习设置", systemImage: "slider.horizontal.3")
+            Label("指导设置", systemImage: "slider.horizontal.3")
                 .font(.headline)
 
             HStack {
@@ -75,7 +75,7 @@ struct ContentView: View {
                     .buttonStyle(.bordered)
             }
 
-            Text("红黑方向自动识别。若中途进入棋局，可确认当前轮次后点“同步”。")
+            Text("仅支持指定的木纹对局棋盘，红黑方向自动识别。中途进入时可确认轮次后点“同步”。")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
 
@@ -86,7 +86,7 @@ struct ContentView: View {
 
     private var startCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Label("开始练习", systemImage: "play.circle.fill")
+            Label("开始指导", systemImage: "play.circle.fill")
                 .font(.headline)
 
             HStack(spacing: 14) {
@@ -140,7 +140,7 @@ struct ContentView: View {
                     .foregroundStyle(.orange)
             }
 
-            Text("默认只需确认一次系统录屏，悬浮窗会自动开启，然后直接切到天天象棋的人机练习。系统确认不能跳过。")
+            Text("确认“棋研录屏”后会自动开启悬浮窗，再切到指定的对局棋盘并露出全部棋子。")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }

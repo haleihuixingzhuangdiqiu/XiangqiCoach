@@ -8,7 +8,7 @@ struct RecognitionResult {
     let position: XiangqiPosition
     let boardAtBottom: Side
     let layout: BoardLayout
-    /// 32×32 RGB 平均通道绝对差，范围 0…255；只用于观测主题匹配程度。
+    /// 32×32 RGB 去均值后的平均通道绝对差；用于观测字形匹配程度，不受局部整体明暗平移影响。
     let meanDistance: Float
     let maximumDistance: Float
     var qualityText: String { "棋盘已确认" }
@@ -265,8 +265,19 @@ final class BoardRecognizer: @unchecked Sendable {
         for y in 0..<31 {
             for x in 0..<32 { differences += abs(luminance[y * 32 + x] - luminance[(y + 1) * 32 + x]) }
         }
-        return Feature(pixels: pixels, inkChroma: inkChroma(pixels, luminance: luminance),
-                       sharpness: differences / Float(2 * 32 * 31))
+        // 浮窗投影会压暗棋面；先在原始像素上保留颜色与清晰度，再去掉每通道整体亮度用于字形匹配。
+        // 只抵消局部明暗平移，不补锐、不放宽质量门限；模糊和颜色判断仍使用原始数据。
+        let chroma = inkChroma(pixels, luminance: luminance)
+        pixels.withUnsafeMutableBufferPointer { buffer in
+            for channel in 0..<3 {
+                let start = buffer.baseAddress! + channel * 1024
+                var mean: Float = 0
+                vDSP_meanv(start, 1, &mean, 1024)
+                var offset = -mean
+                vDSP_vsadd(start, 1, &offset, start, 1, 1024)
+            }
+        }
+        return Feature(pixels: pixels, inkChroma: chroma, sharpness: differences / Float(2 * 32 * 31))
     }
 
     /// Otsu 只读取棋面内圈，避开边缘金圈和外部白色走棋光晕；阈值由每格实际亮度分布产生。

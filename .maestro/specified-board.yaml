@@ -1,0 +1,9 @@
+appId: com.lgj.xiangqicoach
+---
+- launchApp
+- assertVisible: "棋盘识别已就绪"
+- assertVisible: "对局棋盘，实时给招"
+- assertVisible: "指导设置"
+- assertNotVisible: "我执"
+- assertNotVisible: "练习设置"
+- takeScreenshot: "build/specified-board/home"

@@ -29,7 +29,7 @@ def configure_target(target, bundle_identifier, info_plist)
     settings["TARGETED_DEVICE_FAMILY"] = "1"
     settings["SUPPORTED_PLATFORMS"] = "iphoneos iphonesimulator"
     settings["ENABLE_USER_SCRIPT_SANDBOXING"] = "YES"
-    settings["CURRENT_PROJECT_VERSION"] = "2026091404"
+    settings["CURRENT_PROJECT_VERSION"] = "2026091501"
     settings["MARKETING_VERSION"] = "1.1"
   end
 end
@@ -99,6 +99,13 @@ end
 Dir.glob(File.join(root, "XiangqiCoach/Resources/*")).select { |p| File.file?(p) && File.extname(p) != ".plist" }.each do |absolute|
   ref = project.main_group.new_file(absolute.delete_prefix(root + "/"))
   app_target.resources_build_phase.add_file_reference(ref)
+end
+# 真实回归棋盘只进入 XCTest bundle，不随主 App 或录屏扩展发布。
+test_fixtures = File.join(root, "XiangqiCoachTests/Fixtures")
+if File.directory?(test_fixtures)
+  ref = project.main_group.new_file(test_fixtures.delete_prefix(root + "/"))
+  ref.last_known_file_type = "folder"
+  tests_target.resources_build_phase.add_file_reference(ref)
 end
 configure_pikafish(project, app_target, root)
 project.save

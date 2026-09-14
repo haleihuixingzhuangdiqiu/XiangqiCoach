@@ -17,6 +17,7 @@
 		1710D2153E0D9AF616E48AE8 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4C5C002E6857196338DB26 /* SampleHandler.swift */; };
 		1826EC9AD4F9D3B6A0B0F3B4 /* CoachSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE91D86D6D5F38E807F2E82 /* CoachSessionState.swift */; };
 		21C163855B5EB4E14F5B580E /* position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91E7B15676EFC6ADE780E055 /* position.cpp */; };
+		21F6EFD0D549BE9DF4006955 /* LiveBoardRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE2D234725CDCD2639F4BEF /* LiveBoardRecognizerTests.swift */; };
 		24F5E7313855D4242FAC7956 /* timeman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E31DE84ABA8C7F7A988D738 /* timeman.cpp */; };
 		25263D9E0E502F45244FC9B1 /* XQPikafishEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7F44E789350879EA64161718 /* XQPikafishEngine.mm */; };
 		2F61E5B07B26E679538A83A1 /* ProUI in Resources */ = {isa = PBXBuildFile; fileRef = F7FD89138B11D336D6D369B5 /* ProUI */; };
@@ -64,6 +65,7 @@
 		B5F89DFB3DCDC7FC339741ED /* BroadcastPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E625C8860AA517F4DE021173 /* BroadcastPickerTests.swift */; };
 		B991B52D24F2C4A34DAFFAFE /* BroadcastPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9CCCC59E187F3EF2003D99 /* BroadcastPickerView.swift */; };
 		BF2B0E21864F0C0E4F42C9F1 /* XiangqiPositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C632936F08DC15CA0187B17F /* XiangqiPositionTests.swift */; };
+		BF9CCEC5550A498292074CD4 /* Fixtures in Resources */ = {isa = PBXBuildFile; fileRef = 35C5326B846CFB74D6D2613A /* Fixtures */; };
 		BFCF38089BA6CEFD7AA6AAAB /* uci.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72555C9DBFD05BAB05FBA77E /* uci.cpp */; };
 		C292F68DB93CFFFD5604D161 /* FramePipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E48CC61A5648359F7CF4A30 /* FramePipelineTests.swift */; };
 		C58F148A0118B88FA4DA7C12 /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D4D8F3209BF97570C9661D /* search.cpp */; };
@@ -140,6 +142,7 @@
 		2F9CCCC59E187F3EF2003D99 /* BroadcastPickerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BroadcastPickerView.swift; path = XiangqiCoach/Capture/BroadcastPickerView.swift; sourceTree = "<group>"; };
 		327D84AA8535F4BDC147A772 /* BoardRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardRecognizer.swift; path = XiangqiCoach/Analysis/BoardRecognizer.swift; sourceTree = "<group>"; };
 		34DBC5C9E17D8DF24802F7A3 /* board-template-black.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "board-template-black.png"; path = "XiangqiCoach/Resources/board-template-black.png"; sourceTree = "<group>"; };
+		35C5326B846CFB74D6D2613A /* Fixtures */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Fixtures; path = XiangqiCoachTests/Fixtures; sourceTree = "<group>"; };
 		44D4D8F3209BF97570C9661D /* search.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = search.cpp; path = XiangqiCoach/Vendor/Pikafish/src/search.cpp; sourceTree = "<group>"; };
 		45DC7EDEFF0A1AA303CEAC82 /* benchmark.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = benchmark.cpp; path = XiangqiCoach/Vendor/Pikafish/src/benchmark.cpp; sourceTree = "<group>"; };
 		46A5CE3C08339FA4EFB41774 /* XQPikafishEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = XQPikafishEngine.h; path = XiangqiCoach/Engine/Native/XQPikafishEngine.h; sourceTree = "<group>"; };
@@ -166,6 +169,7 @@
 		91E7B15676EFC6ADE780E055 /* position.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = position.cpp; path = XiangqiCoach/Vendor/Pikafish/src/position.cpp; sourceTree = "<group>"; };
 		928C9C3672FF8FE5CA1ECBCB /* CoachAnalysisState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachAnalysisState.swift; path = XiangqiCoach/App/CoachAnalysisState.swift; sourceTree = "<group>"; };
 		97C9A53F7DC9C39E0F3A4BB2 /* CoachBoardRendererTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachBoardRendererTests.swift; path = XiangqiCoachTests/CoachBoardRendererTests.swift; sourceTree = "<group>"; };
+		9AE2D234725CDCD2639F4BEF /* LiveBoardRecognizerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LiveBoardRecognizerTests.swift; path = XiangqiCoachTests/LiveBoardRecognizerTests.swift; sourceTree = "<group>"; };
 		9C6CA0B6EACFF2B0C567CA46 /* error_private.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = error_private.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/error_private.cpp; sourceTree = "<group>"; };
 		9C9B41A1C6F47CF46254FA38 /* CoachViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachViewModel.swift; path = XiangqiCoach/App/CoachViewModel.swift; sourceTree = "<group>"; };
 		9D87FC804C57CA1A0E2A1CD8 /* CoachDiagnostics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachDiagnostics.swift; path = XiangqiCoach/App/CoachDiagnostics.swift; sourceTree = "<group>"; };
@@ -287,6 +291,7 @@
 				34DBC5C9E17D8DF24802F7A3 /* board-template-black.png */,
 				AD39A3CEA0A45E029ADC444B /* board-template-red.png */,
 				E48485BCE102315478DEA706 /* Pikafish Native */,
+				35C5326B846CFB74D6D2613A /* Fixtures */,
 			);
 			sourceTree = "<group>";
 		};
@@ -305,6 +310,7 @@
 				FBD36EF8307751760A344410 /* PikafishEngineTests.swift */,
 				731FA187377D98685940F2E8 /* TurnSynchronizationStateTests.swift */,
 				C632936F08DC15CA0187B17F /* XiangqiPositionTests.swift */,
+				9AE2D234725CDCD2639F4BEF /* LiveBoardRecognizerTests.swift */,
 			);
 			name = "Test Sources";
 			sourceTree = "<group>";
@@ -482,6 +488,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF9CCEC5550A498292074CD4 /* Fixtures in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +577,7 @@
 				4C73EA6F933D891DC29D9D07 /* PikafishEngineTests.swift in Sources */,
 				6D0FE1CD9CACEE31EF2653F6 /* TurnSynchronizationStateTests.swift in Sources */,
 				BF2B0E21864F0C0E4F42C9F1 /* XiangqiPositionTests.swift in Sources */,
+				21F6EFD0D549BE9DF4006955 /* LiveBoardRecognizerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,7 +733,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091404;
+				CURRENT_PROJECT_VERSION = 2026091501;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -769,7 +777,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091404;
+				CURRENT_PROJECT_VERSION = 2026091501;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -794,7 +802,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091404;
+				CURRENT_PROJECT_VERSION = 2026091501;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -838,7 +846,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091404;
+				CURRENT_PROJECT_VERSION = 2026091501;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -861,7 +869,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091404;
+				CURRENT_PROJECT_VERSION = 2026091501;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -885,7 +893,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091404;
+				CURRENT_PROJECT_VERSION = 2026091501;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;

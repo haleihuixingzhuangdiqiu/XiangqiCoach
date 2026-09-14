@@ -26,3 +26,7 @@
 - 真机 Release 签名构建通过；2026-09-14 23:55 安装 2026091404，23:56 启动成功。
 - 从 iPhone 实际读回构建号 2026091404、新会话 ID、`receiverStatus=录屏接收器已就绪`、`isPictureInPicturePossible=true`。此时 `isScreenCaptured=false`，系统录屏尚未重新开启；因此当前只确认真机接收器启动成功，持续录屏收帧待用户系统确认后检查。证据：`build/zero-frame/phone-after-launch.json`。
 - 此次为网络故障诊断，回归前保留了原日志；没有清除手机数据。UI 绘制无改动，图形相关 XCTest 已随整套测试通过，未把静态截图称为实际连续录屏。
+
+## 后续真机确认 · 2026-09-15
+
+用户重新开启实际录屏后，2026091404 的后台连续快照帧数 125 → 421 → 1117，PiP 始终 active，接收器就绪。固定端口零帧问题已在真实录屏路径确认恢复。之后的棋盘识别按用户最新“只要指定两张对局棋盘”范围单独处理，详见 `specified-board-validation.md`。

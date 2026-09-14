@@ -54,7 +54,7 @@ final class CoachViewModel: ObservableObject {
     private var lastFrameLatencyMilliseconds: Double?
     private var lastEngineMilliseconds: Int?
     private var lastEngineResultDepth: Int?
-    private var recognitionWaitDetail = "请露出完整棋盘，保持主题/方向一致"
+    private var recognitionWaitDetail = "请打开指定的对局棋盘，并露出全部棋子"
     private var requiresTurnSynchronization = false
     private var recognizedBoardAtBottom: Side?
     private var orientationCandidate: Side?
@@ -206,7 +206,7 @@ final class CoachViewModel: ObservableObject {
                 case let .success(recognition):
                     self.handleRecognition(recognition, capturedAt: capturedAt)
                 case let .failure(error):
-                    self.recognitionStatus = "棋盘未稳定：\(error.localizedDescription)"
+                    self.recognitionStatus = "识别暂停：\(error.localizedDescription)"
                     self.boardTracker.loseBoard()
                     self.turnSynchronization.recognitionInterrupted()
                     self.orientationCandidate = nil
@@ -442,7 +442,7 @@ final class CoachViewModel: ObservableObject {
 
     private func showRecognitionWait(
         _ phase: CoachSessionState.Phase,
-        detail: String = "请露出完整棋盘，保持主题/方向一致",
+        detail: String = "请打开指定的对局棋盘，并露出全部棋子",
         requiresSynchronization: Bool = false
     ) {
         // 画面暂不可信只撤销落子指引，仍显示上次确认棋盘并让同局计算完成。
@@ -556,7 +556,7 @@ final class CoachViewModel: ObservableObject {
         case .analyzing:
             state = CoachOverlayState(title: "\(manualSideToMove.displayName) · 正在分析", move: "计算中…", detail: "请稍候", accent: .systemYellow)
         case .waitingForOpponent:
-            state = CoachOverlayState(title: "人机练习 · 等待对方", move: "等待电脑走棋", detail: "局面识别正常", accent: .systemOrange)
+            state = CoachOverlayState(title: "对局棋盘 · 等待对方", move: "等待对方走棋", detail: "局面识别正常", accent: .systemOrange)
         case .recommendation:
             state = CoachOverlayState(title: "\(manualSideToMove.displayName)建议", move: recommendation, detail: recommendationDetail, accent: .systemGreen)
         case .finished:

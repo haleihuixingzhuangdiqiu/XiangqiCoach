@@ -13,7 +13,7 @@ final class BoardRecognizerTests: XCTestCase {
             broadcast(frame(board(.red))), sideToMove: .red)
         XCTAssertEqual(result.position, .standard)
         XCTAssertEqual(result.boardAtBottom, .red)
-        XCTAssertEqual(result.layout.id, "portrait-1280x2781")
+        XCTAssertEqual(result.layout.id, "specified-wood-board")
     }
 
     func testBlackBottomIsActualH2E2AndWhiteOriginHighlightIsEmpty() throws {
@@ -26,7 +26,7 @@ final class BoardRecognizerTests: XCTestCase {
     }
 
     /// 真实棋盘像素经 UIKit 拼回屏幕，再走录屏同款 CoreImage 720/900/1080 高度与 JPEG 编解码。
-    func testBothLayoutsBothOrientationsCompressionAndScaleMatrix() throws {
+    func testSpecifiedBoardBothResolutionsAndOrientationsCompressionMatrix() throws {
         let recognizer = try BoardRecognizer.preset()
         for side in Side.allCases {
             for modern in [true, false] {
@@ -38,7 +38,7 @@ final class BoardRecognizerTests: XCTestCase {
                         XCTAssertEqual(result.position, side == .red ? .standard : afterRedCannon,
                                        "\(side) modern=\(modern) height=\(height) JPEG=\(quality)")
                         XCTAssertEqual(result.boardAtBottom, side)
-                        XCTAssertEqual(result.layout.id, modern ? "portrait-1280x2781" : "portrait-1320x2868")
+                        XCTAssertEqual(result.layout.id, "specified-wood-board")
                     }
                 }
             }
@@ -102,6 +102,24 @@ final class BoardRecognizerTests: XCTestCase {
         XCTAssertThrowsError(try recognizer.recognize(broadcast(frame(obscured)), sideToMove: .red))
     }
 
+    func testFloatingWindowShadowPreservesBothPieceColorsWithoutCoveringChessmen() throws {
+        let recognizer = try BoardRecognizer.preset()
+        for side in Side.allCases {
+            let screen = try frame(board(side))
+            let shadowed = renderer(screen.size).image { context in
+                screen.draw(at: .zero)
+                // 固定实图坐标：浮窗本体在首排棋子上方，只有向下投影落到右侧棋面。
+                context.cgContext.setShadow(offset: CGSize(width: 0, height: 12), blur: 36,
+                                            color: UIColor.black.withAlphaComponent(0.55).cgColor)
+                UIColor.white.setFill()
+                UIBezierPath(roundedRect: CGRect(x: 500, y: 180, width: 750, height: 562), cornerRadius: 40).fill()
+            }
+            let result = try recognizer.recognize(broadcast(shadowed), sideToMove: side)
+            XCTAssertEqual(result.position, side == .red ? .standard : afterRedCannon)
+            XCTAssertEqual(result.boardAtBottom, side)
+        }
+    }
+
     func testBlurRejectedBeforeItCanChangeCannonColor() throws {
         let recognizer = try BoardRecognizer.preset()
         for side in Side.allCases {
@@ -134,7 +152,7 @@ final class BoardRecognizerTests: XCTestCase {
         XCTAssertThrowsError(try recognizer.recognize(broadcast(screen), sideToMove: .red))
     }
 
-    func testRepeatedCompressedFramesAndLayoutSwitchKeepCanonicalBoard() throws {
+    func testRepeatedCompressedFramesAndResolutionSwitchKeepCanonicalBoard() throws {
         let recognizer = try BoardRecognizer.preset()
         for modern in [true, true, false, false, true] {
             let compressed = try broadcast(frame(board(.red), modern: modern))
@@ -166,10 +184,10 @@ final class BoardRecognizerTests: XCTestCase {
         return UIGraphicsImageRenderer(size: size, format: format)
     }
 
-    /// 旧布局的原照片已丢失；这只是新实图像素按旧交叉点几何重建，不能替代旧原图或真机验收。
+    /// 两个分辨率共用指定棋盘布局；独立实图坐标验收另由 LiveBoardRecognizerTests 覆盖。
     private func frame(_ board: UIImage, modern: Bool = true, shiftY: CGFloat = 0) throws -> UIImage {
         let size = modern ? CGSize(width: 1280, height: 2781) : CGSize(width: 1320, height: 2868)
-        let target = (modern ? BoardLayout.modernScreen(boardAtBottom: .red) : BoardLayout.screen(boardAtBottom: .red)).gridRect(in: size)
+        let target = BoardLayout.screen(boardAtBottom: .red).gridRect(in: size)
         let source = BoardLayout.template(boardAtBottom: .red).gridRect(in: board.size)
         let scaleX = target.width / source.width, scaleY = target.height / source.height
         let rect = CGRect(x: target.minX - source.minX * scaleX, y: target.minY - source.minY * scaleY + shiftY,

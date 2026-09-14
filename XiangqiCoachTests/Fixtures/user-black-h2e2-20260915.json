@@ -1,0 +1,26 @@
+{
+  "source": "build/live-recognition/user-black-h2e2-20260915-source.png",
+  "sourceSHA256": "766f3df0c0ee8049067bc0fe7596f2e5e068cc214c0743f8c3d2caabe144171c",
+  "sourceKind": "User explicitly requested this board screenshot only, on 2026-09-15",
+  "sourcePixelSize": {
+    "width": 1320,
+    "height": 2868
+  },
+  "cropTopLeftPixels": {
+    "x": 10,
+    "y": 740,
+    "width": 1300,
+    "height": 1444
+  },
+  "fixture": "user-black-h2e2-20260915.png",
+  "fixtureSHA256": "0e2821783f3464552aa627cbcb11ee1e29c3ae299be924d066eee43f32b2446b",
+  "colorSpace": "Source sRGB marker preserved when present; EXIF/XMP/personal metadata omitted",
+  "boardAtBottom": "black",
+  "sideToMove": "black",
+  "expectedFEN": "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C2C4/9/RHEAKAEHR b",
+  "expectedMovesFromStandard": [
+    "h2e2"
+  ],
+  "privacy": "Test bundle contains only the board crop. Full user screenshot remains in build evidence; avatar, nickname, status bar, voice controls and timers excluded.",
+  "reconstruction": "Place original crop pixels without scaling at the recorded fixed top-left position on the source-sized canvas. Do not query BoardLayout or recognition output for placement."
+}

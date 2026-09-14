@@ -1,0 +1,24 @@
+{
+  "source": "build/live-recognition/user-red-opening-20260915-source.jpg",
+  "sourceSHA256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+  "sourceKind": "User explicitly requested this board screenshot only, on 2026-09-15",
+  "sourcePixelSize": {
+    "width": 1280,
+    "height": 2781
+  },
+  "cropTopLeftPixels": {
+    "x": 12,
+    "y": 722,
+    "width": 1256,
+    "height": 1393
+  },
+  "fixture": "user-red-opening-20260915.png",
+  "fixtureSHA256": "811b85a81263c3e7aafd2ba39d44d09aa570d5e19e166f294e1e1ccd14389168",
+  "colorSpace": "Source sRGB marker preserved when present; EXIF/XMP/personal metadata omitted",
+  "boardAtBottom": "red",
+  "sideToMove": "red",
+  "expectedFEN": "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RHEAKAEHR r",
+  "expectedMovesFromStandard": [],
+  "privacy": "Test bundle contains only the board crop. Full user screenshot remains in build evidence; avatar, nickname, status bar, voice controls and timers excluded.",
+  "reconstruction": "Place original crop pixels without scaling at the recorded fixed top-left position on the source-sized canvas. Do not query BoardLayout or recognition output for placement."
+}
