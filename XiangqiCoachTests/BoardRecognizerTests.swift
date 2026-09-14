@@ -9,7 +9,7 @@ final class BoardRecognizerTests: XCTestCase {
     private let context = CIContext(options: [.cacheIntermediates: false])
 
     func testRedOpeningFromActualBoardCrop() throws {
-        let result = try BoardRecognizer.preset(boardAtBottom: .black).recognize(
+        let result = try BoardRecognizer.preset().recognize(
             broadcast(frame(board(.red))), sideToMove: .red)
         XCTAssertEqual(result.position, .standard)
         XCTAssertEqual(result.boardAtBottom, .red)
@@ -17,7 +17,7 @@ final class BoardRecognizerTests: XCTestCase {
     }
 
     func testBlackBottomIsActualH2E2AndWhiteOriginHighlightIsEmpty() throws {
-        let result = try BoardRecognizer.preset(boardAtBottom: .red).recognize(
+        let result = try BoardRecognizer.preset().recognize(
             broadcast(frame(board(.black))), sideToMove: .black)
         XCTAssertEqual(result.position, afterRedCannon)
         XCTAssertEqual(result.boardAtBottom, .black)
@@ -27,7 +27,7 @@ final class BoardRecognizerTests: XCTestCase {
 
     /// 真实棋盘像素经 UIKit 拼回屏幕，再走录屏同款 CoreImage 720/900/1080 高度与 JPEG 编解码。
     func testBothLayoutsBothOrientationsCompressionAndScaleMatrix() throws {
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         for side in Side.allCases {
             for modern in [true, false] {
                 let screen = try frame(board(side), modern: modern)
@@ -45,13 +45,13 @@ final class BoardRecognizerTests: XCTestCase {
         }
     }
 
-    func testSelectedSideNeverChangesRecognizedPieceColorsOrOrientation() throws {
+    func testInputTurnNeverChangesRecognizedPieceColorsOrOrientation() throws {
         for side in Side.allCases {
             let screen = try broadcast(frame(board(side)))
-            for preset in Side.allCases {
-                let result = try BoardRecognizer.preset(boardAtBottom: preset).recognize(screen, sideToMove: .red)
+            for inputTurn in Side.allCases {
+                let result = try BoardRecognizer.preset().recognize(screen, sideToMove: inputTurn)
                 var expected = side == .red ? XiangqiPosition.standard : afterRedCannon
-                expected.sideToMove = .red
+                expected.sideToMove = inputTurn
                 XCTAssertEqual(result.position, expected)
                 XCTAssertEqual(result.boardAtBottom, side)
             }
@@ -66,7 +66,7 @@ final class BoardRecognizerTests: XCTestCase {
         let red = expected[bottom]
         expected[bottom] = expected[top]
         expected[top] = red
-        let result = try BoardRecognizer.preset(boardAtBottom: .red).recognize(broadcast(frame(swapped)), sideToMove: .red)
+        let result = try BoardRecognizer.preset().recognize(broadcast(frame(swapped)), sideToMove: .red)
         XCTAssertEqual(result.position, expected)
     }
 
@@ -76,7 +76,7 @@ final class BoardRecognizerTests: XCTestCase {
             (Square(row: 2, column: 1), moved, Square(row: 2, column: 7)),
             (Square(row: 2, column: 4), red, Square(row: 2, column: 4))
         ])
-        let result = try BoardRecognizer.preset(boardAtBottom: .red).recognize(broadcast(frame(restored)), sideToMove: .red)
+        let result = try BoardRecognizer.preset().recognize(broadcast(frame(restored)), sideToMove: .red)
         XCTAssertEqual(result.position, .standard)
         XCTAssertEqual(result.boardAtBottom, .black)
     }
@@ -87,7 +87,7 @@ final class BoardRecognizerTests: XCTestCase {
             (Square(row: 9, column: 4), original, Square(row: 8, column: 4)),
             (Square(row: 5, column: 4), original, Square(row: 9, column: 4))
         ])
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         XCTAssertThrowsError(try recognizer.recognize(broadcast(frame(moved)), sideToMove: .red))
     }
 
@@ -98,12 +98,12 @@ final class BoardRecognizerTests: XCTestCase {
             UIColor(white: 0.2, alpha: 1).setFill()
             context.fill(cellRect(Square(row: 9, column: 4), size: original.size))
         }
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         XCTAssertThrowsError(try recognizer.recognize(broadcast(frame(obscured)), sideToMove: .red))
     }
 
     func testBlurRejectedBeforeItCanChangeCannonColor() throws {
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         for side in Side.allCases {
             let screen = try frame(board(side))
             for blur in [0.6, 1.0, 1.5] {
@@ -113,7 +113,7 @@ final class BoardRecognizerTests: XCTestCase {
     }
 
     func testBlankAndUniformOverlayAreRejected() throws {
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         let blank = renderer(CGSize(width: 1280, height: 2781)).image { context in
             UIColor(red: 0.85, green: 0.65, blue: 0.4, alpha: 1).setFill()
             context.fill(CGRect(x: 0, y: 0, width: 1280, height: 2781))
@@ -130,12 +130,12 @@ final class BoardRecognizerTests: XCTestCase {
 
     func testBoardOutsideSupportedGeometryIsRejected() throws {
         let screen = try frame(board(.red), shiftY: 160)
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         XCTAssertThrowsError(try recognizer.recognize(broadcast(screen), sideToMove: .red))
     }
 
     func testRepeatedCompressedFramesAndLayoutSwitchKeepCanonicalBoard() throws {
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .black)
+        let recognizer = try BoardRecognizer.preset()
         for modern in [true, true, false, false, true] {
             let compressed = try broadcast(frame(board(.red), modern: modern))
             XCTAssertEqual(try recognizer.recognize(compressed, sideToMove: .red).position, .standard)
@@ -143,7 +143,7 @@ final class BoardRecognizerTests: XCTestCase {
     }
 
     func testCompressedRecognitionPerformance() throws {
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: .red)
+        let recognizer = try BoardRecognizer.preset()
         let compressed = try broadcast(frame(board(.black)))
         XCTAssertEqual(try recognizer.recognize(compressed, sideToMove: .black).position, afterRedCannon)
         measure { _ = try? recognizer.recognize(compressed, sideToMove: .black) }

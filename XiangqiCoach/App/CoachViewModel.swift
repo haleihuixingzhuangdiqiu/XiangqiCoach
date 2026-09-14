@@ -5,13 +5,6 @@ import UIKit
 
 @MainActor
 final class CoachViewModel: ObservableObject {
-    @Published var playerSide: Side = .red {
-        didSet {
-            guard playerSide != oldValue else { return }
-            guard !applyingRecognizedSide else { return }
-            prepareRecognizer()
-        }
-    }
     @Published var manualSideToMove: Side = .red
     @Published var voiceEnabled = true
     @Published var autoStartPictureInPicture = true
@@ -61,7 +54,6 @@ final class CoachViewModel: ObservableObject {
     private var lastEngineResultDepth: Int?
     private var recognitionWaitDetail = "请露出完整棋盘，保持主题/方向一致"
     private var requiresTurnSynchronization = false
-    private var applyingRecognizedSide = false
     private var recognizedBoardAtBottom: Side?
     private var orientationCandidate: Side?
     private var orientationCandidateCount = 0
@@ -131,10 +123,9 @@ final class CoachViewModel: ObservableObject {
     }
 
     private func prepareRecognizer() {
-        // 内置模板按屏幕底部方向准备；切换执棋方会使旧模板、旧帧和旧计算全部失效。
+        // 一次准备两种颜色的模板；执棋方只能从后续真实画面确认，不能由设置或默认值指定。
         recognizerGeneration += 1
         let generation = recognizerGeneration
-        let boardAtBottom = playerSide
         recognizer = nil
         isRecognizerReady = false
         recognitionPreparationStatus = "正在准备棋盘识别…"
@@ -143,7 +134,7 @@ final class CoachViewModel: ObservableObject {
         updateOverlay()
 
         recognitionQueue.async { [weak self] in
-            let result = Result { try BoardRecognizer.preset(boardAtBottom: boardAtBottom) }
+            let result = Result { try BoardRecognizer.preset() }
             DispatchQueue.main.async {
                 guard let self, generation == self.recognizerGeneration else { return }
                 switch result {
@@ -286,16 +277,11 @@ final class CoachViewModel: ObservableObject {
 
     /// 实测朝向由将帅位置和颜色确认；内部同步不重新加载模板，也不丢弃刚证明的局面。
     private func confirmObservedSide(_ side: Side) -> Bool {
-        if recognizedBoardAtBottom == side, playerSide == side { return true }
+        if recognizedBoardAtBottom == side { return true }
         guard orientationCandidateCount >= 2 else { return false }
+        // 新确认的朝向替代旧朝向时撤销旧侧搜索，但不重载模板、不丢弃已证明的棋局。
+        invalidateAnalysis()
         recognizedBoardAtBottom = side
-        if playerSide != side {
-            invalidateAnalysis()
-            suggestedMove = nil
-            applyingRecognizedSide = true
-            playerSide = side
-            applyingRecognizedSide = false
-        }
         return true
     }
 
@@ -305,7 +291,8 @@ final class CoachViewModel: ObservableObject {
         let sessionGeneration = session.generation
         requiresTurnSynchronization = false
 
-        guard position.sideToMove == playerSide else {
+        guard let boardAtBottom = recognizedBoardAtBottom else { return }
+        guard position.sideToMove == boardAtBottom else {
             if analysisState.hasWork { invalidateAnalysis() }
             suggestedMove = nil
             session.advance(to: .waitingForOpponent, generation: sessionGeneration)
@@ -566,10 +553,10 @@ final class CoachViewModel: ObservableObject {
             state = CoachOverlayState(title: "录屏已停止", move: "指导已暂停", detail: "返回教练重新开启“棋研录屏”", accent: .systemOrange)
         }
         // 棋盘是独立于搜索状态的持久内容；等待识别/思考不再把整个浮窗切成白底。
-        state.position = session.isCapturing ? currentPosition : nil
+        state.position = session.isCapturing && recognizedBoardAtBottom != nil ? currentPosition : nil
         state.boardIsCurrent = lastConfirmedFrameAt.map(isFresh) ?? false
         state.suggestedMove = session.phase == .recommendation ? suggestedMove : nil
-        state.boardAtBottom = recognizedBoardAtBottom ?? playerSide
+        if let recognizedBoardAtBottom { state.boardAtBottom = recognizedBoardAtBottom }
         if recommendation != state.move { recommendation = state.move }
         if recommendationDetail != state.detail { recommendationDetail = state.detail }
         pipController.update(state)

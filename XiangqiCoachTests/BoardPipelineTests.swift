@@ -18,7 +18,7 @@ final class BoardPipelineTests: XCTestCase {
 
     private func verifyPipeline(boardAtBottom: Side, movesFromStandard: [XiangqiMove], attachmentName: String) async throws {
         let expected = movesFromStandard.reduce(XiangqiPosition.standard) { $0.applying($1) }
-        let recognizer = try BoardRecognizer.preset(boardAtBottom: boardAtBottom.opponent)
+        let recognizer = try BoardRecognizer.preset()
         var tracker = BoardTracker()
         var recognizedBottom: Side?
         for frameIndex in 0..<2 {

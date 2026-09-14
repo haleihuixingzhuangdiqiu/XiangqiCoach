@@ -63,17 +63,6 @@ struct ContentView: View {
                 .font(.headline)
 
             HStack {
-                Text("我执")
-                Spacer()
-                Picker("我执", selection: $model.playerSide) {
-                    Text("红方").tag(Side.red)
-                    Text("黑方").tag(Side.black)
-                }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 210)
-            }
-
-            HStack {
                 Text("当前轮到")
                 Spacer()
                 Picker("当前轮到", selection: $model.manualSideToMove) {

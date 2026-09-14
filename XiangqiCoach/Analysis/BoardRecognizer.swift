@@ -15,7 +15,7 @@ struct RecognitionResult {
 }
 
 /// 固定棋盘主题的像素识别器。初始化后只读；由专用串行队列处理录屏帧。
-/// 先根据实际字色和字形分类，再用双将位置判朝向；“我执”不会参与红黑猜测。
+/// 先根据实际字色和字形分类，再用双将位置判朝向；不接受外部指定的执棋方。
 final class BoardRecognizer: @unchecked Sendable {
     private struct Feature {
         let pixels: [Float]
@@ -38,8 +38,8 @@ final class BoardRecognizer: @unchecked Sendable {
     private let maximumBlackInkChroma: Float
     private let minimumRedInkChroma: Float
 
-    static func preset(boardAtBottom: Side) throws -> BoardRecognizer {
-        // 方向只能由识别后的棋盘确定。两种选择共用只读模板，避免设置切换重复解码。
+    static func preset() throws -> BoardRecognizer {
+        // 方向只能由识别后的棋盘确定。两种朝向共用只读模板，重复进入时不再解码。
         cache.lock.lock()
         defer { cache.lock.unlock() }
         if let existing = cache.recognizer { return existing }
