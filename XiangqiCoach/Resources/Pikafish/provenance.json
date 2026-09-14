@@ -1,0 +1,12 @@
+{
+  "sourceTag": "Pikafish-2025-06-23",
+  "sourceCommit": "2b6cf79d55d9d168604cf42ce61b517653d6f2fc",
+  "sourceURL": "https://github.com/official-pikafish/Pikafish/tree/2b6cf79d55d9d168604cf42ce61b517653d6f2fc",
+  "proBinaryReportedVersion": "Pikafish 2025-06-27",
+  "modelBytes": 44880002,
+  "modelSHA256": "9b2ce59b760c26f284b9fcadd091fa789d9fd4e8c1dd71ffbd42212503a13e95",
+  "modelOfficialRelease": "https://github.com/official-pikafish/Pikafish/releases/tag/Pikafish-2025-06-23",
+  "proModelIdentical": true,
+  "ruleVariantIdentical": false,
+  "restoredOn": "2026-09-14"
+}

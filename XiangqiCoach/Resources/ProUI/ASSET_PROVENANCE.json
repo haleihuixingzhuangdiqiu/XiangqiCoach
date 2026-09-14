@@ -1,0 +1,462 @@
+{
+  "recovered_on": "2026-09-14",
+  "scope": "User-authorized personal local installation; screenshot-derived replacement assets.",
+  "provenance_note": "The previous Android Pro APK assets were unavailable. These are NOT the original Pro PNGs; pro_ filenames preserve the renderer resource contract only.",
+  "source_resolution": [
+    1280,
+    2781
+  ],
+  "files": [
+    {
+      "file": "pro_black_rook.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        32,
+        728,
+        160,
+        872
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "e69701c5725e42347f3cf487bcacc18422f057d97a9a22440d2663bd2963acb8",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_black_horse.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        168,
+        728,
+        296,
+        872
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "242adee46c6f4ccb9177e63ec322e296c905726efeea5515dba7650862e5c0dd",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_black_elephant.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        304,
+        728,
+        432,
+        872
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "08e815113ffda0b9e61bb0cd68aa77177c95557586ee0082b7755f6559760cff",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_black_advisor.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        440,
+        728,
+        568,
+        872
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "2e210516d958f67d69f30ee76d67950b83942e5d279e909954090920c93e1029",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_black_general.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        576,
+        728,
+        704,
+        872
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "67a7b41e497216ad63c3f234da5bbe20bf746b20b99df2dc08ac0e3d1e91d77e",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_black_cannon.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        168,
+        999,
+        296,
+        1143
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "793af28fd3d6541e32616330f50e5637139349360d135ad8648293ccaad18f9e",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_black_pawn.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        32,
+        1135,
+        160,
+        1279
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "f7ebe54e23c104cc7219708fa9b97f9ccc793e226d34c59b551c29aeb8506448",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_rook.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        32,
+        1949,
+        160,
+        2093
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "def61760a6095dd646c28da61cb5aafbe2444669c7871466e8964742d2b79137",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_horse.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        168,
+        1949,
+        296,
+        2093
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "ccfc68d06d865c48cea0b3a3db1d59d896e1a01a914a53ad6d8d5bb6b08ba703",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_elephant.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        304,
+        1949,
+        432,
+        2093
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "3fe88be2ec87497303ce610ff85516b36fed1880db06dc460825e4a52fdc0b3f",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_advisor.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        440,
+        1949,
+        568,
+        2093
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "ccffd3cc60d5bf4506d0a1c8f142d0b8cc130d8f4979116b05a1e68765e30aa0",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_general.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        576,
+        1949,
+        704,
+        2093
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "b40b3dbd966e04ac67482946455a2de8093b054eb48f1255b3fd902d03e277e6",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_cannon.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        168,
+        1678,
+        296,
+        1822
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "81682ef2d068c629a8b1f2db3756a2bae72f1f01b98f35ec7aee25f2338d619d",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_red_pawn.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        32,
+        1542,
+        160,
+        1686
+      ],
+      "size": [
+        128,
+        144
+      ],
+      "sha256": "9563c2d1807a680ccb2df9118376ad729f9e2614f8b318e4218ed5eef58ade68",
+      "operation": "Original screenshot RGB pixels; alpha mask only, union of two ellipses with 4x antialiasing",
+      "alpha_ellipses_xyxy": [
+        [
+          6,
+          10,
+          122,
+          121
+        ],
+        [
+          6,
+          22,
+          122,
+          133
+        ]
+      ]
+    },
+    {
+      "file": "pro_wood_texture.png",
+      "source": "codex-clipboard-c8f9a7a7-846d-48b9-a797-3f2151a7f50e.jpg",
+      "source_sha256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "crop_xyxy": [
+        544,
+        1350,
+        744,
+        1450
+      ],
+      "size": [
+        200,
+        100
+      ],
+      "sha256": "081ffd0d7e34460f6932c4128d5eb9a69e1585e03db4bc918bfb7cf23d16ef95",
+      "operation": "Lossless original-pixel crop from the empty center of the river, excluding grid lines, lettering and all piece shadows; no smoothing, recoloring or synthesis"
+    }
+  ]
+}

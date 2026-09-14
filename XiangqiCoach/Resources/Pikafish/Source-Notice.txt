@@ -1,0 +1,18 @@
+本应用使用官方 Pikafish 2025-06-23 核心，以及与此前实测 Pro 象棋完全同 SHA-256 的 NNUE 模型。
+
+官方源码：
+https://github.com/official-pikafish/Pikafish/tree/2b6cf79d55d9d168604cf42ce61b517653d6f2fc
+
+模型：44,880,002 字节
+SHA-256：9b2ce59b760c26f284b9fcadd091fa789d9fd4e8c1dd71ffbd42212503a13e95
+官方模型来源：
+https://github.com/official-pikafish/Pikafish/releases/tag/Pikafish-2025-06-23
+
+Pro 原生报告版本为 2025-06-27；当前公开官方核心与其开局搜索相同，但尚未获得其额外 AsianRule/ScoreType/LU_Output 版本对应源码，不能宣称所有棋规与 Pro 完全一致。
+
+完整源码、iOS 适配与构建脚本随本项目提供。
+源码目录：XiangqiCoach/Vendor/Pikafish
+集成说明：docs/pikafish-integration.md
+
+引擎源码许可见 GPL-3.0.txt；NNUE 权重条款见 NNUE-License.md。
+本安装供用户个人练习使用。

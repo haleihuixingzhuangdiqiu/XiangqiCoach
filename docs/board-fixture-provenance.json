@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "status": "Rebuilt recognizer uses the two annotated board-only fixtures; real iOS regression pending.",
+  "fixtures": [
+    {
+      "id": "red-bottom-opening",
+      "sourceSHA256": "326842ee79614fa22e3f08a7ff6eb5884cbeeeaad192c00de925c260e3d876ed",
+      "sourceSize": [
+        1280,
+        2781
+      ],
+      "boardOnlyFile": "red-bottom-opening.png",
+      "boardOnlySHA256": "8bd0ecf117c82e15c20eb4992cd05c70c76d0f1fbcc0f938fc551c28b62227a9",
+      "cropXYWH": [
+        12,
+        722,
+        1256,
+        1393
+      ],
+      "approximateScreenGridXYWH": [
+        96,
+        802,
+        1088,
+        1220
+      ],
+      "gridAccuracy": "Line-profile and visual measurements; must refine/verify through actual recognizer before production use.",
+      "boardAtBottom": "red",
+      "expectedFEN": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w - - 0 1",
+      "movesFromStandard": [],
+      "manualAnnotationVerified": true,
+      "resourceFile": "board-template-red.png",
+      "resourceSHA256": "8bd0ecf117c82e15c20eb4992cd05c70c76d0f1fbcc0f938fc551c28b62227a9"
+    },
+    {
+      "id": "black-bottom-after-red-cannon",
+      "sourceSHA256": "fd5c056d67d0b9cd19039724f36c9e099adc5e109e01fb6fa33e056911cb8384",
+      "sourceSize": [
+        1280,
+        2781
+      ],
+      "boardOnlyFile": "black-bottom-after-red-cannon.png",
+      "boardOnlySHA256": "b08722a6fe2d34259e0f76deb43d12ff5d96d4eb3e753802098e8b680eac2a66",
+      "cropXYWH": [
+        12,
+        722,
+        1256,
+        1393
+      ],
+      "approximateScreenGridXYWH": [
+        96,
+        802,
+        1088,
+        1220
+      ],
+      "gridAccuracy": "Line-profile and visual measurements; must refine/verify through actual recognizer before production use.",
+      "boardAtBottom": "black",
+      "expectedFEN": "rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C2C4/9/RNBAKABNR b - - 1 1",
+      "movesFromStandard": [
+        "h2e2"
+      ],
+      "manualAnnotationVerified": true,
+      "resourceFile": "board-template-black.png",
+      "resourceSHA256": "b08722a6fe2d34259e0f76deb43d12ff5d96d4eb3e753802098e8b680eac2a66"
+    }
+  ],
+  "acceptanceCases": [
+    "Both supplied boards recognize all 90 cells after actual ReplayKit 720px JPEG encode/decode.",
+    "Black-bottom image is actual h2e2 position, black to move; never relabel the moved cannon as a starting square.",
+    "White highlight at screen row2 col1 is empty; highlighted cannon at row2 col4 stays red.",
+    "Automatically select old vs new vertical layout and both orientations without user calibration.",
+    "Retain last confirmed board while thinking or briefly occluded; hide stale arrow.",
+    "New frame cancels obsolete position search; same-position occlusion does not repeatedly restart search.",
+    "Verify repeated stable frames, layout switches, occlusion/re-entry, and board moving outside fitted geometry.",
+    "Run on physical iPhone and compare live frame/recognition/engine times; fixture success is not live acceptance."
+  ]
+}
