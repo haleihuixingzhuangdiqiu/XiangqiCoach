@@ -29,7 +29,7 @@ def configure_target(target, bundle_identifier, info_plist)
     settings["TARGETED_DEVICE_FAMILY"] = "1"
     settings["SUPPORTED_PLATFORMS"] = "iphoneos iphonesimulator"
     settings["ENABLE_USER_SCRIPT_SANDBOXING"] = "YES"
-    settings["CURRENT_PROJECT_VERSION"] = "2026091403"
+    settings["CURRENT_PROJECT_VERSION"] = "2026091404"
     settings["MARKETING_VERSION"] = "1.1"
   end
 end

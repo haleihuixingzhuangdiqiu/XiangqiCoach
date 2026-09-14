@@ -29,6 +29,8 @@ final class CoachViewModel: ObservableObject {
     private let speech = AVSpeechSynthesizer()
     private let diagnostics = CoachDiagnostics()
 
+    /// 单独保留监听器状态，防止系统“录屏已开启”覆盖真正的传输错误。
+    private var receiverStatus = "正在启动录屏接收器"
     private var recognizer: BoardRecognizer?
     private var analyzingFrame = false
     private var boardTracker = BoardTracker()
@@ -64,7 +66,12 @@ final class CoachViewModel: ObservableObject {
             Task { @MainActor in self?.ingest(image, capturedAt: capturedAt) }
         }
         receiver.onStatus = { [weak self] status in
-            Task { @MainActor in self?.captureStatus = status }
+            Task { @MainActor in
+                guard let self else { return }
+                self.receiverStatus = status
+                self.captureStatus = status
+                self.writeDiagnostics()
+            }
         }
         receiver.start()
 
@@ -511,6 +518,12 @@ final class CoachViewModel: ObservableObject {
             isAnalyzing: analysisState.isInFlight,
             isScreenCaptured: isScreenCaptured,
             receivedFrameCount: receivedFrameCount,
+            captureStatus: captureStatus,
+            receiverStatus: receiverStatus,
+            applicationState: String(describing: UIApplication.shared.applicationState),
+            isPictureInPictureActive: pipController.isPictureInPictureActive,
+            isPictureInPicturePossible: pipController.isPictureInPicturePossible,
+            pictureInPictureError: pipController.errorMessage,
             recognitionStatus: recognitionStatus,
             frameLatencyMilliseconds: lastFrameLatencyMilliseconds,
             recognitionMilliseconds: lastRecognitionMilliseconds,

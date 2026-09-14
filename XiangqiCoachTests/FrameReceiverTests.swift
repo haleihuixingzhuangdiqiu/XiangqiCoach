@@ -6,6 +6,30 @@ import XCTest
 @testable import XiangqiCoach
 
 final class FrameReceiverTests: XCTestCase {
+    func testExplicitFixedPortReceivesJPEGOverLoopback() async throws {
+        // 宿主 App 使用 43981；相邻的非零固定端口走完全相同的生产绑定路径。
+        // 旧实现对所有非零固定端口都同步抛 EINVAL，而 .any 不会触发。
+        let receiver = FrameReceiver(port: 43_982)
+        defer { receiver.stop() }
+        let port = try await start(receiver)
+        XCTAssertEqual(port, NWEndpoint.Port(rawValue: 43_982))
+        let jpeg = try makeJPEG()
+        let frame = expectation(description: "固定端口实际 TCP 帧解码完成")
+        let observations = ReceivedFrames()
+        receiver.onFrame = { image, timestamp in
+            observations.append(image, timestamp)
+            frame.fulfill()
+        }
+        let capturedAt = ProcessInfo.processInfo.systemUptime
+        try await transmit(packet(jpeg, at: capturedAt), to: 43_982)
+        await fulfillment(of: [frame], timeout: 2)
+        let received = try XCTUnwrap(observations.snapshot.first)
+        XCTAssertEqual(observations.snapshot.count, 1)
+        XCTAssertEqual(received.timestamp, capturedAt)
+        XCTAssertEqual(received.image.width, 18)
+        XCTAssertEqual(received.image.height, 12)
+    }
+
     func testFragmentedHeaderAndJPEGReachRealLoopbackReceiverWithOriginalTimestamp() async throws {
         let receiver = FrameReceiver(port: .any)
         defer { receiver.stop() }
@@ -76,7 +100,7 @@ final class FrameReceiverTests: XCTestCase {
     }
 
     private func start(_ receiver: FrameReceiver) async throws -> NWEndpoint.Port {
-        let ready = expectation(description: "随机端口 NWListener ready")
+        let ready = expectation(description: "NWListener ready")
         receiver.onStatus = { status in
             if status == "录屏接收器已就绪" { ready.fulfill() }
             if status.contains("失败") || status.contains("无法启动") { XCTFail(status) }

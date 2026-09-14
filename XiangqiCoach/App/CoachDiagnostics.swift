@@ -8,6 +8,12 @@ struct CoachDiagnosticsSnapshot: Codable, Equatable, Sendable {
     let isAnalyzing: Bool
     let isScreenCaptured: Bool
     let receivedFrameCount: Int
+    let captureStatus: String
+    let receiverStatus: String
+    let applicationState: String
+    let isPictureInPictureActive: Bool
+    let isPictureInPicturePossible: Bool
+    let pictureInPictureError: String?
     let recognitionStatus: String
     let frameLatencyMilliseconds: Double?
     let recognitionMilliseconds: Double?
@@ -19,7 +25,7 @@ struct CoachDiagnosticsSnapshot: Codable, Equatable, Sendable {
     let engineError: String?
 }
 
-/// 最多每秒提交一次，且只覆盖同一文件；编码和磁盘写入均离开主线程。
+/// 变化最多每秒提交一次；静止状态每十秒刷新存活时间，区分零帧与应用被挂起。只覆盖同一文件，写入离开主线程。
 @MainActor
 final class CoachDiagnostics {
     private let queue = DispatchQueue(label: "com.lgj.xiangqicoach.diagnostics", qos: .utility)
@@ -32,7 +38,7 @@ final class CoachDiagnostics {
 
     func submit(_ snapshot: CoachDiagnosticsSnapshot) {
         let now = ProcessInfo.processInfo.systemUptime
-        guard now - lastSubmittedAt >= 1, snapshot != lastSnapshot, let destination else { return }
+        guard now - lastSubmittedAt >= 1, snapshot != lastSnapshot || now - lastSubmittedAt >= 10, let destination else { return }
         lastSubmittedAt = now
         lastSnapshot = snapshot
         let sessionIdentifier = sessionIdentifier

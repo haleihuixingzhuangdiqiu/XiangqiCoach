@@ -40,8 +40,8 @@ xcodebuild -project XiangqiCoach.xcodeproj -scheme XiangqiCoach \
 
 真机使用个人团队自动签名，应用标识为 `com.lgj.xiangqicoach`，扩展为 `com.lgj.xiangqicoach.broadcast`。更换开发者需要修改生成脚本中的团队标识。签名证书、配置文件不纳入源码。
 
-运行状态最多每秒写入一次 `Documents/coach-diagnostics.json`，包含构建号、会话 ID 和记录时间，避免把升级前的旧诊断误当成新版本验收。该文件不保存录屏照片或头像。
+运行状态最多每秒写入一次 `Documents/coach-diagnostics.json`，包含构建号、会话 ID、接收通道与悬浮状态；静止状态每十秒刷新记录时间，避免把升级前的旧诊断误当成新版本验收。该文件不保存录屏照片或头像。
 
 ## 测试
 
-覆盖真实本机 TCP 分段/错误/旧帧传输、棋规和走子历史、识别正反方向及已走炮局面、搜索取消/超时/恢复、PiP 时钟与缓存、棋盘图形和过期箭头隔离。每次重建必须重新运行；历史测试记录不代替当前验收。最新结果见 `docs/rebuild-validation.md`。
+覆盖真实本机 TCP 分段/错误/旧帧传输、棋规和走子历史、识别正反方向及已走炮局面、搜索取消/超时/恢复、PiP 时钟与缓存、棋盘图形和过期箭头隔离。每次重建必须重新运行；历史测试记录不代替当前验收。重建结果见 `docs/rebuild-validation.md`，固定端口零帧修复见 `docs/zero-frame-validation.md`。

@@ -21,7 +21,8 @@ final class FrameReceiver {
         do {
             let parameters = NWParameters.tcp
             parameters.requiredLocalEndpoint = .hostPort(host: "127.0.0.1", port: requestedPort)
-            let listener = try NWListener(using: parameters, on: requestedPort)
+            // 地址和端口已由本地端点指定；再次传 on: 固定端口会让 Network.framework 抛 EINVAL。
+            let listener = try NWListener(using: parameters)
             listener.newConnectionHandler = { [weak self] connection in
                 self?.receiveFrame(from: connection)
             }
