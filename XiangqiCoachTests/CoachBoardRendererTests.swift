@@ -9,7 +9,7 @@ final class CoachBoardRendererTests: XCTestCase {
         XCTAssertTrue(CoachBoardRenderer.hasCompleteProAssets, "需要打包 ProUI 的 14 个棋子及无品牌木纹 PNG")
     }
 
-    func testLargerBoardPreservesSquareCellsAndCanvasMargins() {
+    func testBoardPreservesSquareCellsAndRoomForArtwork() {
         let grid = CoachBoardRenderer.grid
         XCTAssertEqual(grid.width / 8, grid.height / 9, accuracy: 0.001)
         XCTAssertGreaterThan(grid.width, 408)
@@ -290,4 +290,150 @@ final class CoachBoardRendererTests: XCTestCase {
             add(attachment)
         }
     }
+
+    /// 150 源像素圆角比问题截图的遮罩更保守，只是回归安全域，不冒充 iOS 实际圆角参数。
+    @MainActor
+    func testAllPieceArtworkAndSelectionBoundsFitConservativeRoundedMask() throws {
+        XCTAssertEqual(CoachBoardRenderer.canvasSize, CGSize(width: 800, height: 600))
+        let mask = conservativeMask()
+        let assets = try bundledPieceArtwork()
+        XCTAssertEqual(assets.count, 14)
+        for bottom in Side.allCases {
+            let geometry = CoachBoardGeometry(grid: CoachBoardRenderer.grid, boardAtBottom: bottom)
+            for row in 0..<10 {
+                for column in 0..<9 {
+                    let square = Square(row: row, column: column)
+                    let center = geometry.point(for: square)
+                    // 圈选半径是格距的 .47；最外侧白描边宽4，路径两侧各扩张2。
+                    let selectionRadius = geometry.cellSize * 0.47 + 2
+                    let selection = CGRect(x: center.x - selectionRadius, y: center.y - selectionRadius,
+                                           width: selectionRadius * 2, height: selectionRadius * 2)
+                    XCTAssertTrue(containsEntireRect(selection, in: mask),
+                                  "\(bottom.rawValue)在下 (\(row),\(column)) 的圈选外沿会被系统遮罩裁掉")
+                    for (piece, image) in assets {
+                        let artwork = artworkRect(image, center: center, cellSize: geometry.cellSize)
+                        XCTAssertTrue(containsEntireRect(artwork, in: mask),
+                                      "\(bottom.rawValue)在下 (\(row),\(column)) 的\(piece.side.rawValue)_\(piece.kind.rawValue)素材（含阴影）超出安全域")
+                    }
+                }
+            }
+        }
+    }
+
+    @MainActor
+    func testConservativeMaskRejectsThePreviouslyClippedGrid() throws {
+        let oldGrid = CGRect(x: 44, y: 38, width: 464, height: 522)
+        let oldGeometry = CoachBoardGeometry(grid: oldGrid, boardAtBottom: .red)
+        let assets = try bundledPieceArtwork()
+        let image = try XCTUnwrap(assets.first?.1)
+        let mask = conservativeMask()
+        for square in [Square(row: 0, column: 0), Square(row: 9, column: 0)] {
+            let center = oldGeometry.point(for: square)
+            XCTAssertFalse(containsEntireRect(artworkRect(image, center: center, cellSize: oldGeometry.cellSize), in: mask),
+                           "负例必须重现左上/左下棋子的原裁切，防止安全域检查失去作用")
+        }
+    }
+
+    /// 对实际 renderer 输出施加保守圆角，深灰角区表示被裁掉的内容。附件明确不是物理设备截图。
+    @MainActor
+    func testSimulatedRoundedMaskAttachmentsPreserveCurrentRecallOpponentAndStaleBoards() throws {
+        let ownMove = XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4))
+        let own = CoachOverlayState(
+            title: "轮到你 · 红方", move: "炮二平五", detail: "已识别", accent: .systemGreen,
+            position: .standard, suggestedMove: ownMove, boardAtBottom: .red
+        )
+        var blackToMove = XiangqiPosition.standard
+        blackToMove.sideToMove = .black
+        let opponent = CoachOverlayState(
+            title: "对手走法", move: "计算完成", detail: "对手回合不播报", accent: .systemBlue,
+            position: blackToMove,
+            suggestedMove: XiangqiMove(from: Square(row: 0, column: 1), to: Square(row: 2, column: 2)),
+            boardAtBottom: .red
+        )
+        var recall = own
+        recall.boardIsCurrent = false
+        recall.suggestedMove = nil
+        recall.previousSuggestion = CoachMoveRecall(position: .standard, move: ownMove, boardAtBottom: .red)
+        var stale = own
+        stale.boardIsCurrent = false
+        stale.title = "等待画面更新"
+
+        let assets = try bundledPieceArtwork()
+        let artwork = Dictionary(uniqueKeysWithValues: assets)
+        let geometry = CoachBoardGeometry(grid: CoachBoardRenderer.grid, boardAtBottom: .red)
+        let corners = [Square(row: 0, column: 0), Square(row: 0, column: 8),
+                       Square(row: 9, column: 0), Square(row: 9, column: 8)]
+        for (name, state) in [("我方走法", own), ("对手预测", opponent), ("上一条走法", recall), ("上次确认局面", stale)] {
+            let original = CoachBoardRenderer.image(for: state)
+            let unmasked = simulatedSystemMask(on: original, appliesMask: false)
+            let clipped = simulatedSystemMask(on: original)
+            let position = try XCTUnwrap(state.position)
+            // 两图经过相同的标准色域/位深转换，比较四角PNG全部范围，避免把色彩转换当作遮罩损失。
+            for square in corners {
+                let piece = try XCTUnwrap(position[square])
+                let image = try XCTUnwrap(artwork[piece])
+                let rect = artworkRect(image, center: geometry.point(for: square), cellSize: geometry.cellSize).integral
+                XCTAssertEqual(try pixels(unmasked, in: rect), try pixels(clipped, in: rect),
+                               "\(name)的四角棋子不能因系统遮罩损失像素")
+            }
+            let attachment = XCTAttachment(image: clipped)
+            attachment.name = "保守圆角模拟-R150-\(name)-非真机截图"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
+    @MainActor
+    private func bundledPieceArtwork() throws -> [(Piece, UIImage)] {
+        var result: [(Piece, UIImage)] = []
+        for side in Side.allCases {
+            for kind in PieceKind.allCases {
+                let name = "pro_\(side.rawValue)_\(kind.rawValue)"
+                let url = try XCTUnwrap(Bundle.main.url(forResource: name, withExtension: "png", subdirectory: "ProUI")
+                    ?? Bundle.main.url(forResource: name, withExtension: "png"), "缺少实际棋子素材 \(name)")
+                let image = try XCTUnwrap(UIImage(contentsOfFile: url.path))
+                XCTAssertGreaterThan(image.size.width, 0)
+                XCTAssertGreaterThan(image.size.height, 0)
+                result.append((Piece(side: side, kind: kind), image))
+            }
+        }
+        return result
+    }
+
+    /// 使用实际PNG宽高比，包含素材下部阴影；只用棋子圆半径不足以检测底部裁切。
+    private func artworkRect(_ image: UIImage, center: CGPoint, cellSize: CGFloat) -> CGRect {
+        let width = cellSize * 0.91
+        return CGRect(x: center.x - width / 2, y: center.y - width / 2,
+                      width: width, height: width * image.size.height / image.size.width)
+    }
+
+    private func conservativeMask() -> UIBezierPath {
+        UIBezierPath(roundedRect: CGRect(origin: .zero, size: CoachBoardRenderer.canvasSize), cornerRadius: 150)
+    }
+
+    private func containsEntireRect(_ rect: CGRect, in mask: UIBezierPath) -> Bool {
+        // 圆角矩形是凸集，四个顶点均在内部即可保证整个素材/圈选包围盒都在内部。
+        [CGPoint(x: rect.minX, y: rect.minY), CGPoint(x: rect.maxX, y: rect.minY),
+         CGPoint(x: rect.minX, y: rect.maxY), CGPoint(x: rect.maxX, y: rect.maxY)].allSatisfy { mask.contains($0) }
+    }
+
+    @MainActor
+    private func simulatedSystemMask(on image: UIImage, appliesMask: Bool = true) -> UIImage {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        format.opaque = true
+        format.preferredRange = .standard
+        return UIGraphicsImageRenderer(size: CoachBoardRenderer.canvasSize, format: format).image { context in
+            UIColor(white: 0.15, alpha: 1).setFill()
+            context.fill(CGRect(origin: .zero, size: CoachBoardRenderer.canvasSize))
+            if appliesMask { conservativeMask().addClip() }
+            image.draw(at: .zero)
+        }
+    }
+
+    private func pixels(_ image: UIImage, in rect: CGRect) throws -> Data {
+        let cropped = try XCTUnwrap(image.cgImage?.cropping(to: rect))
+        return try XCTUnwrap(UIImage(cgImage: cropped).pngData())
+    }
+
 }

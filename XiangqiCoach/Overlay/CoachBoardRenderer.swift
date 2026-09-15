@@ -55,9 +55,10 @@ struct CoachBoardGeometry {
 enum CoachBoardRenderer {
     static let canvasSize = CGSize(width: 800, height: 600)
     static let aspectRatio: CGFloat = 4.0 / 3.0
-    static let grid = CGRect(x: 44, y: 38, width: 464, height: 522)
+    /// 为系统 PiP 圆角保留棋子、阴影和圈选的安全距离；不是把画布四角当成可用区域。
+    static let grid = CGRect(x: 88, y: 62, width: 416, height: 468)
 
-    private static let boardPanel = CGRect(x: 12, y: 8, width: 528, height: 584)
+    private static let boardPanel = CGRect(x: 0, y: 0, width: 540, height: 600)
     private static let paper = UIColor(red: 0.985, green: 0.983, blue: 0.970, alpha: 1)
     private static let ink = UIColor(red: 0.19, green: 0.22, blue: 0.20, alpha: 1)
     private static let secondaryInk = UIColor(red: 0.39, green: 0.42, blue: 0.38, alpha: 1)
@@ -207,34 +208,22 @@ enum CoachBoardRenderer {
         }
     }
 
+    /// 木纹铺到画布的左、上、下边界，由系统 PiP 圆角统一裁切。
+    /// 不在这三边再画内缩的直角木框，避免圆角内出现白色月牙和第二层方框。
     private static func drawWoodPanel(in context: CGContext) {
         context.saveGState()
-        UIColor(red: 0.49, green: 0.32, blue: 0.15, alpha: 1).setFill()
-        UIBezierPath(rect: boardPanel).fill()
-        context.restoreGState()
-
-        context.saveGState()
-        UIBezierPath(rect: boardPanel.insetBy(dx: 1, dy: 1)).addClip()
-        gradient(in: boardPanel, colors: [
-            UIColor(red: 0.91, green: 0.78, blue: 0.57, alpha: 1),
-            UIColor(red: 0.64, green: 0.45, blue: 0.23, alpha: 1),
-            UIColor(red: 0.39, green: 0.25, blue: 0.12, alpha: 1),
-        ], context: context)
-        context.restoreGState()
-
-        let face = boardPanel.insetBy(dx: 5, dy: 5).offsetBy(dx: 0, dy: -1)
-        context.saveGState()
-        UIBezierPath(rect: face).addClip()
+        context.clip(to: boardPanel)
         if let woodTexture { UIColor(patternImage: woodTexture).setFill() }
         else { UIColor(red: 0.81, green: 0.66, blue: 0.43, alpha: 1).setFill() }
-        context.fill(face)
-        gradient(in: face, colors: [UIColor.white.withAlphaComponent(0.17), UIColor.white.withAlphaComponent(0.02),
-                                   UIColor(red: 0.36, green: 0.20, blue: 0.07, alpha: 0.12)], context: context)
+        context.fill(boardPanel)
+        gradient(in: boardPanel, colors: [UIColor.white.withAlphaComponent(0.17), UIColor.white.withAlphaComponent(0.02),
+                                          UIColor(red: 0.36, green: 0.20, blue: 0.07, alpha: 0.12)], context: context)
         context.restoreGState()
-        UIColor.white.withAlphaComponent(0.40).setStroke()
-        let rim = UIBezierPath(rect: face.insetBy(dx: 0.7, dy: 0.7))
-        rim.lineWidth = 1.1
-        rim.stroke()
+        // 只保留与右侧说明区相接的一条直线，棋盘网格仍按真实交叉点绘制。
+        context.setStrokeColor(boardInk.withAlphaComponent(0.25).cgColor)
+        context.setLineWidth(1)
+        line(from: CGPoint(x: boardPanel.maxX - 0.5, y: 0),
+             to: CGPoint(x: boardPanel.maxX - 0.5, y: canvasSize.height), in: context)
     }
 
     private static func drawGrid(in context: CGContext) {
@@ -382,14 +371,14 @@ enum CoachBoardRenderer {
         }
 
         context.setStrokeColor(ink.withAlphaComponent(0.13).cgColor)
-        line(from: CGPoint(x: x, y: 530), to: CGPoint(x: x + width, y: 530), in: context)
-        text("\(state.boardAtBottom.displayName)在下", in: CGRect(x: x, y: 549, width: 116, height: 30),
+        line(from: CGPoint(x: x, y: 514), to: CGPoint(x: x + 186, y: 514), in: context)
+        text("\(state.boardAtBottom.displayName)在下", in: CGRect(x: x, y: 529, width: 106, height: 30),
              size: 21, weight: .medium, color: secondaryInk)
         let source = isRecall ? "回看" : (state.boardIsCurrent ? "实时" : "旧局面")
         let sourceColor = isRecall ? recallGuide : (state.boardIsCurrent ? markerColor : secondaryInk)
         sourceColor.withAlphaComponent(0.09).setFill()
-        context.fill(CGRect(x: x + 136, y: 544, width: 84, height: 36))
-        text(source, in: CGRect(x: x + 139, y: 550, width: 78, height: 27),
+        context.fill(CGRect(x: x + 106, y: 524, width: 80, height: 36))
+        text(source, in: CGRect(x: x + 109, y: 530, width: 74, height: 27),
              size: 20, weight: .semibold, color: sourceColor, alignment: .center)
     }
 
