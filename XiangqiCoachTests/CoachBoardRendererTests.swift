@@ -152,7 +152,7 @@ final class CoachBoardRendererTests: XCTestCase {
         XCTAssertEqual(CoachBoardRenderer.guidanceText(for: state), "炮二平五")
         XCTAssertEqual(CoachBoardRenderer.boardCaption(for: state), "上一条走法")
         XCTAssertTrue(CoachBoardRenderer.guidanceDetail(for: state).contains("等待落子确认"))
-        XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state), ["原起点：圈选棋子", "原落点：箭头位置", "对应上次确认的局面"])
+        XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state), ["原来起点", "原来落点", "选子时仍可回看"])
     }
 
     func testRecallMustMatchOriginalBoardAndOrientationEvenWhenMoveRemainsLegal() {
@@ -185,7 +185,7 @@ final class CoachBoardRendererTests: XCTestCase {
         XCTAssertNil(CoachBoardRenderer.displayedRecall(for: state))
         XCTAssertEqual(CoachBoardRenderer.boardCaption(for: state), "推荐走法")
         XCTAssertEqual(CoachBoardRenderer.guidanceText(for: state), "炮八平五")
-        XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state).first, "先点圈选棋子")
+        XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state).first, "先点棋子")
     }
 
     func testRecallRejectsIllegalOrOffBoardMoves() {
@@ -246,7 +246,7 @@ final class CoachBoardRendererTests: XCTestCase {
                 position: position, suggestedMove: move, boardAtBottom: bottom)
             XCTAssertEqual(CoachBoardRenderer.displayedMove(for: state), move)
             XCTAssertEqual(CoachBoardRenderer.boardCaption(for: state), "对手走法")
-            XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state), ["对手可能起点", "对手可能落点", "等待对手实际走子"])
+            XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state), ["可能起点", "可能落点", "蓝色箭头仅作预测"])
             XCTAssertFalse(CoachBoardRenderer.guidanceText(for: state).contains("计算"))
             let attachment = XCTAttachment(image: CoachBoardRenderer.image(for: state))
             attachment.name = "对手预测-\(bottom.displayName)在下"

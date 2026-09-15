@@ -29,9 +29,9 @@ struct CoachBoardGeometry {
         let normal = CGPoint(x: -forward.y, y: forward.x)
         let startInset = min(cellSize * 0.46, distance * 0.46)
         let length = distance - startInset
-        let headLength = min(cellSize * 0.22, length * 0.6)
-        let shaftHalfWidth = cellSize * 0.025
-        let headHalfWidth = cellSize * 0.105
+        let headLength = min(cellSize * 0.26, length * 0.6)
+        let shaftHalfWidth = cellSize * 0.040
+        let headHalfWidth = cellSize * 0.13
         func offsetPoint(along: CGFloat, across: CGFloat) -> CGPoint {
             CGPoint(
                 x: origin.x + forward.x * along + normal.x * across,
@@ -60,9 +60,9 @@ enum CoachBoardRenderer {
     private static let boardPanel = CGRect(x: 12, y: 8, width: 528, height: 584)
     private static let paper = UIColor(red: 0.985, green: 0.983, blue: 0.970, alpha: 1)
     private static let ink = UIColor(red: 0.19, green: 0.22, blue: 0.20, alpha: 1)
-    private static let secondaryInk = UIColor(red: 0.45, green: 0.46, blue: 0.40, alpha: 1)
+    private static let secondaryInk = UIColor(red: 0.39, green: 0.42, blue: 0.38, alpha: 1)
     private static let boardInk = UIColor(red: 0.43, green: 0.28, blue: 0.13, alpha: 1)
-    private static let guide = UIColor(red: 0.16, green: 0.72, blue: 0.58, alpha: 1)
+    private static let guide = UIColor(red: 0.04, green: 0.51, blue: 0.36, alpha: 1)
     private static let opponentGuide = UIColor(red: 0.16, green: 0.48, blue: 0.83, alpha: 1)
     private static let recallGuide = UIColor(red: 0.65, green: 0.39, blue: 0.10, alpha: 1)
     private static let woodTexture = mirroredWoodTile()
@@ -94,7 +94,7 @@ enum CoachBoardRenderer {
             context.fill(CGRect(origin: .zero, size: canvasSize))
             if let position = state.position {
                 drawBoard(position, state: state, in: context.cgContext)
-                drawGuidance(state, position: position, in: context.cgContext)
+                drawGuidance(state, in: context.cgContext)
             } else {
                 drawWaitingState(state, in: context.cgContext)
             }
@@ -153,11 +153,11 @@ enum CoachBoardRenderer {
 
     static func instructionLines(for state: CoachOverlayState) -> [String] {
         if displayedRecall(for: state) != nil {
-            return ["原起点：圈选棋子", "原落点：箭头位置", "对应上次确认的局面"]
+            return ["原来起点", "原来落点", isOpponentTurn(for: state) ? "对手上一条预测" : "选子时仍可回看"]
         }
         guard displayedMove(for: state) != nil else { return [] }
-        if isOpponentTurn(for: state) { return ["对手可能起点", "对手可能落点", "等待对手实际走子"] }
-        return ["先点圈选棋子", "再点箭头落点", "落子由你操作"]
+        if isOpponentTurn(for: state) { return ["可能起点", "可能落点", "蓝色箭头仅作预测"] }
+        return ["先点棋子", "再点落点", "跟随绿色箭头"]
     }
 
     private static func asset(named name: String) -> UIImage? {
@@ -317,78 +317,94 @@ enum CoachBoardRenderer {
             points.dropFirst().forEach { arrow.addLine(to: $0) }
             arrow.close()
             UIColor.white.withAlphaComponent(0.58).setStroke()
-            arrow.lineWidth = 1
+            arrow.lineWidth = 1.6
             arrow.lineJoinStyle = .round
             arrow.stroke()
             color.withAlphaComponent(0.92).setFill()
             arrow.fill()
         }
-        disc(at: target, radius: geometry.cellSize * 0.12, fill: color.withAlphaComponent(0.78), in: context)
+        disc(at: target, radius: geometry.cellSize * 0.055, fill: color.withAlphaComponent(0.45), in: context)
         ring(at: target, radius: geometry.cellSize * 0.20, color: color.withAlphaComponent(0.65), width: 1.8, in: context)
     }
 
-    private static func drawGuidance(_ state: CoachOverlayState, position: XiangqiPosition, in context: CGContext) {
+    /// 小浮窗只保留走法、两步图示与局面来源；搜索深度、评分等仍在二级诊断页查看。
+    private static func drawGuidance(_ state: CoachOverlayState, in context: CGContext) {
         let x: CGFloat = 558
         let width: CGFloat = 220
         let isRecall = displayedRecall(for: state) != nil
-        let markerColor = isRecall ? recallGuide : (isOpponentTurn(for: state) ? opponentGuide : guide)
-        disc(at: CGPoint(x: x + 4, y: 39), radius: 3.5, fill: isRecall ? recallGuide : state.accent, in: context)
-        text(isRecall ? "等待落子确认" : state.title, in: CGRect(x: x + 16, y: 24, width: width - 16, height: 58),
-             size: 20, weight: .semibold, color: ink)
-        if isRecall {
-            recallGuide.withAlphaComponent(0.10).setFill()
-            UIBezierPath(rect: CGRect(x: x - 6, y: 90, width: width + 12, height: 38)).fill()
-        }
-        text(boardCaption(for: state), in: CGRect(x: x, y: 98, width: width, height: 25),
-             size: isRecall ? 18 : 16, weight: isRecall ? .semibold : .medium, color: isRecall ? recallGuide : secondaryInk)
+        let hasMove = displayedMove(for: state) != nil || isRecall
+        let isOpponent = isOpponentTurn(for: state)
+        let markerColor = isRecall ? recallGuide : (isOpponent ? opponentGuide : guide)
+        let statusColor = hasMove ? markerColor : state.accent
+
+        // 窄分隔与相同内边距固定内容区域，思考和回看不改变棋盘的尺寸或位置。
+        context.setFillColor(UIColor.white.withAlphaComponent(0.58).cgColor)
+        context.fill(CGRect(x: 546, y: 8, width: 242, height: 584))
+        context.setFillColor(statusColor.cgColor)
+        context.fill(CGRect(x: x, y: 28, width: 34, height: 4))
+        let heading = isRecall ? (isOpponent ? "对手上条走法" : "上一条走法")
+            : (hasMove ? (isOpponent ? "对手预测" : "我方走法") : (state.boardIsCurrent ? state.title : boardCaption(for: state)))
+        text(heading, in: CGRect(x: x, y: 50, width: width, height: 58),
+             size: 23, weight: .semibold, color: hasMove ? markerColor : secondaryInk)
+
         let guidance = guidanceText(for: state)
-        text(guidance, in: CGRect(x: x - 1, y: 132, width: width + 2, height: 93),
-             size: 36, weight: .semibold, color: ink)
-        text(guidanceDetail(for: state), in: CGRect(x: x, y: 238, width: width, height: 92),
-             size: 18, weight: .regular, color: secondaryInk)
-        context.setStrokeColor(boardInk.withAlphaComponent(0.16).cgColor)
+        text(guidance, in: CGRect(x: x - 1, y: 126, width: width + 2, height: 118),
+             size: hasMove ? 46 : 32, weight: .bold, color: ink)
+        context.setStrokeColor(ink.withAlphaComponent(0.13).cgColor)
         context.setLineWidth(1)
-        line(from: CGPoint(x: x, y: 348), to: CGPoint(x: x + width, y: 348), in: context)
+        line(from: CGPoint(x: x, y: 266), to: CGPoint(x: x + width, y: 266), in: context)
 
         let instructions = instructionLines(for: state)
         if instructions.count == 3 {
-            ring(at: CGPoint(x: x + 11, y: 388), radius: 8, color: markerColor, width: 2.2, in: context)
-            text(instructions[0], in: CGRect(x: x + 31, y: 372, width: width - 31, height: 34),
-                 size: 20, weight: .medium, color: ink)
-            disc(at: CGPoint(x: x + 11, y: 442), radius: 7, fill: markerColor, in: context)
-            text(instructions[1], in: CGRect(x: x + 31, y: 426, width: width - 31, height: 34),
-                 size: 20, weight: .medium, color: ink)
-            text(instructions[2], in: CGRect(x: x, y: 480, width: width, height: 27),
-                 size: 16, weight: .regular, color: secondaryInk)
+            for index in 0..<2 {
+                let y: CGFloat = 303 + CGFloat(index) * 80
+                markerColor.withAlphaComponent(0.09).setFill()
+                context.fill(CGRect(x: x, y: y, width: 42, height: 42))
+                let center = CGPoint(x: x + 21, y: y + 21)
+                if index == 0 {
+                    context.saveGState()
+                    if isRecall { context.setLineDash(phase: 0, lengths: [4, 2]) }
+                    ring(at: center, radius: 11, color: markerColor, width: 2.8, in: context)
+                    context.restoreGState()
+                } else {
+                    ring(at: center, radius: 11, color: markerColor.withAlphaComponent(0.55), width: 2, in: context)
+                    disc(at: center, radius: 5, fill: markerColor, in: context)
+                }
+                text(instructions[index], in: CGRect(x: x + 57, y: y + 4, width: width - 57, height: 36),
+                     size: 27, weight: .semibold, color: ink)
+            }
+            text(instructions[2], in: CGRect(x: x, y: 464, width: width, height: 57),
+                 size: 21, weight: .medium, color: secondaryInk)
         } else {
-            text(state.boardIsCurrent ? "\(position.sideToMove.displayName)行棋" : "局面待确认", in: CGRect(x: x, y: 374, width: width, height: 38),
-                 size: 24, weight: .semibold, color: ink)
-            text(state.boardIsCurrent ? "显示已确认的实际局面" : "更新前暂不提供落子指令", in: CGRect(x: x, y: 430, width: width, height: 56),
-                 size: 18, weight: .regular, color: secondaryInk)
+            // 等待或错误时保留真实状态说明；不把旧棋盘写成可操作的实时指令。
+            text(guidanceDetail(for: state), in: CGRect(x: x, y: 301, width: width, height: 187),
+                 size: 23, weight: .regular, color: secondaryInk)
         }
-        markerColor.withAlphaComponent(0.08).setFill()
-        UIBezierPath(rect: CGRect(x: x - 2, y: 538, width: width + 4, height: 36)).fill()
-        text("\(state.boardAtBottom.displayName)在下 · \(isRecall ? "上次局面" : "自动对齐")", in: CGRect(x: x + 3, y: 545, width: width - 6, height: 25),
-             size: 17, weight: .medium, color: ink, alignment: .center)
+
+        context.setStrokeColor(ink.withAlphaComponent(0.13).cgColor)
+        line(from: CGPoint(x: x, y: 530), to: CGPoint(x: x + width, y: 530), in: context)
+        text("\(state.boardAtBottom.displayName)在下", in: CGRect(x: x, y: 549, width: 116, height: 30),
+             size: 21, weight: .medium, color: secondaryInk)
+        let source = isRecall ? "回看" : (state.boardIsCurrent ? "实时" : "旧局面")
+        let sourceColor = isRecall ? recallGuide : (state.boardIsCurrent ? markerColor : secondaryInk)
+        sourceColor.withAlphaComponent(0.09).setFill()
+        context.fill(CGRect(x: x + 136, y: 544, width: 84, height: 36))
+        text(source, in: CGRect(x: x + 139, y: 550, width: 78, height: 27),
+             size: 20, weight: .semibold, color: sourceColor, alignment: .center)
     }
 
     private static func drawWaitingState(_ state: CoachOverlayState, in context: CGContext) {
         let panel = CGRect(x: 26, y: 26, width: 748, height: 548)
-        UIColor.white.withAlphaComponent(0.50).setFill()
-        UIBezierPath(rect: panel).fill()
-        UIColor(red: 0.82, green: 0.73, blue: 0.56, alpha: 0.50).setStroke()
-        let border = UIBezierPath(rect: panel)
-        border.lineWidth = 1
-        border.stroke()
-        disc(at: CGPoint(x: 66, y: 88), radius: 5, fill: state.accent, in: context)
-        text(state.title, in: CGRect(x: 86, y: 68, width: 620, height: 47), size: 28, weight: .medium, color: secondaryInk)
-        text(state.move, in: CGRect(x: 60, y: 191, width: 680, height: 137), size: 51, weight: .semibold, color: ink)
-        text(state.detail, in: CGRect(x: 64, y: 354, width: 672, height: 91), size: 28, weight: .regular, color: secondaryInk)
-        context.setStrokeColor(boardInk.withAlphaComponent(0.16).cgColor)
-        context.setLineWidth(1)
-        line(from: CGPoint(x: 64, y: 483), to: CGPoint(x: 736, y: 483), in: context)
-        text("识别棋盘后显示走法指引", in: CGRect(x: 64, y: 510, width: 672, height: 35),
-             size: 23, weight: .regular, color: secondaryInk)
+        UIColor.white.withAlphaComponent(0.58).setFill()
+        context.fill(panel)
+        context.setFillColor(state.accent.cgColor)
+        context.fill(CGRect(x: 60, y: 66, width: 42, height: 5))
+        text(state.title, in: CGRect(x: 60, y: 97, width: 680, height: 52),
+             size: 27, weight: .medium, color: secondaryInk)
+        text(state.move, in: CGRect(x: 60, y: 198, width: 680, height: 137),
+             size: 49, weight: .bold, color: ink)
+        text(state.detail, in: CGRect(x: 60, y: 369, width: 680, height: 136),
+             size: 29, weight: .regular, color: secondaryInk)
     }
 
     private static func gradient(in rect: CGRect, colors: [UIColor], context: CGContext) {
