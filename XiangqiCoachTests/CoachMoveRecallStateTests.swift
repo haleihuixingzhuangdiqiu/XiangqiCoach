@@ -54,7 +54,7 @@ final class CoachMoveRecallStateTests: XCTestCase {
         XCTAssertNil(previousSuggestion(recall, position: .standard))
     }
 
-    func testStopResetAndManualSyncCannotRestoreOldRecallWhenSameBoardReturns() {
+    func testStopOrRecognitionResetCannotRestoreOldRecallWhenSameBoardReturns() {
         var recall = publishedRecall()
         recall.reset()
         recall.confirm(position: .standard, boardAtBottom: .red)
@@ -72,14 +72,30 @@ final class CoachMoveRecallStateTests: XCTestCase {
         XCTAssertNotNil(previousSuggestion(recall, position: .standard))
     }
 
-    func testIllegalOrOpponentsMoveCannotBecomeRecall() {
+    func testIllegalOrOutOfTurnMoveCannotBecomeRecall() {
         var recall = publishedRecall()
         let illegal = XiangqiMove(from: Square(row: 9, column: 1), to: Square(row: 5, column: 2))
         XCTAssertFalse(recall.remember(illegal, in: .standard, boardAtBottom: .red))
         XCTAssertNil(previousSuggestion(recall, position: .standard))
         XCTAssertFalse(recall.remember(blackCannonMove, in: .standard, boardAtBottom: .red))
-        XCTAssertFalse(recall.remember(redCannonMove, in: .standard, boardAtBottom: .black))
         XCTAssertNil(previousSuggestion(recall, position: .standard))
+    }
+
+    func testLegalOpponentTurnCanBeRecalledOnlyOnItsOriginalBoardAndOrientation() {
+        let afterRed = XiangqiPosition.standard.applying(redCannonMove)
+        for (position, move, bottom) in [
+            (XiangqiPosition.standard, redCannonMove, Side.black),
+            (afterRed, blackCannonMove, Side.red)
+        ] {
+            var recall = CoachMoveRecallState()
+            XCTAssertNotEqual(position.sideToMove, bottom)
+            XCTAssertEqual(position[move.from]?.side, position.sideToMove)
+            XCTAssertTrue(recall.remember(move, in: position, boardAtBottom: bottom))
+            let previous = recall.previousSuggestion(for: position, boardAtBottom: bottom, hasCurrentSuggestion: false)
+            XCTAssertEqual(previous, CoachMoveRecall(position: position, move: move, boardAtBottom: bottom))
+            XCTAssertNil(recall.previousSuggestion(for: position, boardAtBottom: bottom.opponent, hasCurrentSuggestion: false))
+            XCTAssertNil(recall.previousSuggestion(for: position.applying(move), boardAtBottom: bottom, hasCurrentSuggestion: false))
+        }
     }
 
     func testOcclusionDuringSearchDoesNotInventRecallOrRestartSameBoardWork() throws {

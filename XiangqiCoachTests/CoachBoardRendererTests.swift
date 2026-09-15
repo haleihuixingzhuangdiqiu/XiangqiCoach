@@ -234,6 +234,34 @@ final class CoachBoardRendererTests: XCTestCase {
     }
 
     @MainActor
+    func testOpponentTurnRendersPredictionForBothBoardOrientations() throws {
+        for bottom in Side.allCases {
+            var position = XiangqiPosition.standard
+            position.sideToMove = bottom.opponent
+            let move = bottom == .red
+                ? XiangqiMove(from: Square(row: 0, column: 1), to: Square(row: 2, column: 2))
+                : XiangqiMove(from: Square(row: 9, column: 1), to: Square(row: 7, column: 2))
+            let state = CoachOverlayState(
+                title: "对手走法 · 仅图形提示", move: "计算完成", detail: "对手回合不播报", accent: .systemBlue,
+                position: position, suggestedMove: move, boardAtBottom: bottom)
+            XCTAssertEqual(CoachBoardRenderer.displayedMove(for: state), move)
+            XCTAssertEqual(CoachBoardRenderer.boardCaption(for: state), "对手走法")
+            XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state), ["对手可能起点", "对手可能落点", "等待对手实际走子"])
+            XCTAssertFalse(CoachBoardRenderer.guidanceText(for: state).contains("计算"))
+            let attachment = XCTAttachment(image: CoachBoardRenderer.image(for: state))
+            attachment.name = "对手预测-\(bottom.displayName)在下"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            var waiting = state
+            waiting.boardIsCurrent = false
+            waiting.previousSuggestion = CoachMoveRecall(position: position, move: move, boardAtBottom: bottom)
+            XCTAssertNil(CoachBoardRenderer.displayedMove(for: waiting))
+            XCTAssertEqual(CoachBoardRenderer.displayedRecall(for: waiting)?.move, move)
+            XCTAssertEqual(CoachBoardRenderer.boardCaption(for: waiting), "对手上一条走法")
+        }
+    }
+
+    @MainActor
     func testRenderVisualAcceptanceAttachments() {
         XCTAssertTrue(CoachBoardRenderer.hasCompleteProAssets)
         let redMove = XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4))

@@ -8,6 +8,8 @@ struct RecognitionResult {
     let position: XiangqiPosition
     let boardAtBottom: Side
     let layout: BoardLayout
+    /// 视觉上完整的上一步标记；轮次仍由 BoardTracker 的稳定帧和棋规判定。
+    var lastMove: BoardMoveEvidence? = nil
     /// 32×32 RGB 去均值后的平均通道绝对差；用于观测字形匹配程度，不受局部整体明暗平移影响。
     let meanDistance: Float
     let maximumDistance: Float
@@ -27,6 +29,7 @@ final class BoardRecognizer: @unchecked Sendable {
         let feature: Feature
     }
     private let templates: [Template]
+    private let lastMoveRecognizer: LastMoveRecognizer?
     private let fixedLayout: BoardLayout?
     private let maximumDistanceByPiece: [Piece?: Float]
     private let minimumPieceSharpness: Float
@@ -65,7 +68,13 @@ final class BoardRecognizer: @unchecked Sendable {
             }
             images.append((image, .template(boardAtBottom: side), annotated))
         }
-        try self.init(annotatedImages: images)
+        let references = images.map { image, layout, position in
+            LastMoveRecognizer.Reference(image: image, layout: layout, position: position,
+                lastMove: layout.boardAtBottom == .black ? BoardMoveEvidence(
+                    move: XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4)), movedSide: .red) : nil,
+                fullScreenHeight: 2781)
+        }
+        try self.init(annotatedImages: images, lastMoveReferences: references)
     }
 
     /// 测试和显式标准局面模板入口；内置的已走棋模板使用带真实局面标注的初始化器。
@@ -73,7 +82,8 @@ final class BoardRecognizer: @unchecked Sendable {
         try self.init(annotatedImages: [(templateImage, templateLayout, .standard)], fixedLayout: screenLayout)
     }
 
-    init(annotatedImages: [(CGImage, BoardLayout, XiangqiPosition)], fixedLayout: BoardLayout? = nil) throws {
+    init(annotatedImages: [(CGImage, BoardLayout, XiangqiPosition)], fixedLayout: BoardLayout? = nil,
+         lastMoveReferences: [LastMoveRecognizer.Reference] = []) throws {
         var collected: [Template] = []
         var variations = annotatedImages
         var blurredMinimums: [Float] = []
@@ -121,6 +131,7 @@ final class BoardRecognizer: @unchecked Sendable {
         }
         guard !collected.isEmpty else { throw BoardRecognitionError.templateUnavailable }
         templates = collected
+        lastMoveRecognizer = lastMoveReferences.isEmpty ? nil : try LastMoveRecognizer(references: lastMoveReferences)
         self.fixedLayout = fixedLayout
         // 同类正常模板的最大两两差作为类别边界，不用全盘平均数掩盖局部遮挡。
         var classBounds: [Piece?: Float] = [:]
@@ -184,7 +195,9 @@ final class BoardRecognizer: @unchecked Sendable {
         let board = bottom == .red ? screen : Array(screen.reversed())
         let position = XiangqiPosition(board: board, sideToMove: sideToMove)
         guard Self.isPlausible(position) else { throw BoardRecognitionError.unrecognizedBoard }
-        return RecognitionResult(position: position, boardAtBottom: bottom, layout: layout.oriented(bottom),
+        let oriented = layout.oriented(bottom)
+        return RecognitionResult(position: position, boardAtBottom: bottom, layout: oriented,
+                                 lastMove: lastMoveRecognizer?.recognize(image, position: position, layout: oriented),
                                  meanDistance: sum / 90, maximumDistance: maximum)
     }
 

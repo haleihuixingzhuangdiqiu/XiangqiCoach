@@ -50,13 +50,13 @@ final class XiangqiEngine: @unchecked Sendable {
                 guard move.from.isOnBoard, move.to.isOnBoard, move.from != move.to,
                       replay[move.from]?.side == replay.sideToMove,
                       replay[move.to]?.side != replay.sideToMove else {
-                    lastError = "棋局历史与当前棋盘不一致，请重新同步"
+                    lastError = "棋局历史与当前棋盘不一致，请重新开启录屏"
                     return nil
                 }
                 replay = replay.applying(move)
             }
             guard replay == position else {
-                lastError = "棋局历史与当前棋盘不一致，请重新同步"
+                lastError = "棋局历史与当前棋盘不一致，请重新开启录屏"
                 return nil
             }
             root = history.root

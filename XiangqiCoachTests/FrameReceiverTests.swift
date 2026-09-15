@@ -93,10 +93,30 @@ final class FrameReceiverTests: XCTestCase {
         // 每个连接等接收器关闭后再发下一个，拒绝路径也有真实网络完成事件，不用固定延时猜测。
         for fragments in rejected { try await transmit(fragments, to: port) }
         let secondTimestamp = ProcessInfo.processInfo.systemUptime
+        // 时间戳有效但 JPEG 无效时也不能推进门禁；随后同一采集时间的完整图仍须成功。
+        try await transmit([FramePacketHeader(payloadSize: 4, capturedAt: secondTimestamp).data,
+                            Data([1, 2, 3, 4])], to: port)
         try await transmit(packet(jpeg, at: secondTimestamp), to: port)
         await fulfillment(of: [second], timeout: 2)
         XCTAssertEqual(observations.snapshot.map(\.timestamp), [firstTimestamp, secondTimestamp])
         XCTAssertTrue(observations.snapshot.allSatisfy { $0.image.width == 18 && $0.image.height == 12 })
+    }
+
+    func testExpiredHeaderClosesBeforeBodyOrConnectionWatchdog() async throws {
+        let receiver = FrameReceiver(port: .any)
+        defer { receiver.stop() }
+        let port = try await start(receiver)
+        receiver.onFrame = { _, _ in XCTFail("过期帧头不能进入解码回调") }
+        let closed = expectation(description: "只收到过期帧头即可关闭，不等待 JPEG body")
+        let header = FramePacketHeader(payloadSize: 1_000_000,
+                                       capturedAt: ProcessInfo.processInfo.systemUptime - 2).data
+        let transmission = LoopbackTransmission(port: port, fragments: [header])
+        transmission.start { result in
+            if case let .failure(error) = result { XCTFail(error.localizedDescription) }
+            closed.fulfill()
+        }
+        // 生产连接看门狗是 1 秒；0.75 秒截止能区别立即拒绝与占住接收槽等待超时。
+        await fulfillment(of: [closed], timeout: 0.75)
     }
 
     private func start(_ receiver: FrameReceiver) async throws -> NWEndpoint.Port {

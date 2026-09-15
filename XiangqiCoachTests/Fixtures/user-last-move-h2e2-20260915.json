@@ -1,0 +1,32 @@
+{
+  "description": "真实用户截图棋盘原像素裁剪；未增删或重绘标记；不包含头像、昵称或状态栏。",
+  "sourceSHA256": "bac3d6730ee642bec67eb81281960e0a8a1c1be4344e2cf5e186c74ff6e2af0c",
+  "sourceSize": {
+    "width": 1320,
+    "height": 2868
+  },
+  "crop": {
+    "x": 10,
+    "y": 740,
+    "width": 1300,
+    "height": 1444
+  },
+  "fixtureSHA256": "0bb3663055e1784a2eb5d33f1a0bc551d49353ae1e511e79610c5ce6d049e189",
+  "expectedFEN": "rheakaehr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C2C4/9/RHEAKAEHR b",
+  "boardAtBottom": "black",
+  "lastMove": {
+    "iccs": "h2e2",
+    "movedSide": "red"
+  },
+  "markerCoordinatesInSource": {
+    "origin": [
+      239.25,
+      1106.93
+    ],
+    "destination": [
+      660,
+      1106.93
+    ]
+  },
+  "measurement": "720高 CoreImage DeviceRGB JPEG0.5后白圈 RGB 中性色明显降低；使用仅棋面以外环带的真实正/负模板，不能沿用原分辨率白色阈值。其他朝向/删圈/添点测试是显式合成样本，不是新的实机证据。"
+}

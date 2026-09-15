@@ -106,11 +106,7 @@ final class PiPCoachController: NSObject, ObservableObject {
 
     private func renderCurrentState() {
         guard let layer = displayView?.displayLayer else { return }
-        if layer.status == .failed { layer.flush() }
-        guard layer.isReadyForMoreMediaData else { return }
-        if let sampleBuffer = frameFactory.makeSampleBuffer(state: state) {
-            layer.enqueue(sampleBuffer)
-        }
+        frameFactory.displayLatest(state: state, on: layer)
         let isPossible = controller?.isPictureInPicturePossible ?? false
         if isPictureInPicturePossible != isPossible {
             DispatchQueue.main.async { [weak self] in
@@ -198,10 +194,28 @@ struct CoachPiPPreview: UIViewRepresentable {
     func updateUIView(_ uiView: CoachSampleBufferView, context: Context) {}
 }
 
+/// 把显示队列的背压与像素生成分开，拥塞时仍可立即用最新状态替换过时样本。
+protocol OverlayFrameDestination: AnyObject {
+    var status: AVQueuedSampleBufferRenderingStatus { get }
+    var isReadyForMoreMediaData: Bool { get }
+    func flush()
+    func enqueue(_ sampleBuffer: CMSampleBuffer)
+}
+
+extension AVSampleBufferDisplayLayer: OverlayFrameDestination {}
+
 final class OverlayFrameFactory {
     private var cachedState: CoachOverlayState?
     private var cachedPixelBuffer: CVPixelBuffer?
     private var cachedFormat: CMVideoFormatDescription?
+
+    func displayLatest(state: CoachOverlayState, on destination: OverlayFrameDestination) {
+        guard let sampleBuffer = makeSampleBuffer(state: state) else { return }
+        // 这是实时状态流：满队列时丢弃旧样本，flush 保留正在显示的图像，不等 500 ms 保活重试。
+        // Apple 允许实时来源在 !isReady 时 enqueue；先 flush 可避免无界堆积。
+        if destination.status == .failed || !destination.isReadyForMoreMediaData { destination.flush() }
+        destination.enqueue(sampleBuffer)
+    }
 
     func makeSampleBuffer(state: CoachOverlayState) -> CMSampleBuffer? {
         if cachedState != state || cachedPixelBuffer == nil {

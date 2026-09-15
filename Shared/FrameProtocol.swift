@@ -32,24 +32,65 @@ struct FramePacketHeader {
     }
 }
 
-/// 在进入编码队列之前限频，忙时直接丢帧，避免排队持有大量旧的 ReplayKit 像素缓冲。
-struct FrameAdmission {
-    static let minimumInterval: TimeInterval = 1.0 / 6.0
-    private(set) var isActive = true
-    private var isBusy = false
-    private var lastAcceptedAt = -Double.infinity
+/// 编码/传输期间只保留一张最新截图；完成后立即消费它，不排队保留旧的 ReplayKit 缓冲。
+/// 所有调用由发送方同一把锁保护。generation 使暂停前的编码完成/超时回调不能重新启动旧任务。
+struct FrameAdmission<Payload> {
+    static var minimumInterval: TimeInterval { 1.0 / 10.0 }
+    static var maximumSendAge: TimeInterval { 0.5 }
 
-    mutating func begin(at now: TimeInterval) -> Bool {
-        guard isActive, !isBusy, now - lastAcceptedAt >= Self.minimumInterval else { return false }
-        isBusy = true
-        lastAcceptedAt = now
-        return true
+    struct CapturedFrame {
+        let payload: Payload
+        let capturedAt: TimeInterval
+        let generation: Int
     }
 
-    mutating func complete() { isBusy = false }
+    enum Next {
+        case idle
+        case wait(TimeInterval)
+        case frame(CapturedFrame)
+    }
+
+    private(set) var isActive = true
+    private(set) var generation = 0
+    private var isScheduled = false
+    private var pending: CapturedFrame?
+    private var lastStartedAt = -Double.infinity
+
+    /// 返回非 nil 时才需要投递一次工作；后续输入仅替换待处理截图，不重复投递闭包。
+    mutating func offer(_ payload: Payload, capturedAt: TimeInterval) -> Int? {
+        guard isActive, capturedAt.isFinite, capturedAt > 0 else { return nil }
+        guard pending == nil || capturedAt > pending!.capturedAt else { return nil }
+        pending = CapturedFrame(payload: payload, capturedAt: capturedAt, generation: generation)
+        guard !isScheduled else { return nil }
+        isScheduled = true
+        return generation
+    }
+
+    mutating func next(generation expectedGeneration: Int, at now: TimeInterval) -> Next {
+        guard expectedGeneration == generation, isActive, isScheduled else { return .idle }
+        guard let pending else {
+            isScheduled = false
+            return .idle
+        }
+        let age = now - pending.capturedAt
+        guard age >= 0, age < Self.maximumSendAge else {
+            self.pending = nil
+            isScheduled = false
+            return .idle
+        }
+        let delay = lastStartedAt + Self.minimumInterval - now
+        guard delay <= 0 else { return .wait(delay) }
+        self.pending = nil
+        lastStartedAt = now
+        return .frame(pending)
+    }
+
     mutating func setActive(_ active: Bool) {
+        generation += 1
         isActive = active
-        if active { lastAcceptedAt = -Double.infinity }
+        isScheduled = false
+        pending = nil
+        lastStartedAt = -Double.infinity
     }
 }
 
@@ -57,9 +98,14 @@ struct FrameAdmission {
 struct FrameFreshnessGate {
     private var latestTimestamp = -Double.infinity
 
-    mutating func accept(capturedAt: TimeInterval, now: TimeInterval) -> Bool {
+    /// 先检查帧头即可拒绝过时数据，不必继续接收大段 JPEG 或浪费解码时间。
+    func isAcceptable(capturedAt: TimeInterval, now: TimeInterval) -> Bool {
         let age = now - capturedAt
-        guard age >= 0, age <= 1, capturedAt > latestTimestamp else { return false }
+        return age >= 0 && age <= 1 && capturedAt > latestTimestamp
+    }
+
+    mutating func accept(capturedAt: TimeInterval, now: TimeInterval) -> Bool {
+        guard isAcceptable(capturedAt: capturedAt, now: now) else { return false }
         latestTimestamp = capturedAt
         return true
     }

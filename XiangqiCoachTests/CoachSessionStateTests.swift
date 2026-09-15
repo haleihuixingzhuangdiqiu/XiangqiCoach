@@ -25,7 +25,7 @@ final class CoachSessionStateTests: XCTestCase {
 
     func testRecordingAndRecognitionLifecycle() {
         var state = readyRecording()
-        for phase: CoachSessionState.Phase in [.confirmingBoard, .analyzing, .recommendation, .waitingForBoard, .confirmingBoard, .waitingForOpponent, .finished] {
+        for phase: CoachSessionState.Phase in [.confirmingBoard, .analyzing, .recommendation, .waitingForBoard, .confirmingBoard, .finished] {
             XCTAssertTrue(state.advance(to: phase, generation: state.generation))
             XCTAssertEqual(state.phase, phase)
         }

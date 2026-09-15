@@ -58,12 +58,14 @@ final class FrameReceiver {
             guard
                 error == nil,
                 let data,
-                let header = FramePacketHeader(data: data)
+                let header = FramePacketHeader(data: data),
+                let self,
+                self.freshness.isAcceptable(capturedAt: header.capturedAt, now: ProcessInfo.processInfo.systemUptime)
             else {
                 connection.cancel()
                 return
             }
-            self?.receiveBody(from: connection, remaining: header.payloadSize, collected: Data(), capturedAt: header.capturedAt)
+            self.receiveBody(from: connection, remaining: header.payloadSize, collected: Data(), capturedAt: header.capturedAt)
         }
     }
 
@@ -83,14 +85,14 @@ final class FrameReceiver {
             connection.cancel()
             guard
                 bytesLeft == 0,
-                ProcessInfo.processInfo.systemUptime - capturedAt <= 1,
-                ProcessInfo.processInfo.systemUptime >= capturedAt,
+                let self,
+                self.freshness.isAcceptable(capturedAt: capturedAt, now: ProcessInfo.processInfo.systemUptime),
                 let source = CGImageSourceCreateWithData(next as CFData, nil),
                 let image = CGImageSourceCreateImageAtIndex(source, 0, nil)
             else {
                 return
             }
-            guard let self, self.freshness.accept(capturedAt: capturedAt, now: ProcessInfo.processInfo.systemUptime) else { return }
+            guard self.freshness.accept(capturedAt: capturedAt, now: ProcessInfo.processInfo.systemUptime) else { return }
             self.onFrame?(image, capturedAt)
         }
     }

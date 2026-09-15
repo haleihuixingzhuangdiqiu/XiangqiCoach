@@ -8,7 +8,6 @@ struct CoachSessionState: Equatable {
         case waitingForBoard
         case confirmingBoard
         case analyzing
-        case waitingForOpponent
         case recommendation
         case finished
         case recordingStopped
@@ -60,7 +59,7 @@ struct CoachSessionState: Equatable {
     mutating func advance(to phase: Phase, generation: Int) -> Bool {
         guard acceptsResult(from: generation), isRecognizerReady, hasReceivedFrame else { return false }
         switch phase {
-        case .waitingForBoard, .confirmingBoard, .analyzing, .waitingForOpponent, .recommendation, .finished:
+        case .waitingForBoard, .confirmingBoard, .analyzing, .recommendation, .finished:
             self.phase = phase
             return true
         default:

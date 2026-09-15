@@ -5,7 +5,7 @@ import UIKit
 
 @MainActor
 final class CoachViewModel: ObservableObject {
-    @Published var manualSideToMove: Side = .red
+    @Published private(set) var turnStatus = "等待棋盘"
     @Published var voiceEnabled = true
     @Published var autoStartPictureInPicture = true
 
@@ -32,9 +32,11 @@ final class CoachViewModel: ObservableObject {
     /// 单独保留监听器状态，防止系统“录屏已开启”覆盖真正的传输错误。
     private var receiverStatus = "正在启动录屏接收器"
     private var recognizer: BoardRecognizer?
-    private var analyzingFrame = false
+    private var recognitionFrames = LatestRecognitionFrame<CGImage>()
+    private var lastPreviewAt = -Double.infinity
+    private var totalReceivedFrames = 0
+    private var lastDiagnosticsUIAt = -Double.infinity
     private var boardTracker = BoardTracker()
-    private var turnSynchronization = TurnSynchronizationState()
     private var currentPosition: XiangqiPosition? { boardTracker.position }
     private var suggestedMove: XiangqiMove?
     private var moveRecall = CoachMoveRecallState()
@@ -56,7 +58,7 @@ final class CoachViewModel: ObservableObject {
     private var lastEngineMilliseconds: Int?
     private var lastEngineResultDepth: Int?
     private var recognitionWaitDetail = "请打开指定的对局棋盘，并露出全部棋子"
-    private var requiresTurnSynchronization = false
+    private var requiresMoveEvidence = false
     private var recognizedBoardAtBottom: Side?
     private var orientationCandidate: Side?
     private var orientationCandidateCount = 0
@@ -107,19 +109,6 @@ final class CoachViewModel: ObservableObject {
         freshnessTimer?.invalidate()
     }
 
-    func resynchronizeTurn() {
-        guard session.isCapturing else {
-            recognitionStatus = "请先开启录屏，再同步当前轮次"
-            return
-        }
-        // 教练页面会遮住外部棋盘，因此先登记意图；不依赖返回页面之前的截图来改轮次。
-        turnSynchronization.request(sideToMove: manualSideToMove, at: ProcessInfo.processInfo.systemUptime)
-        boardTracker.loseBoard()
-        invalidateAnalysis()
-        recognitionStatus = "已登记\(manualSideToMove.displayName)轮次，请切回棋盘"
-        showRecognitionWait(.waitingForBoard, detail: "切回棋盘并保持稳定，确认最新画面后自动同步")
-    }
-
     func startPictureInPicture() {
         updateCaptureState(UIScreen.main.isCaptured)
         updateOverlay()
@@ -164,38 +153,50 @@ final class CoachViewModel: ObservableObject {
         // 首帧可能先于系统通知抵达；使用当前系统值补齐开始事件，停止后的排队帧则丢弃。
         updateCaptureState(UIScreen.main.isCaptured)
         guard session.receiveFrame() else { return }
-        receivedFrameCount += 1
+        totalReceivedFrames += 1
         updateLatency(capturedAt: capturedAt)
         guard isFresh(capturedAt), capturedAt > (lastFrameCapturedAt ?? 0) else {
             checkFrameFreshness()
             return
         }
         lastFrameCapturedAt = capturedAt
-        livePreview = UIImage(cgImage: image)
-        captureStatus = "录屏中 · 已收到画面"
-        updateOverlay()
+        // 截图缩略图只服务前台诊断，不让后台录屏每帧触发 SwiftUI 图片重绑。
+        let now = ProcessInfo.processInfo.systemUptime
+        if UIApplication.shared.applicationState == .active, now - lastPreviewAt >= 0.5 {
+            livePreview = UIImage(cgImage: image)
+            lastPreviewAt = now
+        }
+        if captureStatus != "录屏中 · 已收到画面" { captureStatus = "录屏中 · 已收到画面" }
         guard let recognizer else {
             recognitionStatus = recognitionPreparationStatus
             return
         }
-        guard !analyzingFrame else { return }
-        analyzingFrame = true
-        let sideToMove = currentPosition?.sideToMove ?? manualSideToMove
-        let sessionGeneration = session.generation
+        guard let work = recognitionFrames.offer(image, capturedAt: capturedAt) else { return }
+        recognize(work, using: recognizer)
+    }
 
+    /// 识别串行运行，忙时只留一个最新待处理帧；完成即续跑，不额外等待下一次录屏回调。
+    private func recognize(_ work: LatestRecognitionFrame<CGImage>.Work, using recognizer: BoardRecognizer) {
+        let image = work.value
+        let capturedAt = work.capturedAt
+        let sideToMove = currentPosition?.sideToMove ?? .red
+        let sessionGeneration = session.generation
         recognitionQueue.async { [weak self] in
             let startedAt = ProcessInfo.processInfo.systemUptime
             let result = Result { try recognizer.recognize(image, sideToMove: sideToMove) }
             let recognitionMilliseconds = (ProcessInfo.processInfo.systemUptime - startedAt) * 1_000
             DispatchQueue.main.async {
                 guard let self else { return }
-                guard self.session.acceptsResult(from: sessionGeneration) else { return }
-                self.analyzingFrame = false
+                guard self.session.acceptsResult(from: sessionGeneration), self.recognitionFrames.isCurrent(work) else { return }
+                defer {
+                    if let next = self.recognitionFrames.complete(work, now: ProcessInfo.processInfo.systemUptime) {
+                        self.recognize(next, using: recognizer)
+                    }
+                }
                 self.lastRecognitionMilliseconds = recognitionMilliseconds
                 self.updateLatency(capturedAt: capturedAt)
                 guard self.isFresh(capturedAt) else {
                     self.boardTracker.loseBoard()
-                    self.turnSynchronization.recognitionInterrupted()
                     self.orientationCandidate = nil
                     self.orientationCandidateCount = 0
                     self.lastConfirmedFrameAt = nil
@@ -209,7 +210,6 @@ final class CoachViewModel: ObservableObject {
                 case let .failure(error):
                     self.recognitionStatus = "识别暂停：\(error.localizedDescription)"
                     self.boardTracker.loseBoard()
-                    self.turnSynchronization.recognitionInterrupted()
                     self.orientationCandidate = nil
                     self.orientationCandidateCount = 0
                     self.lastConfirmedFrameAt = nil
@@ -226,37 +226,18 @@ final class CoachViewModel: ObservableObject {
             orientationCandidate = recognition.boardAtBottom
             orientationCandidateCount = 1
         }
-        var observation = boardTracker.observe(recognition.position)
-        if turnSynchronization.isPending {
-            guard let selectedSide = turnSynchronization.observe(
-                recognition.position, boardAtBottom: recognition.boardAtBottom,
-                capturedAt: capturedAt, now: ProcessInfo.processInfo.systemUptime
-            ), confirmObservedSide(recognition.boardAtBottom) else {
-                recognitionStatus = "正在确认同步所需的最新棋盘…"
-                showRecognitionWait(.confirmingBoard, detail: "请保持完整棋盘稳定，确认两张新画面后同步")
-                return
-            }
-            if !TurnSynchronizationState.hasProvenTurn(for: observation, history: boardTracker.analysisHistory) {
-                observation = boardTracker.synchronize(sideToMove: selectedSide)
-                guard case .accepted = observation else {
-                    turnSynchronization.reset()
-                    recognitionStatus = "所选轮次与当前局面不符，请确认后重新同步"
-                    showRecognitionWait(.confirmingBoard, detail: "返回教练确认当前轮次，再点“同步”", requiresSynchronization: true)
-                    return
-                }
-            }
-            if case let .unchanged(position) = observation { manualSideToMove = position.sideToMove }
-            turnSynchronization.reset()
-        }
+        let observation = boardTracker.observe(recognition.position, lastMove: recognition.lastMove)
         switch observation {
         case .confirming:
             recognitionStatus = "正在确认局面…"
             showRecognitionWait(.confirmingBoard)
-        case .needsSynchronization:
+        case .waitingForMoveEvidence:
             _ = confirmObservedSide(recognition.boardAtBottom)
-            recognitionStatus = "局面未同步，不能确定轮次"
-            showRecognitionWait(.confirmingBoard, detail: "返回教练确认当前轮次，再点“同步”", requiresSynchronization: true)
+            turnStatus = "正在识别上一步标记"
+            recognitionStatus = "正在自动确认轮次"
+            showRecognitionWait(.confirmingBoard, detail: "正在读取上一步起点与落点，保持完整棋盘可见即可", requiresEvidence: true)
         case let .unchanged(position):
+            turnStatus = "\(position.sideToMove.displayName)走 · 自动识别"
             guard confirmObservedSide(recognition.boardAtBottom) else {
                 showRecognitionWait(.confirmingBoard, detail: "正在确认棋盘朝向，请保持画面稳定")
                 return
@@ -267,7 +248,8 @@ final class CoachViewModel: ObservableObject {
         case let .accepted(position, reason):
             // 已证明实际走子后立即删除原记录，即使仍需确认朝向也不能套用旧走法。
             moveRecall.confirm(position: position, boardAtBottom: recognition.boardAtBottom)
-            manualSideToMove = position.sideToMove
+            speech.stopSpeaking(at: .immediate)
+            turnStatus = "\(position.sideToMove.displayName)走 · 自动识别"
             guard confirmObservedSide(recognition.boardAtBottom) else {
                 showRecognitionWait(.confirmingBoard, detail: "正在确认棋盘朝向，请保持画面稳定")
                 return
@@ -278,8 +260,8 @@ final class CoachViewModel: ObservableObject {
                 recognitionStatus = "已识别新局 · 红方先行"
             case let .legalMoves(count):
                 recognitionStatus = "已同步\(count)步 · \(position.sideToMove.displayName)走"
-            case .manualSynchronization:
-                recognitionStatus = "已同步 · \(position.sideToMove.displayName)走"
+            case .lastMoveMarker:
+                recognitionStatus = "已根据上一步自动同步 · \(position.sideToMove.displayName)走"
             }
             analyzeIfNeeded(position)
         }
@@ -299,17 +281,10 @@ final class CoachViewModel: ObservableObject {
         guard session.isCapturing, session.isRecognizerReady, session.hasReceivedFrame else { return }
         guard let lastConfirmedFrameAt, isFresh(lastConfirmedFrameAt) else { return }
         let sessionGeneration = session.generation
-        requiresTurnSynchronization = false
+        requiresMoveEvidence = false
 
-        guard let boardAtBottom = recognizedBoardAtBottom else { return }
-        guard position.sideToMove == boardAtBottom else {
-            if analysisState.hasWork { invalidateAnalysis() }
-            suggestedMove = nil
-            session.advance(to: .waitingForOpponent, generation: sessionGeneration)
-            updateOverlay()
-            return
-        }
-
+        guard recognizedBoardAtBottom != nil else { return }
+        // 双方回合都分析；执棋方只影响展示身份与语音，不能阻止对手走法计算。
         let request = analysisState.request(position: position, now: ProcessInfo.processInfo.systemUptime)
         if case let .completed(outcome) = request {
             // 同局建议已显示时保持不动；从遮挡恢复则直接恢复已完成结果，不重复计算/播报每一帧。
@@ -354,7 +329,7 @@ final class CoachViewModel: ObservableObject {
                 self.lastEngineMilliseconds = result?.elapsedMilliseconds
                 self.lastEngineResultDepth = result?.depth
                 guard let lastConfirmedFrameAt = self.lastConfirmedFrameAt, self.isFresh(lastConfirmedFrameAt) else {
-                    // 结果已缓存，等同局面重获确认再发布；不能用旧结果强制改变遮挡/轮次同步提示。
+                    // 结果已缓存，等同局面重获确认再发布；不能用旧结果强制改变遮挡/轮次确认提示。
                     if self.session.phase == .analyzing {
                         self.showRecognitionWait(.waitingForBoard, detail: "计算已完成，等待确认当前棋盘")
                     } else {
@@ -397,7 +372,7 @@ final class CoachViewModel: ObservableObject {
         session.advance(to: .recommendation, generation: session.generation)
         updateOverlay()
 
-        if voiceEnabled && !didAnnounceRecommendation {
+        if voiceEnabled, position.sideToMove == recognizedBoardAtBottom, !didAnnounceRecommendation {
             didAnnounceRecommendation = true
             speech.stopSpeaking(at: .word)
             let utterance = AVSpeechUtterance(string: notation)
@@ -408,7 +383,7 @@ final class CoachViewModel: ObservableObject {
     }
 
     private func updateCaptureState(_ captured: Bool) {
-        isScreenCaptured = captured
+        if isScreenCaptured != captured { isScreenCaptured = captured }
         guard session.setCaptureActive(captured) else { return }
         resetRecognition()
         captureStatus = captured ? "系统录屏已开启" : "录屏已停止"
@@ -418,8 +393,9 @@ final class CoachViewModel: ObservableObject {
 
     private func resetRecognition() {
         invalidateAnalysis()
-        turnSynchronization.reset()
-        analyzingFrame = false
+        recognitionFrames.reset()
+        lastPreviewAt = -Double.infinity
+        turnStatus = "等待棋盘"
         boardTracker.reset()
         recognizedBoardAtBottom = nil
         orientationCandidate = nil
@@ -434,7 +410,7 @@ final class CoachViewModel: ObservableObject {
         suggestedMove = nil
     }
 
-    /// 只有明确换局、改方向、停止或手动重试才使计算失效，短暂识别失败不走此入口。
+    /// 只有明确换局、改方向、停止或重新准备识别才使计算失效，短暂识别失败不走此入口。
     private func invalidateAnalysis() {
         engine.cancel()
         analysisTicket?.cancel()
@@ -450,14 +426,14 @@ final class CoachViewModel: ObservableObject {
     private func showRecognitionWait(
         _ phase: CoachSessionState.Phase,
         detail: String = "请打开指定的对局棋盘，并露出全部棋子",
-        requiresSynchronization: Bool = false
+        requiresEvidence: Bool = false
     ) {
         // 画面暂不可信只撤销当前指引，保留原局面及明确标注的“上一条走法”，同局计算继续。
         // 必须清确认时间，防止回看或刚完成的搜索被误当成最新画面的有效建议。
         lastConfirmedFrameAt = nil
         suggestedMove = nil
         recognitionWaitDetail = detail
-        requiresTurnSynchronization = requiresSynchronization
+        requiresMoveEvidence = requiresEvidence
         speech.stopSpeaking(at: .immediate)
         session.advance(to: phase, generation: session.generation)
         updateOverlay()
@@ -475,7 +451,6 @@ final class CoachViewModel: ObservableObject {
         guard session.isCapturing, let lastFrameCapturedAt else { return }
         guard !isFresh(lastFrameCapturedAt) else { return }
         boardTracker.loseBoard()
-        turnSynchronization.recognitionInterrupted()
         orientationCandidate = nil
         orientationCandidateCount = 0
         lastConfirmedFrameAt = nil
@@ -504,16 +479,22 @@ final class CoachViewModel: ObservableObject {
     private func updateLatency(capturedAt: TimeInterval) {
         let frameMilliseconds = max(0, ProcessInfo.processInfo.systemUptime - capturedAt) * 1_000
         lastFrameLatencyMilliseconds = frameMilliseconds
-        let recognition = lastRecognitionMilliseconds.map { String(format: "%.0f ms", $0) } ?? "—"
-        let engine = lastEngineMilliseconds.map { "\($0) ms" } ?? "—"
-        latencyStatus = String(format: "画面 %.0f ms · 识别 %@ · 计算 %@", frameMilliseconds, recognition, engine)
+        // 诊断页面每秒最多更新两次；后台仍记录真实计数和耗时，不为每帧重建整页视图。
+        let now = ProcessInfo.processInfo.systemUptime
+        if UIApplication.shared.applicationState == .active, now - lastDiagnosticsUIAt >= 0.5 {
+            lastDiagnosticsUIAt = now
+            receivedFrameCount = totalReceivedFrames
+            let recognition = lastRecognitionMilliseconds.map { String(format: "%.0f ms", $0) } ?? "—"
+            let engine = lastEngineMilliseconds.map { "\($0) ms" } ?? "—"
+            latencyStatus = String(format: "画面 %.0f ms · 识别 %@ · 计算 %@", frameMilliseconds, recognition, engine)
+        }
         writeDiagnostics()
     }
 
     private func writeDiagnostics() {
         let confirmedFEN: String?
         switch session.phase {
-        case .analyzing, .waitingForOpponent, .recommendation, .finished:
+        case .analyzing, .recommendation, .finished:
             confirmedFEN = currentPosition?.fen()
         default:
             confirmedFEN = nil
@@ -524,7 +505,7 @@ final class CoachViewModel: ObservableObject {
             boardIsCurrent: pipController.state.boardIsCurrent,
             isAnalyzing: analysisState.isInFlight,
             isScreenCaptured: isScreenCaptured,
-            receivedFrameCount: receivedFrameCount,
+            receivedFrameCount: totalReceivedFrames,
             captureStatus: captureStatus,
             receiverStatus: receiverStatus,
             applicationState: String(describing: UIApplication.shared.applicationState),
@@ -558,14 +539,14 @@ final class CoachViewModel: ObservableObject {
         case .waitingForBoard:
             state = CoachOverlayState(title: "已收到录屏画面", move: "等待棋盘", detail: recognitionWaitDetail, accent: .systemYellow)
         case .confirmingBoard:
-            state = CoachOverlayState(title: "已收到录屏画面", move: requiresTurnSynchronization ? "请同步当前轮次" : "正在确认局面…",
+            state = CoachOverlayState(title: "已收到录屏画面", move: requiresMoveEvidence ? "正在识别轮次…" : "正在确认局面…",
                                       detail: recognitionWaitDetail, accent: .systemYellow)
         case .analyzing:
-            state = CoachOverlayState(title: "\(manualSideToMove.displayName) · 正在分析", move: "计算中…", detail: "请稍候", accent: .systemYellow)
-        case .waitingForOpponent:
-            state = CoachOverlayState(title: "对局棋盘 · 等待对方", move: "等待对方走棋", detail: "局面识别正常", accent: .systemOrange)
+            state = CoachOverlayState(title: "\(currentPosition?.sideToMove.displayName ?? "棋局") · 正在分析", move: "计算中…", detail: "请稍候", accent: .systemYellow)
         case .recommendation:
-            state = CoachOverlayState(title: "\(manualSideToMove.displayName)建议", move: recommendation, detail: recommendationDetail, accent: .systemGreen)
+            let isOpponent = currentPosition?.sideToMove != recognizedBoardAtBottom
+            state = CoachOverlayState(title: isOpponent ? "对手走法 · 仅图形提示" : "我方走法", move: recommendation,
+                                      detail: recommendationDetail, accent: isOpponent ? .systemBlue : .systemGreen)
         case .finished:
             state = CoachOverlayState(title: engineFailureMessage == nil ? "分析完成" : "计算失败", move: recommendation,
                                       detail: recommendationDetail, accent: .systemRed)

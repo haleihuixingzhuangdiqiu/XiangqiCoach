@@ -63,6 +63,7 @@ enum CoachBoardRenderer {
     private static let secondaryInk = UIColor(red: 0.45, green: 0.46, blue: 0.40, alpha: 1)
     private static let boardInk = UIColor(red: 0.43, green: 0.28, blue: 0.13, alpha: 1)
     private static let guide = UIColor(red: 0.16, green: 0.72, blue: 0.58, alpha: 1)
+    private static let opponentGuide = UIColor(red: 0.16, green: 0.48, blue: 0.83, alpha: 1)
     private static let recallGuide = UIColor(red: 0.65, green: 0.39, blue: 0.10, alpha: 1)
     private static let woodTexture = mirroredWoodTile()
     private static let pieceImages: [Piece: UIImage] = {
@@ -124,14 +125,22 @@ enum CoachBoardRenderer {
         return state.suggestedMove == nil ? state.move : "等待最新建议"
     }
 
+    static func isOpponentTurn(for state: CoachOverlayState) -> Bool {
+        guard let position = state.position else { return false }
+        return position.sideToMove != state.boardAtBottom
+    }
+
     static func boardCaption(for state: CoachOverlayState) -> String {
-        if displayedRecall(for: state) != nil { return "上一条走法" }
+        if displayedRecall(for: state) != nil { return isOpponentTurn(for: state) ? "对手上一条走法" : "上一条走法" }
         guard state.boardIsCurrent else { return "上次确认局面" }
-        return displayedMove(for: state) == nil ? "实时棋局" : "推荐走法"
+        guard displayedMove(for: state) != nil else { return "实时棋局" }
+        return isOpponentTurn(for: state) ? "对手走法" : "推荐走法"
     }
 
     static func guidanceDetail(for state: CoachOverlayState) -> String {
-        if displayedRecall(for: state) != nil { return "等待落子确认，选子后仍可回看这条建议" }
+        if displayedRecall(for: state) != nil {
+            return isOpponentTurn(for: state) ? "保留对手上一条预测，等待实际走子确认" : "等待落子确认，选子后仍可回看这条建议"
+        }
         guard state.boardIsCurrent else { return "保留棋盘供查看，确认最新局面后再显示落子建议" }
         return state.suggestedMove != nil && displayedMove(for: state) == nil
             ? "局面已变化，正在更新建议" : state.detail
@@ -142,6 +151,7 @@ enum CoachBoardRenderer {
             return ["原起点：圈选棋子", "原落点：箭头位置", "对应上次确认的局面"]
         }
         guard displayedMove(for: state) != nil else { return [] }
+        if isOpponentTurn(for: state) { return ["对手可能起点", "对手可能落点", "等待对手实际走子"] }
         return ["先点圈选棋子", "再点箭头落点", "落子由你操作"]
     }
 
@@ -186,9 +196,9 @@ enum CoachBoardRenderer {
             }
         }
         if let move = displayedMove(for: state) {
-            drawMove(move, geometry: geometry, recalled: false, in: context)
+            drawMove(move, geometry: geometry, recalled: false, opponent: isOpponentTurn(for: state), in: context)
         } else if let recall = displayedRecall(for: state) {
-            drawMove(recall.move, geometry: geometry, recalled: true, in: context)
+            drawMove(recall.move, geometry: geometry, recalled: true, opponent: isOpponentTurn(for: state), in: context)
         }
     }
 
@@ -271,10 +281,10 @@ enum CoachBoardRenderer {
         }
     }
 
-    private static func drawMove(_ move: XiangqiMove, geometry: CoachBoardGeometry, recalled: Bool, in context: CGContext) {
+    private static func drawMove(_ move: XiangqiMove, geometry: CoachBoardGeometry, recalled: Bool, opponent: Bool, in context: CGContext) {
         let origin = geometry.point(for: move.from)
         let target = geometry.point(for: move.to)
-        let color = recalled ? recallGuide : guide
+        let color = recalled ? recallGuide : (opponent ? opponentGuide : guide)
         ring(at: origin, radius: geometry.cellSize * 0.47, color: UIColor.white.withAlphaComponent(0.70), width: 4, in: context)
         context.saveGState()
         if recalled { context.setLineDash(phase: 0, lengths: [5, 3]) }
@@ -318,7 +328,7 @@ enum CoachBoardRenderer {
         let x: CGFloat = 558
         let width: CGFloat = 220
         let isRecall = displayedRecall(for: state) != nil
-        let markerColor = isRecall ? recallGuide : guide
+        let markerColor = isRecall ? recallGuide : (isOpponentTurn(for: state) ? opponentGuide : guide)
         disc(at: CGPoint(x: x + 4, y: 39), radius: 3.5, fill: isRecall ? recallGuide : state.accent, in: context)
         text(isRecall ? "等待落子确认" : state.title, in: CGRect(x: x + 16, y: 24, width: width - 16, height: 58),
              size: 20, weight: .semibold, color: ink)

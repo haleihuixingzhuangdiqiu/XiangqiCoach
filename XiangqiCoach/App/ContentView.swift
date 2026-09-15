@@ -62,24 +62,14 @@ struct ContentView: View {
             Label("指导设置", systemImage: "slider.horizontal.3")
                 .font(.headline)
 
-            HStack {
-                Text("当前轮到")
-                Spacer()
-                Picker("当前轮到", selection: $model.manualSideToMove) {
-                    Text("红方").tag(Side.red)
-                    Text("黑方").tag(Side.black)
-                }
-                .pickerStyle(.segmented)
-                .frame(maxWidth: 210)
-                Button("同步") { model.resynchronizeTurn() }
-                    .buttonStyle(.bordered)
-            }
-
-            Text("仅支持指定的木纹对局棋盘，红黑方向自动识别。中途进入时可确认轮次后点“同步”。")
+            Text("仅支持指定的木纹对局棋盘。红黑朝向和当前轮次自动识别，无需手动同步。")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
 
-            Toggle("语音播报建议着法", isOn: $model.voiceEnabled)
+            Toggle("播报我方着法", isOn: $model.voiceEnabled)
+            Text("对手回合也显示走法箭头，不播放语音。")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
         }
         .cardStyle()
     }
@@ -153,6 +143,7 @@ struct ContentView: View {
                 .font(.headline)
             detailRow("录屏", model.captureStatus)
             detailRow("识别", model.recognitionStatus)
+            detailRow("轮次", model.turnStatus)
             detailRow("收到画面", "\(model.receivedFrameCount) 帧")
             detailRow("延迟", model.latencyStatus)
 

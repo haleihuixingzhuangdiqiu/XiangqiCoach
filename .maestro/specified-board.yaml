@@ -6,4 +6,6 @@ appId: com.lgj.xiangqicoach
 - assertVisible: "指导设置"
 - assertNotVisible: "我执"
 - assertNotVisible: "练习设置"
-- takeScreenshot: "build/specified-board/home"
+- assertNotVisible: "当前轮到"
+- assertVisible: "仅支持指定的木纹对局棋盘。红黑朝向和当前轮次自动识别，无需手动同步。"
+- takeScreenshot: "build/auto-turn/home"

@@ -14,7 +14,7 @@ struct CoachMoveRecallState {
 
     @discardableResult
     mutating func remember(_ move: XiangqiMove, in position: XiangqiPosition, boardAtBottom: Side) -> Bool {
-        guard position.sideToMove == boardAtBottom, position.legalMoves().contains(move) else {
+        guard position.legalMoves().contains(move) else {
             reset()
             return false
         }
@@ -39,7 +39,7 @@ struct CoachMoveRecallState {
         return lastPublished
     }
 
-    /// 录屏停止、识别重置、方向切换或手动同步的共同边界，不影响临时识别失败的恢复。
+    /// 录屏停止、识别重置或方向切换的共同边界，不影响临时识别失败的恢复。
     mutating func reset() {
         lastPublished = nil
     }
