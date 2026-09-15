@@ -77,3 +77,22 @@ struct CoachSessionState: Equatable {
         return hasReceivedFrame ? .waitingForBoard : .waitingForFrame
     }
 }
+
+/// 仅投影本会话与“棋研录屏”的连接，不把系统的任意录屏信号或累计帧数当作本扩展已连接。
+/// lastFrameAt/now 使用同一个单调时钟；调用方在停止或开始新会话时必须清空 lastFrameAt。
+/// 三秒只容忍连接短抖动，不能替代棋盘建议原有的一秒有效画面门禁。
+enum CoachBroadcastConnectionState: String {
+    case stopped
+    case waitingForFrames
+    case receiving
+    case interrupted
+
+    static func evaluate(isCaptured: Bool, lastFrameAt: Double?, now: Double) -> Self {
+        guard isCaptured else { return .stopped }
+        guard let lastFrameAt else { return .waitingForFrames }
+        guard lastFrameAt.isFinite, now.isFinite, lastFrameAt >= 0, now >= lastFrameAt else { return .interrupted }
+        return now - lastFrameAt <= 3 ? .receiving : .interrupted
+    }
+
+    var canResumeGuidance: Bool { self == .receiving }
+}

@@ -133,6 +133,98 @@ final class LiveBoardRecognizerTests: XCTestCase {
         XCTAssertThrowsError(try recognizer.recognize(compressed(blank), sideToMove: .red))
     }
 
+    /// 连续帧合成回归：实图开局上的单选中圈只搬运真实高亮炮像素，不代表真实选子录屏。
+    func testSyntheticSelectionRecoversAndTracksNextMoveFromActualPixels() throws {
+        let clean = try redOpeningScreen()
+        let selected = try paste(markerScreen(), row: 2, column: 4, into: clean, row: 7, column: 7)
+        try verifyTransientRecovery(clean: clean, transient: selected, expectsRejection: false,
+                                    attachmentName: "合成序列-选子后恢复")
+    }
+
+    /// 把当前 renderer 的实际画面合成到棋盘上；圆角仅模拟系统 PiP 遮罩，不是一次实机录屏。
+    func testSyntheticPiPOcclusionIsRejectedThenRecoversAndTracksNextMove() throws {
+        let clean = try redOpeningScreen()
+        let overlay = CoachBoardRenderer.image(for: CoachOverlayState(
+            title: "轮到你 · 红方", move: "炮二平五", detail: "已识别 · 建议走法",
+            position: .standard, suggestedMove: h2e2, boardAtBottom: .red))
+        let obscured = makeRenderer(clean.size).image { context in
+            clean.draw(at: .zero)
+            // 棋盘上方首排的将帅位落在浮窗实心内容内，而不是透明圆角或窗外阴影中。
+            let window = CGRect(x: 64, y: 690, width: 768, height: 576)
+            context.cgContext.saveGState()
+            UIBezierPath(roundedRect: window, cornerRadius: 96).addClip()
+            overlay.draw(in: window)
+            context.cgContext.restoreGState()
+        }
+        try verifyTransientRecovery(clean: clean, transient: obscured, expectsRejection: true,
+                                    attachmentName: "合成序列-PiP实心区域遮挡后恢复")
+    }
+
+    /// 每一帧都先经过真实 720/JPEG 0.5 识别，再把识别输出交给 Tracker；不注入理想识别结果。
+    /// 末帧的 h2e2 来自真实走子截图的原棋子/标记像素，仅转换到同一红底方向，不冒充另一张实机截图。
+    private func verifyTransientRecovery(clean: UIImage, transient: UIImage, expectsRejection: Bool,
+                                         attachmentName: String) throws {
+        let recognizer = try BoardRecognizer.preset()
+        var tracker = BoardTracker()
+        for index in 0..<2 {
+            let recognized = try recognizer.recognize(compressed(clean), sideToMove: .black)
+            XCTAssertTrue(recognized.position.hasSameBoard(as: .standard))
+            XCTAssertEqual(recognized.boardAtBottom, .red)
+            let observation = tracker.observe(recognized.position, lastMove: recognized.lastMove)
+            XCTAssertEqual(observation, index == 0 ? .confirming : .accepted(.standard, .newGame))
+        }
+        let historyBefore = try XCTUnwrap(tracker.analysisHistory)
+        let transientSample = try compressed(transient)
+        if expectsRejection {
+            XCTAssertThrowsError(try recognizer.recognize(transientSample, sideToMove: .black)) { _ in
+                // 只有真实识别拒绝了这张遮挡图，才走生产的丢帧分支。
+                tracker.loseBoard()
+            }
+        } else {
+            let recognized = try recognizer.recognize(transientSample, sideToMove: .black)
+            XCTAssertTrue(recognized.position.hasSameBoard(as: .standard))
+            XCTAssertEqual(recognized.boardAtBottom, .red)
+            XCTAssertNil(recognized.lastMove, "单选中圈不能被解释成已经落子")
+            XCTAssertEqual(tracker.observe(recognized.position, lastMove: recognized.lastMove), .unchanged(.standard))
+        }
+        XCTAssertEqual(tracker.position, .standard)
+        XCTAssertEqual(tracker.analysisHistory, historyBefore)
+
+        for _ in 0..<2 {
+            let recognized = try recognizer.recognize(compressed(clean), sideToMove: .black)
+            XCTAssertEqual(recognized.boardAtBottom, .red)
+            XCTAssertEqual(tracker.observe(recognized.position, lastMove: recognized.lastMove), .unchanged(.standard))
+            XCTAssertEqual(tracker.position?.sideToMove, .red, "恢复同一棋盘不能采信错误输入轮次")
+            XCTAssertEqual(tracker.analysisHistory, historyBefore)
+        }
+
+        let marked = try markerScreen()
+        let withCannon = try paste(marked, row: 2, column: 4, into: clean, row: 7, column: 4)
+        let moved = try paste(marked, row: 2, column: 1, into: withCannon, row: 7, column: 7)
+        for index in 0..<2 {
+            let recognized = try recognizer.recognize(compressed(moved), sideToMove: .red)
+            XCTAssertTrue(recognized.position.hasSameBoard(as: afterH2E2))
+            XCTAssertEqual(recognized.boardAtBottom, .red)
+            XCTAssertEqual(recognized.lastMove, BoardMoveEvidence(move: h2e2, movedSide: .red))
+            let observation = tracker.observe(recognized.position, lastMove: recognized.lastMove)
+            XCTAssertEqual(observation, index == 0 ? .confirming : .accepted(afterH2E2, .legalMoves(1)))
+            XCTAssertEqual(tracker.position, index == 0 ? .standard : afterH2E2)
+        }
+        XCTAssertEqual(tracker.position?.sideToMove, .black)
+        XCTAssertEqual(tracker.analysisHistory, AnalysisHistory(root: .standard, moves: [h2e2]))
+        for (label, image) in [("干扰帧", transientSample), ("恢复后已走h2e2", try compressed(moved))] {
+            let attachment = XCTAttachment(image: UIImage(cgImage: image))
+            attachment.name = "\(attachmentName)-\(label)-720-JPEG0.5"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
+    private func redOpeningScreen() throws -> UIImage {
+        try fixtureScreen("user-red-opening-20260915", size: CGSize(width: 1280, height: 2781),
+                          crop: CGRect(x: 12, y: 722, width: 1256, height: 1393))
+    }
+
     private var h2e2: XiangqiMove { XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4)) }
     private var afterH2E2: XiangqiPosition { XiangqiPosition.standard.applying(h2e2) }
 

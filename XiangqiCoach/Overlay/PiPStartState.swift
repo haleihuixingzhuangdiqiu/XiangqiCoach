@@ -8,6 +8,8 @@ struct PiPStartState {
     private(set) var phase: Phase = .idle
     private var requestedAt: TimeInterval = 0
     private var resumeAfterStop = false
+    /// 包含等旧浮窗关闭后排队的重启；已开启或没有重启请求的用户关闭不属于待启动。
+    var isPendingStart: Bool { phase == .waiting || phase == .starting || (phase == .stopping && resumeAfterStop) }
     var isStopping: Bool { phase == .stopping }
     var wantsStart: Bool { phase == .waiting || phase == .starting || phase == .active || resumeAfterStop }
 

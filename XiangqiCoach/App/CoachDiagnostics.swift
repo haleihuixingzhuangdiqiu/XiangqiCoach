@@ -7,6 +7,7 @@ struct CoachDiagnosticsSnapshot: Codable, Equatable, Sendable {
     let boardIsCurrent: Bool
     let isAnalyzing: Bool
     let isScreenCaptured: Bool
+    let broadcastConnectionState: String
     let receivedFrameCount: Int
     let captureStatus: String
     let receiverStatus: String
@@ -25,7 +26,8 @@ struct CoachDiagnosticsSnapshot: Codable, Equatable, Sendable {
     let engineError: String?
 }
 
-/// 变化最多每秒提交一次；静止状态每十秒刷新存活时间，区分零帧与应用被挂起。只覆盖同一文件，写入离开主线程。
+/// 变化最多每秒提交一次；静止状态每十秒刷新存活时间，区分零帧与应用被挂起。
+/// 当前快照另附最多 120 条状态变化，保留复发前后的本地证据；不记录录屏图像，写入离开主线程。
 @MainActor
 final class CoachDiagnostics {
     private let queue = DispatchQueue(label: "com.lgj.xiangqicoach.diagnostics", qos: .utility)
@@ -55,8 +57,26 @@ final class CoachDiagnostics {
                 let data = try JSONSerialization.data(withJSONObject: payload, options: [.sortedKeys])
                 try FileManager.default.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
                 try data.write(to: destination, options: .atomic)
+
+                // 帧数/耗时持续变化不会追加事件；仅保存阶段、连接、识别错误和已确认局面的变化。
+                // 跨启动读取同一有界文件，让回到前台或覆盖安装后仍能追查此前中断。
+                let historyURL = destination.deletingLastPathComponent().appendingPathComponent("coach-diagnostics-history.json")
+                let historyData = try? Data(contentsOf: historyURL)
+                var history = historyData.flatMap { try? JSONSerialization.jsonObject(with: $0) as? [[String: Any]] } ?? []
+                let stateKeys = ["sessionIdentifier", "phase", "captureStatus", "receiverStatus", "recognitionStatus",
+                                 "broadcastConnectionState", "confirmedFEN", "pictureInPictureError", "engineError",
+                                 "applicationState", "isScreenCaptured", "isPictureInPictureActive", "isPictureInPicturePossible"]
+                let changed = history.last.map { previous in
+                    stateKeys.contains { (previous[$0] as? NSObject) != (payload[$0] as? NSObject) }
+                } ?? true
+                if changed {
+                    history = Array(history.suffix(119))
+                    history.append(payload)
+                    let historyData = try JSONSerialization.data(withJSONObject: history, options: [.sortedKeys])
+                    try historyData.write(to: historyURL, options: .atomic)
+                }
             } catch {
-                // 本地诊断属于可选旁路；写入失败不得打断录屏或棋局分析，也不额外保留日志副本。
+                // 本地诊断属于可选旁路；写入失败不得打断录屏或棋局分析，当前可用文件保持不变。
             }
         }
     }

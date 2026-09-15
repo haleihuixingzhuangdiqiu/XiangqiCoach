@@ -14,13 +14,16 @@ struct ContentView: View {
     }
 
     private var guidanceTitle: String {
-        guard model.isScreenCaptured else { return "从这里开始" }
+        guard model.broadcastConnectionState.canResumeGuidance else {
+            return model.broadcastConnectionState == .interrupted ? "重新连接录屏" : "从这里开始"
+        }
         if pip.isPictureInPictureActive { return "实时指导中" }
         if pip.errorMessage != nil { return "点继续指导重试" }
         return pip.needsExplicitResume ? "点继续指导恢复" : "正在准备指导"
     }
 
     private var guidanceStatus: String {
+        guard model.broadcastConnectionState.canResumeGuidance else { return model.startupStatus }
         if let error = pip.errorMessage { return error }
         if model.isScreenCaptured, pip.needsExplicitResume { return "录屏仍在运行，悬浮窗已关闭" }
         return model.startupStatus
@@ -56,7 +59,8 @@ struct ContentView: View {
                             .foregroundStyle(ink)
                         Text(guidanceStatus)
                             .font(.subheadline)
-                            .foregroundStyle(pip.errorMessage == nil ? Color.secondary : Color(red: 0.67, green: 0.23, blue: 0.17))
+                            .foregroundStyle(model.broadcastConnectionState.canResumeGuidance && pip.errorMessage != nil
+                                ? Color(red: 0.67, green: 0.23, blue: 0.17) : Color.secondary)
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                             .minimumScaleFactor(0.8)
@@ -74,8 +78,8 @@ struct ContentView: View {
                             .allowsHitTesting(false)
                             .accessibilityLabel("棋盘指导预览")
                             .accessibilityIdentifier("coach.preview")
-                        if !model.isScreenCaptured {
-                            BroadcastPickerView(title: "开始", isEnabled: true, onTap: model.prepareToStart)
+                        if !model.broadcastConnectionState.canResumeGuidance {
+                            BroadcastPickerView(title: model.broadcastConnectionState == .interrupted ? "重新连接" : "开始", isEnabled: true, onTap: model.prepareToStart)
                                 .frame(width: 220, height: 68)
                         }
                     }
@@ -83,7 +87,7 @@ struct ContentView: View {
 
                     // 固定操作区域，录屏开始/结束只切换按钮，不重建或隐藏上面的显示层。
                     ZStack {
-                        if model.isScreenCaptured {
+                        if model.broadcastConnectionState.canResumeGuidance {
                             Button(action: model.resumeGuidance) {
                                 Text("继续指导")
                                     .font(.system(size: 23, weight: .semibold))
@@ -99,7 +103,7 @@ struct ContentView: View {
                     .padding(.top, 16)
 
                     Spacer(minLength: 12)
-                    Text(model.isScreenCaptured ? "跟随悬浮窗里的箭头，继续对局" : "开始后确认系统录屏，即可切回棋盘")
+                    Text(model.broadcastConnectionState.canResumeGuidance ? "跟随悬浮窗里的箭头，继续对局" : "开始后确认系统录屏，即可切回棋盘")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
@@ -136,7 +140,7 @@ private struct CoachHelpView: View {
                         step("01", title: "点击首页“开始”", detail: "在系统面板中选择“棋研录屏”，再点“开始直播”。iOS 的录屏确认必须由你完成，应用无法跳过。")
                         step("02", title: "切回你的棋盘", detail: "录屏开启后会自动显示悬浮指导。进入对局，保持整张棋盘和棋子清晰可见。")
                         step("03", title: "跟着箭头落子", detail: "我方回合显示绿色指引并播报；对手回合显示蓝色分析，不播报。选子时仍可回看上一条走法。")
-                        step("04", title: "恢复或结束指导", detail: "关掉悬浮窗后，可回首页点“继续指导”。要结束本次指导，请在 iOS 录屏控制里停止直播。")
+                        step("04", title: "恢复或结束指导", detail: "关掉悬浮窗后，可回首页点“继续指导”。若画面中断，首页会恢复录屏入口；点“重新连接”，在系统面板中开启“棋研录屏”。其他应用的录屏不能向棋研提供画面。要结束指导，请在 iOS 录屏控制里停止直播。")
                     }
                     Divider()
                     VStack(alignment: .leading, spacing: 12) {

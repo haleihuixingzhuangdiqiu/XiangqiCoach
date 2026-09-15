@@ -16,6 +16,7 @@ final class CoachViewModel: ObservableObject {
     @Published private(set) var recommendationDetail = "正在准备棋盘识别"
     @Published private(set) var receivedFrameCount = 0
     @Published private(set) var isScreenCaptured = false
+    @Published private(set) var broadcastConnectionState: CoachBroadcastConnectionState = .stopped
 
     let pipController: PiPCoachController
 
@@ -52,6 +53,8 @@ final class CoachViewModel: ObservableObject {
     /// 全链路使用开机后的单调时间；超过一秒的画面不能继续提供落子指引。
     private let maximumFrameAge: TimeInterval = 1
     private var lastFrameCapturedAt: TimeInterval?
+    /// 记录已观察到的停止边界；重开后即使旧回调仍不足一秒，也不能冒充新会话首帧。
+    private var lastCaptureStoppedAt = -Double.infinity
     private var lastConfirmedFrameAt: TimeInterval?
     private var lastRecognitionMilliseconds: Double?
     private var lastFrameLatencyMilliseconds: Double?
@@ -96,7 +99,9 @@ final class CoachViewModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.updateCaptureState(UIScreen.main.isCaptured)
-                if self.isScreenCaptured, self.guidanceRequested { self.requestPiPIfNeeded() }
+                self.receiver.start()
+                self.updateBroadcastConnection()
+                if self.guidanceRequested { self.requestPiPIfNeeded() }
             }
         }
         prepareRecognizer()
@@ -115,13 +120,20 @@ final class CoachViewModel: ObservableObject {
     var startupStatus: String {
         if !isRecognizerReady { return recognitionPreparationStatus }
         if !isScreenCaptured { return "准备就绪" }
-        return session.hasReceivedFrame ? "已就绪，切回天天象棋" : "正在连接录屏画面"
+        switch broadcastConnectionState {
+        case .stopped: return "准备就绪"
+        case .waitingForFrames: return "尚未收到棋研画面，请点开始连接“棋研录屏”"
+        case .receiving: return "已就绪，切回天天象棋"
+        case .interrupted: return "棋研画面已中断，请重新连接录屏"
+        }
     }
 
     /// 原生录屏按钮的同一次点击先准备应用，录屏权限仍由系统面板确认。
     func prepareToStart() {
         updateCaptureState(UIScreen.main.isCaptured)
         guidanceRequested = true
+        // 无本扩展画面时，这是用户显式重连；系统任意录屏标记不能代替本扩展首帧。
+        if !broadcastConnectionState.canResumeGuidance { didRequestPiPForCapture = false }
         receiver.start()
         if session.preparationFailed { prepareRecognizer() }
         if isScreenCaptured { requestPiPIfNeeded() }
@@ -135,7 +147,7 @@ final class CoachViewModel: ObservableObject {
     }
 
     private func requestPiPIfNeeded() {
-        guard isScreenCaptured, !didRequestPiPForCapture else { return }
+        guard broadcastConnectionState.canResumeGuidance, !didRequestPiPForCapture else { return }
         didRequestPiPForCapture = true
         updateOverlay()
         pipController.start()
@@ -174,14 +186,16 @@ final class CoachViewModel: ObservableObject {
     private func ingest(_ image: CGImage, capturedAt: TimeInterval) {
         // 首帧可能先于系统通知抵达；使用当前系统值补齐开始事件，停止后的排队帧则丢弃。
         updateCaptureState(UIScreen.main.isCaptured)
-        guard session.receiveFrame() else { return }
+        guard session.isCapturing else { return }
         totalReceivedFrames += 1
         updateLatency(capturedAt: capturedAt)
-        guard isFresh(capturedAt), capturedAt > (lastFrameCapturedAt ?? 0) else {
+        guard isFresh(capturedAt), capturedAt > lastCaptureStoppedAt, capturedAt > (lastFrameCapturedAt ?? 0) else {
             checkFrameFreshness()
             return
         }
+        guard session.receiveFrame() else { return }
         lastFrameCapturedAt = capturedAt
+        updateBroadcastConnection()
         // 首帧来自本扩展；即使 App 打开前已录屏，或通知先后顺序变化，也补齐自动启动。
         requestPiPIfNeeded()
         if captureStatus != "录屏中 · 已收到画面" { captureStatus = "录屏中 · 已收到画面" }
@@ -414,13 +428,15 @@ final class CoachViewModel: ObservableObject {
     private func updateCaptureState(_ captured: Bool) {
         if isScreenCaptured != captured { isScreenCaptured = captured }
         guard session.setCaptureActive(captured) else { return }
+        if !captured { lastCaptureStoppedAt = ProcessInfo.processInfo.systemUptime }
         resetRecognition()
         didRequestPiPForCapture = false
         if !captured {
             guidanceRequested = false
             pipController.stop()
         }
-        captureStatus = captured ? "系统录屏已开启" : "录屏已停止"
+        updateBroadcastConnection()
+        captureStatus = captured ? "系统正在录屏 · 等待棋研画面" : "录屏已停止"
         recognitionStatus = captured ? "等待录屏画面" : "识别已暂停"
         updateOverlay()
         if captured, guidanceRequested { requestPiPIfNeeded() }
@@ -435,6 +451,7 @@ final class CoachViewModel: ObservableObject {
         orientationCandidate = nil
         orientationCandidateCount = 0
         lastFrameCapturedAt = nil
+        updateBroadcastConnection()
         lastConfirmedFrameAt = nil
         lastRecognitionMilliseconds = nil
         lastFrameLatencyMilliseconds = nil
@@ -478,7 +495,18 @@ final class CoachViewModel: ObservableObject {
         return age >= 0 && age <= maximumFrameAge
     }
 
+    /// 传输连接与棋盘可信度分开：系统录屏也可能来自其他扩展；只有近期本扩展帧允许继续指导。
+    /// 三秒仅用于恢复录屏入口，实际箭头仍沿用一秒新鲜度门禁。
+    private func updateBroadcastConnection() {
+        let value = CoachBroadcastConnectionState.evaluate(
+            isCaptured: isScreenCaptured, lastFrameAt: lastFrameCapturedAt, now: ProcessInfo.processInfo.systemUptime)
+        if broadcastConnectionState != value { broadcastConnectionState = value }
+        // 等待就绪时已断流，取消旧启动；保留已开启浮窗及用户主动关闭的选择。
+        if !value.canResumeGuidance, pipController.cancelPendingStart() { didRequestPiPForCapture = false }
+    }
+
     private func checkFrameFreshness() {
+        updateBroadcastConnection()
         checkAnalysisTimeout()
         // 即使录屏已停，下一次低频 tick 仍可把最终状态落盘，避免限频丢掉停止事件。
         writeDiagnostics()
@@ -539,6 +567,7 @@ final class CoachViewModel: ObservableObject {
             boardIsCurrent: pipController.state.boardIsCurrent,
             isAnalyzing: analysisState.isInFlight,
             isScreenCaptured: isScreenCaptured,
+            broadcastConnectionState: broadcastConnectionState.rawValue,
             receivedFrameCount: totalReceivedFrames,
             captureStatus: captureStatus,
             receiverStatus: receiverStatus,
@@ -564,7 +593,7 @@ final class CoachViewModel: ObservableObject {
         case .notRecording:
             state = CoachOverlayState()
         case .waitingForFrame:
-            state = CoachOverlayState(title: "录屏已开启", move: "等待录屏画面", detail: "请确认选择了“棋研录屏”", accent: .systemYellow)
+            state = CoachOverlayState(title: "尚未连接棋研录屏", move: "等待录屏画面", detail: "返回首页点开始，连接“棋研录屏”", accent: .systemYellow)
         case .preparingRecognition:
             let title = session.hasReceivedFrame ? "已收到录屏画面" : "录屏已开启"
             state = CoachOverlayState(title: title, move: "正在准备识别…", detail: "请稍候", accent: .systemYellow)

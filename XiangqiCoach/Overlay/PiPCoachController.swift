@@ -124,6 +124,16 @@ final class PiPCoachController: NSObject, ObservableObject {
         controller?.stopPictureInPicture()
     }
 
+    /// 本扩展断流时只取消尚未显示的请求；已开启浮窗保留，用户关闭后的意图不被重写。
+    @discardableResult
+    func cancelPendingStart() -> Bool {
+        // willStop 到 didStop 之间 published active 仍可能为 true；以真实待启动意图为准，
+        // 才能取消此期间排队的重启。稳定 active 状态本身不属于 pending。
+        guard startup.isPendingStart else { return false }
+        stop()
+        return true
+    }
+
     private func attemptPendingStart() {
         let action = startup.nextAction(
             isReady: controller?.isPictureInPicturePossible == true,
