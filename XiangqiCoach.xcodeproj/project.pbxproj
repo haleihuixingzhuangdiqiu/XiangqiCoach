@@ -52,6 +52,7 @@
 		855D8623BB01DF08CC49EDAA /* zstd_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF362B17ECE7B9B910D97657 /* zstd_decompress.cpp */; };
 		86444CB8F35515FED6BB1DD5 /* evaluate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8BA798C0494C1A1CF01480D /* evaluate.cpp */; };
 		86CA8CCF05153B285475BBC4 /* PiPCoachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CD1ADF4C8BC8417A05C686 /* PiPCoachController.swift */; };
+		88D6AC82A24DBF389CE30A36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 271DC62986B11DA58B40B494 /* Assets.xcassets */; };
 		88F74051EE8274377B5A652E /* BoardPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A9DE619D2BF9BE5157423A /* BoardPipelineTests.swift */; };
 		8D6919B3E5DDD714F89AA888 /* tune.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CCA76E46367963775ADB69AB /* tune.cpp */; };
 		9043C707981EFD8473E93F00 /* ProUI in Resources */ = {isa = PBXBuildFile; fileRef = 87341649DBCE817AE7D61FB4 /* ProUI */; };
@@ -135,6 +136,7 @@
 		1EDD61D2DDF83FC380CF3444 /* Fixtures */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Fixtures; path = XiangqiCoachTests/Fixtures; sourceTree = "<group>"; };
 		22CD1ADF4C8BC8417A05C686 /* PiPCoachController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PiPCoachController.swift; path = XiangqiCoach/Overlay/PiPCoachController.swift; sourceTree = "<group>"; };
 		23EC308A9808F0FA36A4299E /* XiangqiCoachApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiCoachApp.swift; path = XiangqiCoach/App/XiangqiCoachApp.swift; sourceTree = "<group>"; };
+		271DC62986B11DA58B40B494 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = XiangqiCoach/Resources/Assets.xcassets; sourceTree = "<group>"; };
 		290A651D4418B10A8EBAB98B /* bitboard.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = bitboard.cpp; path = XiangqiCoach/Vendor/Pikafish/src/bitboard.cpp; sourceTree = "<group>"; };
 		304BF50097087A9EBB212B33 /* huf_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = huf_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/huf_decompress.cpp; sourceTree = "<group>"; };
 		358B603274F794560768D90C /* BoardTracker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardTracker.swift; path = XiangqiCoach/Analysis/BoardTracker.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 				98B53B7B8E299C2D67E0D3FB /* board-template-red.png */,
 				1EDD61D2DDF83FC380CF3444 /* Fixtures */,
 				0116BADBF0CFFC05901F5F68 /* Pikafish Native */,
+				271DC62986B11DA58B40B494 /* Assets.xcassets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -514,6 +517,7 @@
 				F80AE001CB22F0A8AC167306 /* board-template-black.png in Resources */,
 				2A709C308AAE81666CEF2FC5 /* board-template-red.png in Resources */,
 				75F0C34AEDC5F60C2A060437 /* Pikafish in Resources */,
+				88D6AC82A24DBF389CE30A36 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,7 +644,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091505;
+				CURRENT_PROJECT_VERSION = 2026091506;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -662,7 +666,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091505;
+				CURRENT_PROJECT_VERSION = 2026091506;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -683,12 +687,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091505;
+				CURRENT_PROJECT_VERSION = 2026091506;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -729,12 +732,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091505;
+				CURRENT_PROJECT_VERSION = 2026091506;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -778,7 +780,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091505;
+				CURRENT_PROJECT_VERSION = 2026091506;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -916,7 +918,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091505;
+				CURRENT_PROJECT_VERSION = 2026091506;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;

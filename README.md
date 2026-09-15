@@ -1,5 +1,7 @@
 # 棋研悬浮教练 · 天天象棋人机辅助
 
+<img src="XiangqiCoach/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="96" height="96" alt="棋研桌面图标">
+
 一个用于**天天象棋人机练习**的 iOS 辅助工具：通过系统录屏读取指定棋盘，在本机识别局面、调用 Pikafish 计算，并用画中画展示棋盘、走法箭头和语音提示。
 
 **本项目不维护。** 仅按仓库中的固定棋盘样本实现，不提供持续更新、主题适配或问题排查承诺。天天象棋改版、棋盘布局或棋子样式变化后，请自行修改源码、补充测试并重新编译安装。用途为人机练习与研究。
@@ -99,3 +101,5 @@ xcodebuild -project XiangqiCoach.xcodeproj -scheme XiangqiCoach \
 - Zstandard 依赖许可：[BSD 条款](XiangqiCoach/Resources/Pikafish/Zstd-BSD-LICENSE.txt) 与 [固定来源记录](XiangqiCoach/Resources/Pikafish/Zstd-Source-Notice.txt)。
 - 引擎接入说明：[pikafish-integration.md](docs/pikafish-integration.md)。
 - 棋盘与棋子图来自用户提供的截图裁剪，来源记录见 [棋盘样本](docs/board-fixture-provenance.json) 和 [绘制素材](XiangqiCoach/Resources/ProUI/ASSET_PROVENANCE.json)。这些第三方素材的权利不因放入仓库而转移；文件名 `pro_` 不表示素材来自 Pro 官方。
+
+- 桌面图标使用内置图像生成工具制作，设计、提示词及安装验证见 [app-icon-design.md](docs/app-icon-design.md)。

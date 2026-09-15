@@ -29,7 +29,7 @@ def configure_target(target, bundle_identifier, info_plist)
     settings["TARGETED_DEVICE_FAMILY"] = "1"
     settings["SUPPORTED_PLATFORMS"] = "iphoneos iphonesimulator"
     settings["ENABLE_USER_SCRIPT_SANDBOXING"] = "YES"
-    settings["CURRENT_PROJECT_VERSION"] = "2026091505"
+    settings["CURRENT_PROJECT_VERSION"] = "2026091506"
     settings["MARKETING_VERSION"] = "1.1"
   end
 end
@@ -37,6 +37,12 @@ end
 configure_target(app_target, "com.lgj.xiangqicoach", "XiangqiCoach/Resources/Info.plist")
 configure_target(broadcast_target, "com.lgj.xiangqicoach.broadcast", "XiangqiCoachBroadcast/Info.plist")
 configure_target(tests_target, "com.lgj.xiangqicoach.tests", "XiangqiCoachTests/Info.plist")
+
+app_target.build_configurations.each do |configuration|
+  configuration.build_settings["ASSETCATALOG_COMPILER_APPICON_NAME"] = "AppIcon"
+  # 未提供 AccentColor 资源，删除 new_target 默认名称，避免资源编译器报告缺失。
+  configuration.build_settings.delete("ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME")
+end
 
 broadcast_target.build_configurations.each do |configuration|
   configuration.build_settings["SKIP_INSTALL"] = "YES"
@@ -93,7 +99,8 @@ add_sources(project, app_target, "Shared App", Dir.glob(File.join(root, "Shared/
 add_sources(project, broadcast_target, "Shared Extension", Dir.glob(File.join(root, "Shared/*.swift")))
 Dir.glob(File.join(root, "XiangqiCoach/Resources/*")).select { |p| File.directory?(p) && File.basename(p) != "Pikafish" }.each do |absolute|
   ref = project.main_group.new_file(absolute.delete_prefix(root + "/"))
-  ref.last_known_file_type = "folder"
+  # .xcassets 必须作为资源目录编译；普通 folder 引用只会复制目录，无法生成主屏幕图标。
+  ref.last_known_file_type = File.extname(absolute) == ".xcassets" ? "folder.assetcatalog" : "folder"
   app_target.resources_build_phase.add_file_reference(ref)
 end
 Dir.glob(File.join(root, "XiangqiCoach/Resources/*")).select { |p| File.file?(p) && File.extname(p) != ".plist" }.each do |absolute|
