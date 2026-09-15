@@ -23,3 +23,11 @@
 - iOS 26.5 专用模拟器，Release XCTest：95 项全部通过、0 失败。两张独立实图恢复/压缩测试和双朝向浮窗阴影测试实际执行通过；原有模糊、遮挡、颜色、传输和引擎测试仍全部通过。结果：`build/specified-board/tests.xcresult`。
 - Maestro 首页流程通过：识别就绪、对局指导文案、指导设置可见，“我执”和旧“练习设置”不可见；已目视检查首页截图，文字与录屏入口无截断遮挡。证据在 `build/specified-board/maestro`，原始日志因网络故障诊断而保留。
 - 2026091501 Release 真机签名包生成成功。00:27 安装时 CoreDevice 返回设备不可用，随后设备列表再次确认 iPhone 为 `unavailable`；本版尚未安装，等待用户重新连接。当前手机仍为上一版，不能将模拟器结果说成新版本真机验收。
+
+## 已完成真机安装 · 2026-09-15 晚
+
+19:17 设备恢复连接。首次安装发现旧录屏扩展的开发描述文件已过期；已通过 Xcode 自动签名更新并重新构建，未改源码或识别参数。
+
+19:19 重新签名的 2026091501 在 iPhone 17 Pro Max 安装成功并启动。已从手机读回 `appBuild=2026091501`、新会话 ID、`receiverStatus=录屏接收器已就绪` 和 `isPictureInPicturePossible=true`。检查时系统录屏尚未开启，本次确认安装与启动成功，未将其说成指定棋盘的连续录屏验收。
+
+证据：`build/specified-board/phone-install-resigned.json`、`phone-launch-installed.json`、`phone-installed-diagnostics.json`。开发签名当前有效期：主应用至 2026-09-21 15:17:32 UTC，录屏扩展至 2026-09-22 11:18:45 UTC；签名产物不纳入源码备份。
