@@ -7,114 +7,116 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02AB211E88F2040223D58AD6 /* zstd_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6167093B54668C1C2024BAF0 /* zstd_decompress.cpp */; };
-		0307C37B29F53E1D6B2E5CE0 /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 10F1897147A25EB2DE37AB04 /* debug.cpp */; };
-		0B350A8D4DFEE93D8E86A968 /* FrameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23726EDE3E39EED13DB7CFD1 /* FrameProtocol.swift */; };
-		0C7A78E752946BF089DF2069 /* FrameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE2FFED8474B7BAC1FC2915 /* FrameProtocol.swift */; };
-		0FF007AD24958ED4D67E3706 /* zstd_decompress_block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 105EE0C0D3014AF3B10C576B /* zstd_decompress_block.cpp */; };
-		11D6B2EB38414D850DCB2C55 /* huf_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 21161D3236D784D5FDA2F5D6 /* huf_decompress.cpp */; };
-		1636B346485585FA0A42A5EC /* FrameSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0385857E63E4F7E769EC80E6 /* FrameSender.swift */; };
-		1710D2153E0D9AF616E48AE8 /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD4C5C002E6857196338DB26 /* SampleHandler.swift */; };
-		1826EC9AD4F9D3B6A0B0F3B4 /* CoachSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE91D86D6D5F38E807F2E82 /* CoachSessionState.swift */; };
-		21C163855B5EB4E14F5B580E /* position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 91E7B15676EFC6ADE780E055 /* position.cpp */; };
-		21F6EFD0D549BE9DF4006955 /* LiveBoardRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE2D234725CDCD2639F4BEF /* LiveBoardRecognizerTests.swift */; };
-		24F5E7313855D4242FAC7956 /* timeman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7E31DE84ABA8C7F7A988D738 /* timeman.cpp */; };
-		24FB4A0FEA718EED6FDCDCEF /* BoardMoveEvidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = D98FCC749C235B0090C44AF8 /* BoardMoveEvidence.swift */; };
-		25263D9E0E502F45244FC9B1 /* XQPikafishEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7F44E789350879EA64161718 /* XQPikafishEngine.mm */; };
-		28ADA573CD119102FCD672BB /* CoachMoveRecallState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8E1D6F8906489DF62BDB8E /* CoachMoveRecallState.swift */; };
-		2F61E5B07B26E679538A83A1 /* ProUI in Resources */ = {isa = PBXBuildFile; fileRef = F7FD89138B11D336D6D369B5 /* ProUI */; };
-		3139822670370AC22AA92CFD /* movegen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B56DA00ED388B96D900CB802 /* movegen.cpp */; };
-		3BB2BDC7ACF375B9F5507AA8 /* CoachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9B41A1C6F47CF46254FA38 /* CoachViewModel.swift */; };
-		3FEAEDAFEDE5DF234FE95720 /* ucioption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 671F879B4BB99E88FA01BBA2 /* ucioption.cpp */; };
-		41122D58B6E9961B73D725E3 /* memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B37BFDE7655866C0493A879B /* memory.cpp */; };
-		4C73EA6F933D891DC29D9D07 /* PikafishEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD36EF8307751760A344410 /* PikafishEngineTests.swift */; };
-		4F20FE9F5618171E04AB595D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B7450C7B19D090EB6D47D9 /* Foundation.framework */; };
-		52B3494A87854C730E9F7AAD /* CoachSessionStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD23FA8A6022436CFE6E3422 /* CoachSessionStateTests.swift */; };
-		5A8735C6D685B27D89A079E1 /* CoachDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D87FC804C57CA1A0E2A1CD8 /* CoachDiagnostics.swift */; };
-		5BAA104C6D2321BF755939BD /* tt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 842239E0A4DD345293DEE667 /* tt.cpp */; };
-		5F2632989F982075DBCD5BB8 /* FrameReceiverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD940E76C47B3D361B43D564 /* FrameReceiverTests.swift */; };
-		631E33A573DA7A4A3686071E /* XiangqiCoachBroadcast.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = E49800AB528BCD25736CF04C /* XiangqiCoachBroadcast.appex */; };
-		646928878E33F93D6A502727 /* board-template-black.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DBC5C9E17D8DF24802F7A3 /* board-template-black.png */; };
-		652864609607E04B562E30E2 /* nnue_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAE689DA5567CE27D1761F6A /* nnue_misc.cpp */; };
-		687FD10CDA0F87CC66AEEC42 /* CoachBoardRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C9A53F7DC9C39E0F3A4BB2 /* CoachBoardRendererTests.swift */; };
-		6A85B3F05D9DF82D04930E5C /* BoardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CDF0448699645D012455BB /* BoardLayout.swift */; };
-		6AB695A1B4050AF06EE872FB /* Pikafish in Resources */ = {isa = PBXBuildFile; fileRef = EA7B1BFE3A9D11F42FBF94E4 /* Pikafish */; };
-		6B173E2851A3D2067FE1171D /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 12FE838C9D7FE3D5088BE7D5 /* engine.cpp */; };
-		6E05BEA13B0D8853C32933F2 /* error_private.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C6CA0B6EACFF2B0C567CA46 /* error_private.cpp */; };
-		734DD74F9F3FF290096A18C7 /* thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E340B1F5E5D7DDB74E896F2F /* thread.cpp */; };
-		766180E8F145DF6029BBDBA1 /* zstd_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1E14F2D1A33F614743D4113B /* zstd_common.cpp */; };
-		8132A6BA9AFCA1EFAA89254D /* nnue_accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1183F73CFDE09B8E52C65564 /* nnue_accumulator.cpp */; };
-		825A673DE6021EC8410E7C28 /* LastMoveRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867363907A441BC3EE9F57B1 /* LastMoveRecognizer.swift */; };
-		84F6094AD56D0FFE0098CCAC /* zstd_ddict.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D743683970FC711EF0D6D5BC /* zstd_ddict.cpp */; };
-		87FA6A297494844737F7575A /* FrameReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245D5F1638F6713CE5BB1C8E /* FrameReceiver.swift */; };
-		8CE5ACC83A4E66EA9BF9B46E /* XiangqiCoachApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00D86D5761ED3DDA6BCA3A6 /* XiangqiCoachApp.swift */; };
-		9081F1D18422169B3C1286FB /* threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 008445B0F41C58F0837E5F0E /* threading.cpp */; };
-		96ACC8C0EFB3723E65F43362 /* tune.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2035F4E00CD0D4DDAA6F6959 /* tune.cpp */; };
-		97D2962F79BAADB6C5BA8CB6 /* movepick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A883FB6B99FB5E95E10A17 /* movepick.cpp */; };
-		9B499B4CED62D603C623BA0A /* score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 568C64AAB8796FECFF0E3010 /* score.cpp */; };
-		9EA9825DA94435AD89A31A3A /* bitboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D69EBA453C7972E1BCFF65E /* bitboard.cpp */; };
-		A0FEE911F15432E69BAEA1F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB19B0FA487DF2DF528922AF /* ContentView.swift */; };
-		A10E00C87C04EFB8BB42722A /* fse_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17C196788F20DA9D745F018B /* fse_decompress.cpp */; };
-		A355EE26CF3A67C31A4D3FFD /* MoveNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163D847DD926CFE120F64349 /* MoveNotation.swift */; };
-		A567A93F29CE908F7E8D78FD /* BoardTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F057B81D5D9F009659BE9D14 /* BoardTrackerTests.swift */; };
-		AB0AF41405EF3FB8AD7B0E8F /* BoardPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2802DAC97E6D4ABB65391454 /* BoardPipelineTests.swift */; };
-		AD22ED34858FCDC49094060E /* BoardTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC53F1A9ADDC2110A45AA9CF /* BoardTracker.swift */; };
-		ADD67AEC4570384BCB02F6AB /* CoachAnalysisState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 928C9C3672FF8FE5CA1ECBCB /* CoachAnalysisState.swift */; };
-		AE5EDD607F42E3BC3460675B /* CoachBoardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B420A561C4A427160222C5 /* CoachBoardRenderer.swift */; };
-		AECC440C3D64AA2081278FEA /* xxhash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C1973BBDB1EA7B2DCDA0E157 /* xxhash.cpp */; };
-		B3469D1A350E5808EE48A05A /* evaluate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2792B6C51FCFA34E3AEACE05 /* evaluate.cpp */; };
-		B5879A21DB82652357E32469 /* LatestRecognitionFrameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3110A7E5822406138CD284 /* LatestRecognitionFrameTests.swift */; };
-		B5F89DFB3DCDC7FC339741ED /* BroadcastPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E625C8860AA517F4DE021173 /* BroadcastPickerTests.swift */; };
-		B991B52D24F2C4A34DAFFAFE /* BroadcastPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9CCCC59E187F3EF2003D99 /* BroadcastPickerView.swift */; };
-		BF2B0E21864F0C0E4F42C9F1 /* XiangqiPositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C632936F08DC15CA0187B17F /* XiangqiPositionTests.swift */; };
-		BF9CCEC5550A498292074CD4 /* Fixtures in Resources */ = {isa = PBXBuildFile; fileRef = 35C5326B846CFB74D6D2613A /* Fixtures */; };
-		BFCF38089BA6CEFD7AA6AAAB /* uci.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72555C9DBFD05BAB05FBA77E /* uci.cpp */; };
-		C292F68DB93CFFFD5604D161 /* FramePipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E48CC61A5648359F7CF4A30 /* FramePipelineTests.swift */; };
-		C58F148A0118B88FA4DA7C12 /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D4D8F3209BF97570C9661D /* search.cpp */; };
-		C5D4460EB1D9A3E8005631FE /* PiPCoachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47088248FECB721DD69D9D07 /* PiPCoachController.swift */; };
-		D1572ED46844346D5628BCBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B7450C7B19D090EB6D47D9 /* Foundation.framework */; };
-		D44021FA66A846313AB6095E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66B7450C7B19D090EB6D47D9 /* Foundation.framework */; };
-		D583C9937ED6EFABDB424088 /* XiangqiPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD5AD13EB3D099397788E9 /* XiangqiPosition.swift */; };
-		DAA9387CA05F77691C605774 /* benchmark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45DC7EDEFF0A1AA303CEAC82 /* benchmark.cpp */; };
-		E12C3D786F69BE60EF6B2A2C /* half_ka_v2_hm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C74834B4B36EDDD90F397125 /* half_ka_v2_hm.cpp */; };
-		E39F37B3FFE41E9DEF39A396 /* BoardRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327D84AA8535F4BDC147A772 /* BoardRecognizer.swift */; };
-		E442E443269793A18D2194E3 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0C580BF270B6E041897DB431 /* network.cpp */; };
-		E574CD60C42073D0FD1A39BF /* misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B5E5AAD15DCE93EBC50ECA5 /* misc.cpp */; };
-		EB747D3DCAAA27DF55F97612 /* XiangqiEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CE98C38E38D672E316B045 /* XiangqiEngine.swift */; };
-		ECA1453A483F111823D4065F /* BoardRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D9A6A94B6E2B38BD001E0AE /* BoardRecognizerTests.swift */; };
-		EE01F29E46880A3117CAAB2E /* LatestRecognitionFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC38241BE3C33861DF8E3A90 /* LatestRecognitionFrame.swift */; };
-		F617DB320F6496CD8C9FD7BE /* CoachMoveRecallStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0411EF1879184C65A3D112 /* CoachMoveRecallStateTests.swift */; };
-		F6589CE9F12C0DE598593EDF /* pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87AB4C3A099A32204BDFAAAA /* pool.cpp */; };
-		F74A1906E4A15653BBB1B4D3 /* CoachAnalysisStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7BC42F1781A5BA8D0246D0 /* CoachAnalysisStateTests.swift */; };
-		F90A82B918E4C76D12D6AA49 /* board-template-red.png in Resources */ = {isa = PBXBuildFile; fileRef = AD39A3CEA0A45E029ADC444B /* board-template-red.png */; };
-		FDBFCC4DCEC1AB4DA27E9CA8 /* entropy_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0A3E4DC5BBA5BC06BD4EACCA /* entropy_common.cpp */; };
+		0306DE88AFE7222C6390589F /* CoachViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A2C7AA08465E0724F45C39 /* CoachViewModel.swift */; };
+		0A461091C660596E81EBDBFB /* BroadcastPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E82DC2D46351845701AD28E /* BroadcastPickerView.swift */; };
+		0C64DB77E88DB5A6B91C44F9 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FDFA9ECDF5416CFAB194B480 /* network.cpp */; };
+		0D757EFA3717645FC9D82126 /* thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8E9CA5F000BFFE9D0AC8C9AF /* thread.cpp */; };
+		0DB9B11622309280CFDACCCB /* bitboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 290A651D4418B10A8EBAB98B /* bitboard.cpp */; };
+		1347772633A129D95D2296E1 /* BoardMoveEvidence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493B548CEB023E23CC61272F /* BoardMoveEvidence.swift */; };
+		148710F2576DF4A23DE8F2C5 /* CoachSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523AA52207639159A1B0D80D /* CoachSessionState.swift */; };
+		17FD7BDE89F536228FD9DBF2 /* fse_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8905D6CA7AF4D5BB49778B9E /* fse_decompress.cpp */; };
+		1D51A7442DA4E8B44CB87E93 /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 552D0F0A93943E3FB36D879B /* search.cpp */; };
+		1D910608C7777FB3DC7DCD83 /* huf_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304BF50097087A9EBB212B33 /* huf_decompress.cpp */; };
+		206F1A708BEB25B016BAE56C /* PiPStartStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1794865452C30D70465B812D /* PiPStartStateTests.swift */; };
+		2326C1A9C7ED5861FF953FE5 /* LatestRecognitionFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB1D13D98C7B857765B39A /* LatestRecognitionFrame.swift */; };
+		2A2D5758633518C6EC2E93A2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC45EA851CABF86F7E7E952C /* ContentView.swift */; };
+		2A709C308AAE81666CEF2FC5 /* board-template-red.png in Resources */ = {isa = PBXBuildFile; fileRef = 98B53B7B8E299C2D67E0D3FB /* board-template-red.png */; };
+		2BF770B9354A1C9DD42A464A /* misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C144AB4E1F749238C2F19C5B /* misc.cpp */; };
+		2CD0B8AD8A75E5D3A7CE980B /* FramePipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9311E9B3B63A6A53E59F4412 /* FramePipelineTests.swift */; };
+		332B1B1828DE470D06FA3163 /* engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6C22D82ECE7AABAFF9F9E6EE /* engine.cpp */; };
+		338ECE294980790B56BF157D /* benchmark.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E278444D87BA667AA79A0234 /* benchmark.cpp */; };
+		340AF0C2EA64BE81B831AF5A /* LiveBoardRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA16A898910496AE66CD485 /* LiveBoardRecognizerTests.swift */; };
+		39F9F647CAFEAA3781099F33 /* BroadcastPickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4A8D30AD255FD04607547B /* BroadcastPickerTests.swift */; };
+		3D2921447913433CCF28B9ED /* SampleHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0619AEB88F7AF25A2B842AB /* SampleHandler.swift */; };
+		3E5C6841B39B7ED3791B0F6D /* XQPikafishEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = EE4E9532FEFC67D8369A0A91 /* XQPikafishEngine.mm */; };
+		3E6FF75C7AD7283FE67EFB9D /* FrameSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16E22164FC1570C426F5817E /* FrameSender.swift */; };
+		40118CA8A39D51BB10D5A659 /* error_private.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B48BF08AF5B17F44D82114D1 /* error_private.cpp */; };
+		446ECF7BADE7D52E085DE167 /* entropy_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F87D544D84080A012ED95DB7 /* entropy_common.cpp */; };
+		46B2A3652548E953FA17807F /* CoachBoardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAB39CCB7FC82A4D0CF7188 /* CoachBoardRenderer.swift */; };
+		504D68A2F5B81F22C33F0943 /* movepick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DC9C49BC9061687F66C5C2FE /* movepick.cpp */; };
+		5171CB004A1E23A2E05FD395 /* timeman.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9FD0FC5CBE8D462B97C84C5 /* timeman.cpp */; };
+		51980F7F7240A93B46A8A52F /* FrameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EDF17D95A5FB7B5FEE80D65 /* FrameProtocol.swift */; };
+		5E218C20B8D63F9017C1FEFC /* FrameReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FCB805B1EB9652099E022F /* FrameReceiver.swift */; };
+		5EE4DB02AB1C3F7A899088E2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021F444327191519929A1F52 /* Foundation.framework */; };
+		63D79FE11F2EC89430E9DDA6 /* BoardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C048D176E41E1ECEB7B154 /* BoardLayout.swift */; };
+		645EB14F7D65DAEF414615E1 /* MoveNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1070C2AAABEB80DE0B2D7231 /* MoveNotation.swift */; };
+		667EBB73D6A55583EC825454 /* uci.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5ACC69459F5DCFD63DE97222 /* uci.cpp */; };
+		6BA1168BCAF927624020E1B6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021F444327191519929A1F52 /* Foundation.framework */; };
+		6CED105FA8DB043080E5BD40 /* CoachAnalysisStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C139A06BD81CE9CDA8EBAB46 /* CoachAnalysisStateTests.swift */; };
+		6DB5EA0A699511CA327E8FF1 /* ucioption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E638D6F19BFB7FC8979DF0D4 /* ucioption.cpp */; };
+		6EDCC354C9BCEB23447A42FF /* score.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 62B796D8E876725A097BEA1E /* score.cpp */; };
+		70D84768863E419D815ABE4F /* XiangqiEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1CD2EF6C6567C8E6CBF9E10 /* XiangqiEngine.swift */; };
+		75F0C34AEDC5F60C2A060437 /* Pikafish in Resources */ = {isa = PBXBuildFile; fileRef = 93A7299212C8580EB8C33F2D /* Pikafish */; };
+		7B0937A6109405894C35BE54 /* BoardRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB8885EA5AF649F0B09AC0E /* BoardRecognizer.swift */; };
+		7E24E1B5A4C2CEC1DF7C232E /* nnue_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8F87CB1A7F473DAD61E61D02 /* nnue_misc.cpp */; };
+		855D8623BB01DF08CC49EDAA /* zstd_decompress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF362B17ECE7B9B910D97657 /* zstd_decompress.cpp */; };
+		86444CB8F35515FED6BB1DD5 /* evaluate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F8BA798C0494C1A1CF01480D /* evaluate.cpp */; };
+		86CA8CCF05153B285475BBC4 /* PiPCoachController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CD1ADF4C8BC8417A05C686 /* PiPCoachController.swift */; };
+		88F74051EE8274377B5A652E /* BoardPipelineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A9DE619D2BF9BE5157423A /* BoardPipelineTests.swift */; };
+		8D6919B3E5DDD714F89AA888 /* tune.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CCA76E46367963775ADB69AB /* tune.cpp */; };
+		9043C707981EFD8473E93F00 /* ProUI in Resources */ = {isa = PBXBuildFile; fileRef = 87341649DBCE817AE7D61FB4 /* ProUI */; };
+		94E33CD7FBF3450D2F78A0FA /* debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DADF9DE39595A61BDD9EA960 /* debug.cpp */; };
+		9613C5EC8F7F71FD85EA0288 /* XiangqiPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8B2152E16289DB1DDF89CE /* XiangqiPosition.swift */; };
+		97F8F18CAB022EE9236A6DB2 /* CoachDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5503802311B965D9185C9BD /* CoachDiagnostics.swift */; };
+		A3452F7AABDFF951F677814E /* pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1E003B8928A18CD17C567D8 /* pool.cpp */; };
+		A39B33E69497CF387B339706 /* threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8A5B491E0775B0686EAA5A04 /* threading.cpp */; };
+		A3D59B5D8CFBC91E9469A494 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 021F444327191519929A1F52 /* Foundation.framework */; };
+		A8155B9DA5DEF6DDA613E312 /* zstd_decompress_block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87BC7ACEB008A72B3C1779AE /* zstd_decompress_block.cpp */; };
+		B15F231A97BAA30519428533 /* BoardTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358B603274F794560768D90C /* BoardTracker.swift */; };
+		B1C8837AF9D090D8DD4600E8 /* CoachMoveRecallStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95915A4EBA021D98966C4FD4 /* CoachMoveRecallStateTests.swift */; };
+		B44F009D1877FF878D56EE85 /* movegen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B4F2E8BD9D0D012238E9BE06 /* movegen.cpp */; };
+		B54C745FB036A22D79FDA261 /* BoardTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C013EB86C792788800E6D0 /* BoardTrackerTests.swift */; };
+		B5718C4AF9463B54679E1379 /* CoachBoardRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B3004B3674838C74F77298 /* CoachBoardRendererTests.swift */; };
+		C15291BBB762DCD9A047D5BB /* position.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CFF24875915D28D745E76BD1 /* position.cpp */; };
+		C2A66CF6FF5248E5F50BFA8C /* LastMoveRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42CD7EE4CFFCBFDD29EC86E /* LastMoveRecognizer.swift */; };
+		C2B4AB26422CCFB396C4C2BD /* Fixtures in Resources */ = {isa = PBXBuildFile; fileRef = 1EDD61D2DDF83FC380CF3444 /* Fixtures */; };
+		C4D825C094F0FC79532A64E7 /* zstd_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CAFBFFD3D6CCB28BB5CAEDC7 /* zstd_common.cpp */; };
+		C5D25C0651A4B2CE7EB2CD4A /* FrameReceiverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EEC5B8F03E89573479F1F74 /* FrameReceiverTests.swift */; };
+		C639A1394128EB87AC98C429 /* BoardRecognizerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EDD34AC8D9B0FE12C9C7F5 /* BoardRecognizerTests.swift */; };
+		C81811B2419D43F0C232D731 /* half_ka_v2_hm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11185FB1F6F53A76E4053C61 /* half_ka_v2_hm.cpp */; };
+		C9D21E78B9503A489B8BB5F4 /* PiPStartState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57DBE3AE5E13EE4C90E9A542 /* PiPStartState.swift */; };
+		CD1848C53335FFBDD5ADB901 /* FrameProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14A7A2041A8EAF692A1E380 /* FrameProtocol.swift */; };
+		CD42CDC9B5D38054675AFE33 /* memory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0FC2D3505B2194E5FA63188B /* memory.cpp */; };
+		D12668DD5AD89FC5B3B927F5 /* XiangqiCoachApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EC308A9808F0FA36A4299E /* XiangqiCoachApp.swift */; };
+		D20637158A0A7AD4C2B7DB75 /* CoachSessionStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19AED8EC6F6CBAF67DC50D11 /* CoachSessionStateTests.swift */; };
+		D4AF86DDA641BF3D2D724B8A /* PikafishEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C857C249FD25733CA04E62DA /* PikafishEngineTests.swift */; };
+		DBDE424C187A73128E9517E3 /* zstd_ddict.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E105A47ABF654E4B5150F026 /* zstd_ddict.cpp */; };
+		DC7207D5B123D1D71A8536FF /* XiangqiPositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEF4CAA74330005021A677C2 /* XiangqiPositionTests.swift */; };
+		E0961ACBE9C25F09D460515C /* CoachMoveRecallState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F2C333DDAA81B0C72AFFB74 /* CoachMoveRecallState.swift */; };
+		E6AFB47A7286846F2507FFDA /* nnue_accumulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8D933A92CBD4546859D5542 /* nnue_accumulator.cpp */; };
+		E6D330C5A0B970D6A7AFE652 /* CoachAnalysisState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B84297619C50D142F83D9E3 /* CoachAnalysisState.swift */; };
+		EAC372A096C32B077F2CD35F /* LatestRecognitionFrameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E01D240A57E5C732D7E006F7 /* LatestRecognitionFrameTests.swift */; };
+		F007C219A92DA44DBF6FF30B /* tt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9E7D0133773963C10744E63 /* tt.cpp */; };
+		F80AE001CB22F0A8AC167306 /* board-template-black.png in Resources */ = {isa = PBXBuildFile; fileRef = B0A0754F339736CB082AE3EC /* board-template-black.png */; };
+		F8C6A941176FDAC70D2648C0 /* xxhash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F6E937AF78DE45E19B838313 /* xxhash.cpp */; };
+		FFB79009575659133C569BBF /* XiangqiCoachBroadcast.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 904C36C70E3808D965AB0BF0 /* XiangqiCoachBroadcast.appex */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		8B271C8E9D2F8CF4454FBBF0 /* PBXContainerItemProxy */ = {
+		4A2B1D22F8F9C6E3D8AE0FC8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 5FCD1E6F030EA062C8AA9162 /* Project object */;
+			containerPortal = 45EFC8D801C1A13FB5BB5FAC /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = C38A38DD7B66F4A4CCBBAA6E;
-			remoteInfo = XiangqiCoach;
-		};
-		AAC5A1C66FD986915AFD31A9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FCD1E6F030EA062C8AA9162 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = B0E499E3CD1AF75ED105B6A3;
+			remoteGlobalIDString = 4E230DDFE7E95727EFF6DDAF;
 			remoteInfo = XiangqiCoachBroadcast;
+		};
+		E8095EBAB7EA118E28BA5E01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45EFC8D801C1A13FB5BB5FAC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 34C1E5F44133EB42F8B3994E;
+			remoteInfo = XiangqiCoach;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		7135C73F0C4700B5451376EC /* Embed App Extensions */ = {
+		E9C790C233B0BAC7AA63EA39 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				631E33A573DA7A4A3686071E /* XiangqiCoachBroadcast.appex in Embed App Extensions */,
+				FFB79009575659133C569BBF /* XiangqiCoachBroadcast.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -122,308 +124,331 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		008445B0F41C58F0837E5F0E /* threading.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = threading.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/threading.cpp; sourceTree = "<group>"; };
-		0385857E63E4F7E769EC80E6 /* FrameSender.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameSender.swift; path = XiangqiCoachBroadcast/FrameSender.swift; sourceTree = "<group>"; };
-		0A3E4DC5BBA5BC06BD4EACCA /* entropy_common.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = entropy_common.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/entropy_common.cpp; sourceTree = "<group>"; };
-		0C580BF270B6E041897DB431 /* network.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = network.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/network.cpp; sourceTree = "<group>"; };
-		0D69EBA453C7972E1BCFF65E /* bitboard.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = bitboard.cpp; path = XiangqiCoach/Vendor/Pikafish/src/bitboard.cpp; sourceTree = "<group>"; };
-		0D9A6A94B6E2B38BD001E0AE /* BoardRecognizerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardRecognizerTests.swift; path = XiangqiCoachTests/BoardRecognizerTests.swift; sourceTree = "<group>"; };
-		105EE0C0D3014AF3B10C576B /* zstd_decompress_block.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_decompress_block.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/zstd_decompress_block.cpp; sourceTree = "<group>"; };
-		10F1897147A25EB2DE37AB04 /* debug.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = debug.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/debug.cpp; sourceTree = "<group>"; };
-		1183F73CFDE09B8E52C65564 /* nnue_accumulator.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = nnue_accumulator.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/nnue_accumulator.cpp; sourceTree = "<group>"; };
-		12FE838C9D7FE3D5088BE7D5 /* engine.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = engine.cpp; path = XiangqiCoach/Vendor/Pikafish/src/engine.cpp; sourceTree = "<group>"; };
-		163D847DD926CFE120F64349 /* MoveNotation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MoveNotation.swift; path = XiangqiCoach/Engine/MoveNotation.swift; sourceTree = "<group>"; };
-		17C196788F20DA9D745F018B /* fse_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = fse_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/fse_decompress.cpp; sourceTree = "<group>"; };
-		1E14F2D1A33F614743D4113B /* zstd_common.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_common.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/zstd_common.cpp; sourceTree = "<group>"; };
-		2035F4E00CD0D4DDAA6F6959 /* tune.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = tune.cpp; path = XiangqiCoach/Vendor/Pikafish/src/tune.cpp; sourceTree = "<group>"; };
-		21161D3236D784D5FDA2F5D6 /* huf_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = huf_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/huf_decompress.cpp; sourceTree = "<group>"; };
-		23726EDE3E39EED13DB7CFD1 /* FrameProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameProtocol.swift; path = Shared/FrameProtocol.swift; sourceTree = "<group>"; };
-		245D5F1638F6713CE5BB1C8E /* FrameReceiver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameReceiver.swift; path = XiangqiCoach/Capture/FrameReceiver.swift; sourceTree = "<group>"; };
-		2792B6C51FCFA34E3AEACE05 /* evaluate.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = evaluate.cpp; path = XiangqiCoach/Vendor/Pikafish/src/evaluate.cpp; sourceTree = "<group>"; };
-		27A883FB6B99FB5E95E10A17 /* movepick.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = movepick.cpp; path = XiangqiCoach/Vendor/Pikafish/src/movepick.cpp; sourceTree = "<group>"; };
-		2802DAC97E6D4ABB65391454 /* BoardPipelineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardPipelineTests.swift; path = XiangqiCoachTests/BoardPipelineTests.swift; sourceTree = "<group>"; };
-		2F9CCCC59E187F3EF2003D99 /* BroadcastPickerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BroadcastPickerView.swift; path = XiangqiCoach/Capture/BroadcastPickerView.swift; sourceTree = "<group>"; };
-		327D84AA8535F4BDC147A772 /* BoardRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardRecognizer.swift; path = XiangqiCoach/Analysis/BoardRecognizer.swift; sourceTree = "<group>"; };
-		34DBC5C9E17D8DF24802F7A3 /* board-template-black.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "board-template-black.png"; path = "XiangqiCoach/Resources/board-template-black.png"; sourceTree = "<group>"; };
-		35C5326B846CFB74D6D2613A /* Fixtures */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Fixtures; path = XiangqiCoachTests/Fixtures; sourceTree = "<group>"; };
-		44D4D8F3209BF97570C9661D /* search.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = search.cpp; path = XiangqiCoach/Vendor/Pikafish/src/search.cpp; sourceTree = "<group>"; };
-		45DC7EDEFF0A1AA303CEAC82 /* benchmark.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = benchmark.cpp; path = XiangqiCoach/Vendor/Pikafish/src/benchmark.cpp; sourceTree = "<group>"; };
-		46A5CE3C08339FA4EFB41774 /* XQPikafishEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = XQPikafishEngine.h; path = XiangqiCoach/Engine/Native/XQPikafishEngine.h; sourceTree = "<group>"; };
-		47088248FECB721DD69D9D07 /* PiPCoachController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PiPCoachController.swift; path = XiangqiCoach/Overlay/PiPCoachController.swift; sourceTree = "<group>"; };
-		48B420A561C4A427160222C5 /* CoachBoardRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachBoardRenderer.swift; path = XiangqiCoach/Overlay/CoachBoardRenderer.swift; sourceTree = "<group>"; };
-		4E48CC61A5648359F7CF4A30 /* FramePipelineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FramePipelineTests.swift; path = XiangqiCoachTests/FramePipelineTests.swift; sourceTree = "<group>"; };
-		4EDA79BE2EE896374473B3B0 /* XiangqiCoach-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "XiangqiCoach-Bridging-Header.h"; path = "XiangqiCoach/Engine/Native/XiangqiCoach-Bridging-Header.h"; sourceTree = "<group>"; };
-		568C64AAB8796FECFF0E3010 /* score.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = score.cpp; path = XiangqiCoach/Vendor/Pikafish/src/score.cpp; sourceTree = "<group>"; };
-		578C049C53CD55D49001D29B /* XiangqiCoach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XiangqiCoach.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		58CE98C38E38D672E316B045 /* XiangqiEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiEngine.swift; path = XiangqiCoach/Engine/XiangqiEngine.swift; sourceTree = "<group>"; };
-		5A0411EF1879184C65A3D112 /* CoachMoveRecallStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachMoveRecallStateTests.swift; path = XiangqiCoachTests/CoachMoveRecallStateTests.swift; sourceTree = "<group>"; };
-		5B5E5AAD15DCE93EBC50ECA5 /* misc.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = misc.cpp; path = XiangqiCoach/Vendor/Pikafish/src/misc.cpp; sourceTree = "<group>"; };
-		6167093B54668C1C2024BAF0 /* zstd_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/zstd_decompress.cpp; sourceTree = "<group>"; };
-		66B7450C7B19D090EB6D47D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		671F879B4BB99E88FA01BBA2 /* ucioption.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = ucioption.cpp; path = XiangqiCoach/Vendor/Pikafish/src/ucioption.cpp; sourceTree = "<group>"; };
-		6EE91D86D6D5F38E807F2E82 /* CoachSessionState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachSessionState.swift; path = XiangqiCoach/App/CoachSessionState.swift; sourceTree = "<group>"; };
-		72555C9DBFD05BAB05FBA77E /* uci.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = uci.cpp; path = XiangqiCoach/Vendor/Pikafish/src/uci.cpp; sourceTree = "<group>"; };
-		7A3110A7E5822406138CD284 /* LatestRecognitionFrameTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LatestRecognitionFrameTests.swift; path = XiangqiCoachTests/LatestRecognitionFrameTests.swift; sourceTree = "<group>"; };
-		7B7BC42F1781A5BA8D0246D0 /* CoachAnalysisStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachAnalysisStateTests.swift; path = XiangqiCoachTests/CoachAnalysisStateTests.swift; sourceTree = "<group>"; };
-		7E31DE84ABA8C7F7A988D738 /* timeman.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = timeman.cpp; path = XiangqiCoach/Vendor/Pikafish/src/timeman.cpp; sourceTree = "<group>"; };
-		7F44E789350879EA64161718 /* XQPikafishEngine.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = XQPikafishEngine.mm; path = XiangqiCoach/Engine/Native/XQPikafishEngine.mm; sourceTree = "<group>"; };
-		842239E0A4DD345293DEE667 /* tt.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = tt.cpp; path = XiangqiCoach/Vendor/Pikafish/src/tt.cpp; sourceTree = "<group>"; };
-		84CDF0448699645D012455BB /* BoardLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardLayout.swift; path = XiangqiCoach/Analysis/BoardLayout.swift; sourceTree = "<group>"; };
-		867363907A441BC3EE9F57B1 /* LastMoveRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LastMoveRecognizer.swift; path = XiangqiCoach/Analysis/LastMoveRecognizer.swift; sourceTree = "<group>"; };
-		87AB4C3A099A32204BDFAAAA /* pool.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = pool.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/pool.cpp; sourceTree = "<group>"; };
-		8F8E1D6F8906489DF62BDB8E /* CoachMoveRecallState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachMoveRecallState.swift; path = XiangqiCoach/App/CoachMoveRecallState.swift; sourceTree = "<group>"; };
-		91E7B15676EFC6ADE780E055 /* position.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = position.cpp; path = XiangqiCoach/Vendor/Pikafish/src/position.cpp; sourceTree = "<group>"; };
-		928C9C3672FF8FE5CA1ECBCB /* CoachAnalysisState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachAnalysisState.swift; path = XiangqiCoach/App/CoachAnalysisState.swift; sourceTree = "<group>"; };
-		97C9A53F7DC9C39E0F3A4BB2 /* CoachBoardRendererTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachBoardRendererTests.swift; path = XiangqiCoachTests/CoachBoardRendererTests.swift; sourceTree = "<group>"; };
-		9AE2D234725CDCD2639F4BEF /* LiveBoardRecognizerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LiveBoardRecognizerTests.swift; path = XiangqiCoachTests/LiveBoardRecognizerTests.swift; sourceTree = "<group>"; };
-		9C6CA0B6EACFF2B0C567CA46 /* error_private.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = error_private.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/error_private.cpp; sourceTree = "<group>"; };
-		9C9B41A1C6F47CF46254FA38 /* CoachViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachViewModel.swift; path = XiangqiCoach/App/CoachViewModel.swift; sourceTree = "<group>"; };
-		9D87FC804C57CA1A0E2A1CD8 /* CoachDiagnostics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachDiagnostics.swift; path = XiangqiCoach/App/CoachDiagnostics.swift; sourceTree = "<group>"; };
-		AB19B0FA487DF2DF528922AF /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = XiangqiCoach/App/ContentView.swift; sourceTree = "<group>"; };
-		AC38241BE3C33861DF8E3A90 /* LatestRecognitionFrame.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LatestRecognitionFrame.swift; path = XiangqiCoach/App/LatestRecognitionFrame.swift; sourceTree = "<group>"; };
-		AD39A3CEA0A45E029ADC444B /* board-template-red.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "board-template-red.png"; path = "XiangqiCoach/Resources/board-template-red.png"; sourceTree = "<group>"; };
-		AD4C5C002E6857196338DB26 /* SampleHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SampleHandler.swift; path = XiangqiCoachBroadcast/SampleHandler.swift; sourceTree = "<group>"; };
-		B37BFDE7655866C0493A879B /* memory.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = memory.cpp; path = XiangqiCoach/Vendor/Pikafish/src/memory.cpp; sourceTree = "<group>"; };
-		B56DA00ED388B96D900CB802 /* movegen.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = movegen.cpp; path = XiangqiCoach/Vendor/Pikafish/src/movegen.cpp; sourceTree = "<group>"; };
-		B6AD5AD13EB3D099397788E9 /* XiangqiPosition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiPosition.swift; path = XiangqiCoach/Engine/XiangqiPosition.swift; sourceTree = "<group>"; };
-		BD23FA8A6022436CFE6E3422 /* CoachSessionStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachSessionStateTests.swift; path = XiangqiCoachTests/CoachSessionStateTests.swift; sourceTree = "<group>"; };
-		C1973BBDB1EA7B2DCDA0E157 /* xxhash.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = xxhash.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/xxhash.cpp; sourceTree = "<group>"; };
-		C632936F08DC15CA0187B17F /* XiangqiPositionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiPositionTests.swift; path = XiangqiCoachTests/XiangqiPositionTests.swift; sourceTree = "<group>"; };
-		C74834B4B36EDDD90F397125 /* half_ka_v2_hm.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = half_ka_v2_hm.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/features/half_ka_v2_hm.cpp; sourceTree = "<group>"; };
-		CD940E76C47B3D361B43D564 /* FrameReceiverTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameReceiverTests.swift; path = XiangqiCoachTests/FrameReceiverTests.swift; sourceTree = "<group>"; };
-		D743683970FC711EF0D6D5BC /* zstd_ddict.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_ddict.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/zstd_ddict.cpp; sourceTree = "<group>"; };
-		D98FCC749C235B0090C44AF8 /* BoardMoveEvidence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardMoveEvidence.swift; path = XiangqiCoach/Analysis/BoardMoveEvidence.swift; sourceTree = "<group>"; };
-		DAE689DA5567CE27D1761F6A /* nnue_misc.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = nnue_misc.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/nnue_misc.cpp; sourceTree = "<group>"; };
-		DC53F1A9ADDC2110A45AA9CF /* BoardTracker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardTracker.swift; path = XiangqiCoach/Analysis/BoardTracker.swift; sourceTree = "<group>"; };
-		E00D86D5761ED3DDA6BCA3A6 /* XiangqiCoachApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiCoachApp.swift; path = XiangqiCoach/App/XiangqiCoachApp.swift; sourceTree = "<group>"; };
-		E340B1F5E5D7DDB74E896F2F /* thread.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = thread.cpp; path = XiangqiCoach/Vendor/Pikafish/src/thread.cpp; sourceTree = "<group>"; };
-		E49800AB528BCD25736CF04C /* XiangqiCoachBroadcast.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = XiangqiCoachBroadcast.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		E625C8860AA517F4DE021173 /* BroadcastPickerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BroadcastPickerTests.swift; path = XiangqiCoachTests/BroadcastPickerTests.swift; sourceTree = "<group>"; };
-		E7EDF69C8982D51AD4D9B14E /* XiangqiCoachTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XiangqiCoachTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA7B1BFE3A9D11F42FBF94E4 /* Pikafish */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Pikafish; path = XiangqiCoach/Resources/Pikafish; sourceTree = "<group>"; };
-		EFE2FFED8474B7BAC1FC2915 /* FrameProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameProtocol.swift; path = Shared/FrameProtocol.swift; sourceTree = "<group>"; };
-		F057B81D5D9F009659BE9D14 /* BoardTrackerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardTrackerTests.swift; path = XiangqiCoachTests/BoardTrackerTests.swift; sourceTree = "<group>"; };
-		F7FD89138B11D336D6D369B5 /* ProUI */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ProUI; path = XiangqiCoach/Resources/ProUI; sourceTree = "<group>"; };
-		FBD36EF8307751760A344410 /* PikafishEngineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PikafishEngineTests.swift; path = XiangqiCoachTests/PikafishEngineTests.swift; sourceTree = "<group>"; };
+		021F444327191519929A1F52 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		0FC2D3505B2194E5FA63188B /* memory.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = memory.cpp; path = XiangqiCoach/Vendor/Pikafish/src/memory.cpp; sourceTree = "<group>"; };
+		1070C2AAABEB80DE0B2D7231 /* MoveNotation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MoveNotation.swift; path = XiangqiCoach/Engine/MoveNotation.swift; sourceTree = "<group>"; };
+		11185FB1F6F53A76E4053C61 /* half_ka_v2_hm.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = half_ka_v2_hm.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/features/half_ka_v2_hm.cpp; sourceTree = "<group>"; };
+		16E22164FC1570C426F5817E /* FrameSender.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameSender.swift; path = XiangqiCoachBroadcast/FrameSender.swift; sourceTree = "<group>"; };
+		1794865452C30D70465B812D /* PiPStartStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PiPStartStateTests.swift; path = XiangqiCoachTests/PiPStartStateTests.swift; sourceTree = "<group>"; };
+		1864C11E305FBBFBD5C80364 /* XQPikafishEngine.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = XQPikafishEngine.h; path = XiangqiCoach/Engine/Native/XQPikafishEngine.h; sourceTree = "<group>"; };
+		19AED8EC6F6CBAF67DC50D11 /* CoachSessionStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachSessionStateTests.swift; path = XiangqiCoachTests/CoachSessionStateTests.swift; sourceTree = "<group>"; };
+		1EDD61D2DDF83FC380CF3444 /* Fixtures */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Fixtures; path = XiangqiCoachTests/Fixtures; sourceTree = "<group>"; };
+		22CD1ADF4C8BC8417A05C686 /* PiPCoachController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PiPCoachController.swift; path = XiangqiCoach/Overlay/PiPCoachController.swift; sourceTree = "<group>"; };
+		23EC308A9808F0FA36A4299E /* XiangqiCoachApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiCoachApp.swift; path = XiangqiCoach/App/XiangqiCoachApp.swift; sourceTree = "<group>"; };
+		290A651D4418B10A8EBAB98B /* bitboard.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = bitboard.cpp; path = XiangqiCoach/Vendor/Pikafish/src/bitboard.cpp; sourceTree = "<group>"; };
+		304BF50097087A9EBB212B33 /* huf_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = huf_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/huf_decompress.cpp; sourceTree = "<group>"; };
+		358B603274F794560768D90C /* BoardTracker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardTracker.swift; path = XiangqiCoach/Analysis/BoardTracker.swift; sourceTree = "<group>"; };
+		36B3004B3674838C74F77298 /* CoachBoardRendererTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachBoardRendererTests.swift; path = XiangqiCoachTests/CoachBoardRendererTests.swift; sourceTree = "<group>"; };
+		46C048D176E41E1ECEB7B154 /* BoardLayout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardLayout.swift; path = XiangqiCoach/Analysis/BoardLayout.swift; sourceTree = "<group>"; };
+		493B548CEB023E23CC61272F /* BoardMoveEvidence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardMoveEvidence.swift; path = XiangqiCoach/Analysis/BoardMoveEvidence.swift; sourceTree = "<group>"; };
+		523AA52207639159A1B0D80D /* CoachSessionState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachSessionState.swift; path = XiangqiCoach/App/CoachSessionState.swift; sourceTree = "<group>"; };
+		53940BD8B632F718D41AA87F /* XiangqiCoachTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XiangqiCoachTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		552D0F0A93943E3FB36D879B /* search.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = search.cpp; path = XiangqiCoach/Vendor/Pikafish/src/search.cpp; sourceTree = "<group>"; };
+		55C013EB86C792788800E6D0 /* BoardTrackerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardTrackerTests.swift; path = XiangqiCoachTests/BoardTrackerTests.swift; sourceTree = "<group>"; };
+		57DBE3AE5E13EE4C90E9A542 /* PiPStartState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PiPStartState.swift; path = XiangqiCoach/Overlay/PiPStartState.swift; sourceTree = "<group>"; };
+		5ACC69459F5DCFD63DE97222 /* uci.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = uci.cpp; path = XiangqiCoach/Vendor/Pikafish/src/uci.cpp; sourceTree = "<group>"; };
+		5B84297619C50D142F83D9E3 /* CoachAnalysisState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachAnalysisState.swift; path = XiangqiCoach/App/CoachAnalysisState.swift; sourceTree = "<group>"; };
+		62B796D8E876725A097BEA1E /* score.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = score.cpp; path = XiangqiCoach/Vendor/Pikafish/src/score.cpp; sourceTree = "<group>"; };
+		6C22D82ECE7AABAFF9F9E6EE /* engine.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = engine.cpp; path = XiangqiCoach/Vendor/Pikafish/src/engine.cpp; sourceTree = "<group>"; };
+		6CEDE4C3EF6AFE5C6EA05A44 /* XiangqiCoach-Bridging-Header.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "XiangqiCoach-Bridging-Header.h"; path = "XiangqiCoach/Engine/Native/XiangqiCoach-Bridging-Header.h"; sourceTree = "<group>"; };
+		6EDF17D95A5FB7B5FEE80D65 /* FrameProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameProtocol.swift; path = Shared/FrameProtocol.swift; sourceTree = "<group>"; };
+		6EEC5B8F03E89573479F1F74 /* FrameReceiverTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameReceiverTests.swift; path = XiangqiCoachTests/FrameReceiverTests.swift; sourceTree = "<group>"; };
+		7F2C333DDAA81B0C72AFFB74 /* CoachMoveRecallState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachMoveRecallState.swift; path = XiangqiCoach/App/CoachMoveRecallState.swift; sourceTree = "<group>"; };
+		87341649DBCE817AE7D61FB4 /* ProUI */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = ProUI; path = XiangqiCoach/Resources/ProUI; sourceTree = "<group>"; };
+		87BC7ACEB008A72B3C1779AE /* zstd_decompress_block.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_decompress_block.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/zstd_decompress_block.cpp; sourceTree = "<group>"; };
+		8905D6CA7AF4D5BB49778B9E /* fse_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = fse_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/fse_decompress.cpp; sourceTree = "<group>"; };
+		8A5B491E0775B0686EAA5A04 /* threading.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = threading.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/threading.cpp; sourceTree = "<group>"; };
+		8E82DC2D46351845701AD28E /* BroadcastPickerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BroadcastPickerView.swift; path = XiangqiCoach/Capture/BroadcastPickerView.swift; sourceTree = "<group>"; };
+		8E9CA5F000BFFE9D0AC8C9AF /* thread.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = thread.cpp; path = XiangqiCoach/Vendor/Pikafish/src/thread.cpp; sourceTree = "<group>"; };
+		8F87CB1A7F473DAD61E61D02 /* nnue_misc.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = nnue_misc.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/nnue_misc.cpp; sourceTree = "<group>"; };
+		904C36C70E3808D965AB0BF0 /* XiangqiCoachBroadcast.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = XiangqiCoachBroadcast.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9311E9B3B63A6A53E59F4412 /* FramePipelineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FramePipelineTests.swift; path = XiangqiCoachTests/FramePipelineTests.swift; sourceTree = "<group>"; };
+		93A7299212C8580EB8C33F2D /* Pikafish */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Pikafish; path = XiangqiCoach/Resources/Pikafish; sourceTree = "<group>"; };
+		93FCB805B1EB9652099E022F /* FrameReceiver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameReceiver.swift; path = XiangqiCoach/Capture/FrameReceiver.swift; sourceTree = "<group>"; };
+		95915A4EBA021D98966C4FD4 /* CoachMoveRecallStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachMoveRecallStateTests.swift; path = XiangqiCoachTests/CoachMoveRecallStateTests.swift; sourceTree = "<group>"; };
+		95A9DE619D2BF9BE5157423A /* BoardPipelineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardPipelineTests.swift; path = XiangqiCoachTests/BoardPipelineTests.swift; sourceTree = "<group>"; };
+		98B53B7B8E299C2D67E0D3FB /* board-template-red.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "board-template-red.png"; path = "XiangqiCoach/Resources/board-template-red.png"; sourceTree = "<group>"; };
+		9EAB39CCB7FC82A4D0CF7188 /* CoachBoardRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachBoardRenderer.swift; path = XiangqiCoach/Overlay/CoachBoardRenderer.swift; sourceTree = "<group>"; };
+		A0619AEB88F7AF25A2B842AB /* SampleHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SampleHandler.swift; path = XiangqiCoachBroadcast/SampleHandler.swift; sourceTree = "<group>"; };
+		A0FB1D13D98C7B857765B39A /* LatestRecognitionFrame.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LatestRecognitionFrame.swift; path = XiangqiCoach/App/LatestRecognitionFrame.swift; sourceTree = "<group>"; };
+		A2EDD34AC8D9B0FE12C9C7F5 /* BoardRecognizerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardRecognizerTests.swift; path = XiangqiCoachTests/BoardRecognizerTests.swift; sourceTree = "<group>"; };
+		B0A0754F339736CB082AE3EC /* board-template-black.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = "board-template-black.png"; path = "XiangqiCoach/Resources/board-template-black.png"; sourceTree = "<group>"; };
+		B14A7A2041A8EAF692A1E380 /* FrameProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FrameProtocol.swift; path = Shared/FrameProtocol.swift; sourceTree = "<group>"; };
+		B1CD2EF6C6567C8E6CBF9E10 /* XiangqiEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiEngine.swift; path = XiangqiCoach/Engine/XiangqiEngine.swift; sourceTree = "<group>"; };
+		B48BF08AF5B17F44D82114D1 /* error_private.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = error_private.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/error_private.cpp; sourceTree = "<group>"; };
+		B4F2E8BD9D0D012238E9BE06 /* movegen.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = movegen.cpp; path = XiangqiCoach/Vendor/Pikafish/src/movegen.cpp; sourceTree = "<group>"; };
+		C139A06BD81CE9CDA8EBAB46 /* CoachAnalysisStateTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachAnalysisStateTests.swift; path = XiangqiCoachTests/CoachAnalysisStateTests.swift; sourceTree = "<group>"; };
+		C144AB4E1F749238C2F19C5B /* misc.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = misc.cpp; path = XiangqiCoach/Vendor/Pikafish/src/misc.cpp; sourceTree = "<group>"; };
+		C857C249FD25733CA04E62DA /* PikafishEngineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PikafishEngineTests.swift; path = XiangqiCoachTests/PikafishEngineTests.swift; sourceTree = "<group>"; };
+		C8A2C7AA08465E0724F45C39 /* CoachViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachViewModel.swift; path = XiangqiCoach/App/CoachViewModel.swift; sourceTree = "<group>"; };
+		CAFBFFD3D6CCB28BB5CAEDC7 /* zstd_common.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_common.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/zstd_common.cpp; sourceTree = "<group>"; };
+		CCA76E46367963775ADB69AB /* tune.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = tune.cpp; path = XiangqiCoach/Vendor/Pikafish/src/tune.cpp; sourceTree = "<group>"; };
+		CFF24875915D28D745E76BD1 /* position.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = position.cpp; path = XiangqiCoach/Vendor/Pikafish/src/position.cpp; sourceTree = "<group>"; };
+		D1E003B8928A18CD17C567D8 /* pool.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = pool.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/pool.cpp; sourceTree = "<group>"; };
+		DA8B2152E16289DB1DDF89CE /* XiangqiPosition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiPosition.swift; path = XiangqiCoach/Engine/XiangqiPosition.swift; sourceTree = "<group>"; };
+		DADF9DE39595A61BDD9EA960 /* debug.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = debug.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/debug.cpp; sourceTree = "<group>"; };
+		DC45EA851CABF86F7E7E952C /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = XiangqiCoach/App/ContentView.swift; sourceTree = "<group>"; };
+		DC9C49BC9061687F66C5C2FE /* movepick.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = movepick.cpp; path = XiangqiCoach/Vendor/Pikafish/src/movepick.cpp; sourceTree = "<group>"; };
+		DDA16A898910496AE66CD485 /* LiveBoardRecognizerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LiveBoardRecognizerTests.swift; path = XiangqiCoachTests/LiveBoardRecognizerTests.swift; sourceTree = "<group>"; };
+		DF362B17ECE7B9B910D97657 /* zstd_decompress.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_decompress.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/zstd_decompress.cpp; sourceTree = "<group>"; };
+		E01D240A57E5C732D7E006F7 /* LatestRecognitionFrameTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LatestRecognitionFrameTests.swift; path = XiangqiCoachTests/LatestRecognitionFrameTests.swift; sourceTree = "<group>"; };
+		E105A47ABF654E4B5150F026 /* zstd_ddict.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = zstd_ddict.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/decompress/zstd_ddict.cpp; sourceTree = "<group>"; };
+		E278444D87BA667AA79A0234 /* benchmark.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = benchmark.cpp; path = XiangqiCoach/Vendor/Pikafish/src/benchmark.cpp; sourceTree = "<group>"; };
+		E384AD406CCE2B31559D3B63 /* XiangqiCoach.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XiangqiCoach.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E638D6F19BFB7FC8979DF0D4 /* ucioption.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = ucioption.cpp; path = XiangqiCoach/Vendor/Pikafish/src/ucioption.cpp; sourceTree = "<group>"; };
+		E8D933A92CBD4546859D5542 /* nnue_accumulator.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = nnue_accumulator.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/nnue_accumulator.cpp; sourceTree = "<group>"; };
+		E9E7D0133773963C10744E63 /* tt.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = tt.cpp; path = XiangqiCoach/Vendor/Pikafish/src/tt.cpp; sourceTree = "<group>"; };
+		EB4A8D30AD255FD04607547B /* BroadcastPickerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BroadcastPickerTests.swift; path = XiangqiCoachTests/BroadcastPickerTests.swift; sourceTree = "<group>"; };
+		EE4E9532FEFC67D8369A0A91 /* XQPikafishEngine.mm */ = {isa = PBXFileReference; includeInIndex = 1; name = XQPikafishEngine.mm; path = XiangqiCoach/Engine/Native/XQPikafishEngine.mm; sourceTree = "<group>"; };
+		EEB8885EA5AF649F0B09AC0E /* BoardRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BoardRecognizer.swift; path = XiangqiCoach/Analysis/BoardRecognizer.swift; sourceTree = "<group>"; };
+		F42CD7EE4CFFCBFDD29EC86E /* LastMoveRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LastMoveRecognizer.swift; path = XiangqiCoach/Analysis/LastMoveRecognizer.swift; sourceTree = "<group>"; };
+		F5503802311B965D9185C9BD /* CoachDiagnostics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CoachDiagnostics.swift; path = XiangqiCoach/App/CoachDiagnostics.swift; sourceTree = "<group>"; };
+		F6E937AF78DE45E19B838313 /* xxhash.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = xxhash.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/xxhash.cpp; sourceTree = "<group>"; };
+		F87D544D84080A012ED95DB7 /* entropy_common.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = entropy_common.cpp; path = XiangqiCoach/Vendor/Pikafish/src/external/common/entropy_common.cpp; sourceTree = "<group>"; };
+		F8BA798C0494C1A1CF01480D /* evaluate.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = evaluate.cpp; path = XiangqiCoach/Vendor/Pikafish/src/evaluate.cpp; sourceTree = "<group>"; };
+		F9FD0FC5CBE8D462B97C84C5 /* timeman.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = timeman.cpp; path = XiangqiCoach/Vendor/Pikafish/src/timeman.cpp; sourceTree = "<group>"; };
+		FDFA9ECDF5416CFAB194B480 /* network.cpp */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.cpp; name = network.cpp; path = XiangqiCoach/Vendor/Pikafish/src/nnue/network.cpp; sourceTree = "<group>"; };
+		FEF4CAA74330005021A677C2 /* XiangqiPositionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XiangqiPositionTests.swift; path = XiangqiCoachTests/XiangqiPositionTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1DEE86BAD8B6AC5FEBAA7BEC /* Frameworks */ = {
+		449029552C466F0E5D4118E5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F20FE9F5618171E04AB595D /* Foundation.framework in Frameworks */,
+				5EE4DB02AB1C3F7A899088E2 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		542B5DE4D1CF76934853F789 /* Frameworks */ = {
+		817570B4292F2DEB7FE43F90 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D44021FA66A846313AB6095E /* Foundation.framework in Frameworks */,
+				A3D59B5D8CFBC91E9469A494 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E5CBDD1A7FE197510241CC98 /* Frameworks */ = {
+		EEDADB6D4FC28885B3A9D8C3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D1572ED46844346D5628BCBC /* Foundation.framework in Frameworks */,
+				6BA1168BCAF927624020E1B6 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09F83F7C07546851A61EA5B9 /* Shared Extension */ = {
+		0116BADBF0CFFC05901F5F68 /* Pikafish Native */ = {
 			isa = PBXGroup;
 			children = (
-				23726EDE3E39EED13DB7CFD1 /* FrameProtocol.swift */,
-			);
-			name = "Shared Extension";
-			sourceTree = "<group>";
-		};
-		17A86E800D1A1556B77EF30B /* XiangqiCoach Sources */ = {
-			isa = PBXGroup;
-			children = (
-				84CDF0448699645D012455BB /* BoardLayout.swift */,
-				327D84AA8535F4BDC147A772 /* BoardRecognizer.swift */,
-				DC53F1A9ADDC2110A45AA9CF /* BoardTracker.swift */,
-				928C9C3672FF8FE5CA1ECBCB /* CoachAnalysisState.swift */,
-				9D87FC804C57CA1A0E2A1CD8 /* CoachDiagnostics.swift */,
-				6EE91D86D6D5F38E807F2E82 /* CoachSessionState.swift */,
-				9C9B41A1C6F47CF46254FA38 /* CoachViewModel.swift */,
-				AB19B0FA487DF2DF528922AF /* ContentView.swift */,
-				E00D86D5761ED3DDA6BCA3A6 /* XiangqiCoachApp.swift */,
-				2F9CCCC59E187F3EF2003D99 /* BroadcastPickerView.swift */,
-				245D5F1638F6713CE5BB1C8E /* FrameReceiver.swift */,
-				163D847DD926CFE120F64349 /* MoveNotation.swift */,
-				58CE98C38E38D672E316B045 /* XiangqiEngine.swift */,
-				B6AD5AD13EB3D099397788E9 /* XiangqiPosition.swift */,
-				48B420A561C4A427160222C5 /* CoachBoardRenderer.swift */,
-				47088248FECB721DD69D9D07 /* PiPCoachController.swift */,
-				8F8E1D6F8906489DF62BDB8E /* CoachMoveRecallState.swift */,
-				D98FCC749C235B0090C44AF8 /* BoardMoveEvidence.swift */,
-				867363907A441BC3EE9F57B1 /* LastMoveRecognizer.swift */,
-				AC38241BE3C33861DF8E3A90 /* LatestRecognitionFrame.swift */,
-			);
-			name = "XiangqiCoach Sources";
-			sourceTree = "<group>";
-		};
-		496B3782197C6224F59D9DD6 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				66B7450C7B19D090EB6D47D9 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		74ECF179086B26F86C0735A7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				578C049C53CD55D49001D29B /* XiangqiCoach.app */,
-				E49800AB528BCD25736CF04C /* XiangqiCoachBroadcast.appex */,
-				E7EDF69C8982D51AD4D9B14E /* XiangqiCoachTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		76D2556200B855421880CC43 = {
-			isa = PBXGroup;
-			children = (
-				74ECF179086B26F86C0735A7 /* Products */,
-				F482AE499EA51D0BE5C7AAFF /* Frameworks */,
-				17A86E800D1A1556B77EF30B /* XiangqiCoach Sources */,
-				F8F8B6E4901AD28A1549D058 /* Broadcast Sources */,
-				7AA8C1CC2480945F6EAA9236 /* Test Sources */,
-				CCFA942AD00122B322DAA874 /* Shared App */,
-				09F83F7C07546851A61EA5B9 /* Shared Extension */,
-				F7FD89138B11D336D6D369B5 /* ProUI */,
-				34DBC5C9E17D8DF24802F7A3 /* board-template-black.png */,
-				AD39A3CEA0A45E029ADC444B /* board-template-red.png */,
-				E48485BCE102315478DEA706 /* Pikafish Native */,
-				35C5326B846CFB74D6D2613A /* Fixtures */,
-			);
-			sourceTree = "<group>";
-		};
-		7AA8C1CC2480945F6EAA9236 /* Test Sources */ = {
-			isa = PBXGroup;
-			children = (
-				2802DAC97E6D4ABB65391454 /* BoardPipelineTests.swift */,
-				0D9A6A94B6E2B38BD001E0AE /* BoardRecognizerTests.swift */,
-				F057B81D5D9F009659BE9D14 /* BoardTrackerTests.swift */,
-				E625C8860AA517F4DE021173 /* BroadcastPickerTests.swift */,
-				7B7BC42F1781A5BA8D0246D0 /* CoachAnalysisStateTests.swift */,
-				97C9A53F7DC9C39E0F3A4BB2 /* CoachBoardRendererTests.swift */,
-				BD23FA8A6022436CFE6E3422 /* CoachSessionStateTests.swift */,
-				4E48CC61A5648359F7CF4A30 /* FramePipelineTests.swift */,
-				CD940E76C47B3D361B43D564 /* FrameReceiverTests.swift */,
-				FBD36EF8307751760A344410 /* PikafishEngineTests.swift */,
-				C632936F08DC15CA0187B17F /* XiangqiPositionTests.swift */,
-				9AE2D234725CDCD2639F4BEF /* LiveBoardRecognizerTests.swift */,
-				5A0411EF1879184C65A3D112 /* CoachMoveRecallStateTests.swift */,
-				7A3110A7E5822406138CD284 /* LatestRecognitionFrameTests.swift */,
-			);
-			name = "Test Sources";
-			sourceTree = "<group>";
-		};
-		CCFA942AD00122B322DAA874 /* Shared App */ = {
-			isa = PBXGroup;
-			children = (
-				EFE2FFED8474B7BAC1FC2915 /* FrameProtocol.swift */,
-			);
-			name = "Shared App";
-			sourceTree = "<group>";
-		};
-		E48485BCE102315478DEA706 /* Pikafish Native */ = {
-			isa = PBXGroup;
-			children = (
-				46A5CE3C08339FA4EFB41774 /* XQPikafishEngine.h */,
-				7F44E789350879EA64161718 /* XQPikafishEngine.mm */,
-				4EDA79BE2EE896374473B3B0 /* XiangqiCoach-Bridging-Header.h */,
-				45DC7EDEFF0A1AA303CEAC82 /* benchmark.cpp */,
-				0D69EBA453C7972E1BCFF65E /* bitboard.cpp */,
-				12FE838C9D7FE3D5088BE7D5 /* engine.cpp */,
-				2792B6C51FCFA34E3AEACE05 /* evaluate.cpp */,
-				10F1897147A25EB2DE37AB04 /* debug.cpp */,
-				0A3E4DC5BBA5BC06BD4EACCA /* entropy_common.cpp */,
-				9C6CA0B6EACFF2B0C567CA46 /* error_private.cpp */,
-				17C196788F20DA9D745F018B /* fse_decompress.cpp */,
-				87AB4C3A099A32204BDFAAAA /* pool.cpp */,
-				008445B0F41C58F0837E5F0E /* threading.cpp */,
-				C1973BBDB1EA7B2DCDA0E157 /* xxhash.cpp */,
-				1E14F2D1A33F614743D4113B /* zstd_common.cpp */,
-				21161D3236D784D5FDA2F5D6 /* huf_decompress.cpp */,
-				D743683970FC711EF0D6D5BC /* zstd_ddict.cpp */,
-				6167093B54668C1C2024BAF0 /* zstd_decompress.cpp */,
-				105EE0C0D3014AF3B10C576B /* zstd_decompress_block.cpp */,
-				B37BFDE7655866C0493A879B /* memory.cpp */,
-				5B5E5AAD15DCE93EBC50ECA5 /* misc.cpp */,
-				B56DA00ED388B96D900CB802 /* movegen.cpp */,
-				27A883FB6B99FB5E95E10A17 /* movepick.cpp */,
-				C74834B4B36EDDD90F397125 /* half_ka_v2_hm.cpp */,
-				0C580BF270B6E041897DB431 /* network.cpp */,
-				1183F73CFDE09B8E52C65564 /* nnue_accumulator.cpp */,
-				DAE689DA5567CE27D1761F6A /* nnue_misc.cpp */,
-				91E7B15676EFC6ADE780E055 /* position.cpp */,
-				568C64AAB8796FECFF0E3010 /* score.cpp */,
-				44D4D8F3209BF97570C9661D /* search.cpp */,
-				E340B1F5E5D7DDB74E896F2F /* thread.cpp */,
-				7E31DE84ABA8C7F7A988D738 /* timeman.cpp */,
-				842239E0A4DD345293DEE667 /* tt.cpp */,
-				2035F4E00CD0D4DDAA6F6959 /* tune.cpp */,
-				72555C9DBFD05BAB05FBA77E /* uci.cpp */,
-				671F879B4BB99E88FA01BBA2 /* ucioption.cpp */,
-				EA7B1BFE3A9D11F42FBF94E4 /* Pikafish */,
+				1864C11E305FBBFBD5C80364 /* XQPikafishEngine.h */,
+				EE4E9532FEFC67D8369A0A91 /* XQPikafishEngine.mm */,
+				6CEDE4C3EF6AFE5C6EA05A44 /* XiangqiCoach-Bridging-Header.h */,
+				E278444D87BA667AA79A0234 /* benchmark.cpp */,
+				290A651D4418B10A8EBAB98B /* bitboard.cpp */,
+				6C22D82ECE7AABAFF9F9E6EE /* engine.cpp */,
+				F8BA798C0494C1A1CF01480D /* evaluate.cpp */,
+				DADF9DE39595A61BDD9EA960 /* debug.cpp */,
+				F87D544D84080A012ED95DB7 /* entropy_common.cpp */,
+				B48BF08AF5B17F44D82114D1 /* error_private.cpp */,
+				8905D6CA7AF4D5BB49778B9E /* fse_decompress.cpp */,
+				D1E003B8928A18CD17C567D8 /* pool.cpp */,
+				8A5B491E0775B0686EAA5A04 /* threading.cpp */,
+				F6E937AF78DE45E19B838313 /* xxhash.cpp */,
+				CAFBFFD3D6CCB28BB5CAEDC7 /* zstd_common.cpp */,
+				304BF50097087A9EBB212B33 /* huf_decompress.cpp */,
+				E105A47ABF654E4B5150F026 /* zstd_ddict.cpp */,
+				DF362B17ECE7B9B910D97657 /* zstd_decompress.cpp */,
+				87BC7ACEB008A72B3C1779AE /* zstd_decompress_block.cpp */,
+				0FC2D3505B2194E5FA63188B /* memory.cpp */,
+				C144AB4E1F749238C2F19C5B /* misc.cpp */,
+				B4F2E8BD9D0D012238E9BE06 /* movegen.cpp */,
+				DC9C49BC9061687F66C5C2FE /* movepick.cpp */,
+				11185FB1F6F53A76E4053C61 /* half_ka_v2_hm.cpp */,
+				FDFA9ECDF5416CFAB194B480 /* network.cpp */,
+				E8D933A92CBD4546859D5542 /* nnue_accumulator.cpp */,
+				8F87CB1A7F473DAD61E61D02 /* nnue_misc.cpp */,
+				CFF24875915D28D745E76BD1 /* position.cpp */,
+				62B796D8E876725A097BEA1E /* score.cpp */,
+				552D0F0A93943E3FB36D879B /* search.cpp */,
+				8E9CA5F000BFFE9D0AC8C9AF /* thread.cpp */,
+				F9FD0FC5CBE8D462B97C84C5 /* timeman.cpp */,
+				E9E7D0133773963C10744E63 /* tt.cpp */,
+				CCA76E46367963775ADB69AB /* tune.cpp */,
+				5ACC69459F5DCFD63DE97222 /* uci.cpp */,
+				E638D6F19BFB7FC8979DF0D4 /* ucioption.cpp */,
+				93A7299212C8580EB8C33F2D /* Pikafish */,
 			);
 			name = "Pikafish Native";
 			sourceTree = "<group>";
 		};
-		F482AE499EA51D0BE5C7AAFF /* Frameworks */ = {
+		1E50E25660104D145CB10D83 /* XiangqiCoach Sources */ = {
 			isa = PBXGroup;
 			children = (
-				496B3782197C6224F59D9DD6 /* iOS */,
+				46C048D176E41E1ECEB7B154 /* BoardLayout.swift */,
+				493B548CEB023E23CC61272F /* BoardMoveEvidence.swift */,
+				EEB8885EA5AF649F0B09AC0E /* BoardRecognizer.swift */,
+				358B603274F794560768D90C /* BoardTracker.swift */,
+				F42CD7EE4CFFCBFDD29EC86E /* LastMoveRecognizer.swift */,
+				5B84297619C50D142F83D9E3 /* CoachAnalysisState.swift */,
+				F5503802311B965D9185C9BD /* CoachDiagnostics.swift */,
+				7F2C333DDAA81B0C72AFFB74 /* CoachMoveRecallState.swift */,
+				523AA52207639159A1B0D80D /* CoachSessionState.swift */,
+				C8A2C7AA08465E0724F45C39 /* CoachViewModel.swift */,
+				DC45EA851CABF86F7E7E952C /* ContentView.swift */,
+				A0FB1D13D98C7B857765B39A /* LatestRecognitionFrame.swift */,
+				23EC308A9808F0FA36A4299E /* XiangqiCoachApp.swift */,
+				8E82DC2D46351845701AD28E /* BroadcastPickerView.swift */,
+				93FCB805B1EB9652099E022F /* FrameReceiver.swift */,
+				1070C2AAABEB80DE0B2D7231 /* MoveNotation.swift */,
+				B1CD2EF6C6567C8E6CBF9E10 /* XiangqiEngine.swift */,
+				DA8B2152E16289DB1DDF89CE /* XiangqiPosition.swift */,
+				9EAB39CCB7FC82A4D0CF7188 /* CoachBoardRenderer.swift */,
+				22CD1ADF4C8BC8417A05C686 /* PiPCoachController.swift */,
+				57DBE3AE5E13EE4C90E9A542 /* PiPStartState.swift */,
+			);
+			name = "XiangqiCoach Sources";
+			sourceTree = "<group>";
+		};
+		507E712ADCC1B39684B3A6E4 /* Broadcast Sources */ = {
+			isa = PBXGroup;
+			children = (
+				16E22164FC1570C426F5817E /* FrameSender.swift */,
+				A0619AEB88F7AF25A2B842AB /* SampleHandler.swift */,
+			);
+			name = "Broadcast Sources";
+			sourceTree = "<group>";
+		};
+		69E0E19B652EFA53396ADB7B /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				021F444327191519929A1F52 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		9CC9C67E382FB573D2D3CA7E = {
+			isa = PBXGroup;
+			children = (
+				D643D9DD51D4247A6E01D582 /* Products */,
+				A22B21C4CE60D4EFB225056A /* Frameworks */,
+				1E50E25660104D145CB10D83 /* XiangqiCoach Sources */,
+				507E712ADCC1B39684B3A6E4 /* Broadcast Sources */,
+				F821B144AFE902B9166C7C1C /* Test Sources */,
+				D4447A9AB9487031E06287A2 /* Shared App */,
+				BB41AC6A1C66276C1C3898D0 /* Shared Extension */,
+				87341649DBCE817AE7D61FB4 /* ProUI */,
+				B0A0754F339736CB082AE3EC /* board-template-black.png */,
+				98B53B7B8E299C2D67E0D3FB /* board-template-red.png */,
+				1EDD61D2DDF83FC380CF3444 /* Fixtures */,
+				0116BADBF0CFFC05901F5F68 /* Pikafish Native */,
+			);
+			sourceTree = "<group>";
+		};
+		A22B21C4CE60D4EFB225056A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69E0E19B652EFA53396ADB7B /* iOS */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F8F8B6E4901AD28A1549D058 /* Broadcast Sources */ = {
+		BB41AC6A1C66276C1C3898D0 /* Shared Extension */ = {
 			isa = PBXGroup;
 			children = (
-				0385857E63E4F7E769EC80E6 /* FrameSender.swift */,
-				AD4C5C002E6857196338DB26 /* SampleHandler.swift */,
+				B14A7A2041A8EAF692A1E380 /* FrameProtocol.swift */,
 			);
-			name = "Broadcast Sources";
+			name = "Shared Extension";
+			sourceTree = "<group>";
+		};
+		D4447A9AB9487031E06287A2 /* Shared App */ = {
+			isa = PBXGroup;
+			children = (
+				6EDF17D95A5FB7B5FEE80D65 /* FrameProtocol.swift */,
+			);
+			name = "Shared App";
+			sourceTree = "<group>";
+		};
+		D643D9DD51D4247A6E01D582 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E384AD406CCE2B31559D3B63 /* XiangqiCoach.app */,
+				904C36C70E3808D965AB0BF0 /* XiangqiCoachBroadcast.appex */,
+				53940BD8B632F718D41AA87F /* XiangqiCoachTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F821B144AFE902B9166C7C1C /* Test Sources */ = {
+			isa = PBXGroup;
+			children = (
+				95A9DE619D2BF9BE5157423A /* BoardPipelineTests.swift */,
+				A2EDD34AC8D9B0FE12C9C7F5 /* BoardRecognizerTests.swift */,
+				55C013EB86C792788800E6D0 /* BoardTrackerTests.swift */,
+				EB4A8D30AD255FD04607547B /* BroadcastPickerTests.swift */,
+				C139A06BD81CE9CDA8EBAB46 /* CoachAnalysisStateTests.swift */,
+				36B3004B3674838C74F77298 /* CoachBoardRendererTests.swift */,
+				95915A4EBA021D98966C4FD4 /* CoachMoveRecallStateTests.swift */,
+				19AED8EC6F6CBAF67DC50D11 /* CoachSessionStateTests.swift */,
+				9311E9B3B63A6A53E59F4412 /* FramePipelineTests.swift */,
+				6EEC5B8F03E89573479F1F74 /* FrameReceiverTests.swift */,
+				E01D240A57E5C732D7E006F7 /* LatestRecognitionFrameTests.swift */,
+				DDA16A898910496AE66CD485 /* LiveBoardRecognizerTests.swift */,
+				1794865452C30D70465B812D /* PiPStartStateTests.swift */,
+				C857C249FD25733CA04E62DA /* PikafishEngineTests.swift */,
+				FEF4CAA74330005021A677C2 /* XiangqiPositionTests.swift */,
+			);
+			name = "Test Sources";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2EECA31DF4AE78CBDF42C69C /* XiangqiCoachTests */ = {
+		34C1E5F44133EB42F8B3994E /* XiangqiCoach */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 468C09F80800E53D92737FF6 /* Build configuration list for PBXNativeTarget "XiangqiCoachTests" */;
+			buildConfigurationList = 7B201237EF9E305CE84DFB3F /* Build configuration list for PBXNativeTarget "XiangqiCoach" */;
 			buildPhases = (
-				7DBF2B7563AAC5614846ABE1 /* Sources */,
-				1DEE86BAD8B6AC5FEBAA7BEC /* Frameworks */,
-				1555268AF05B638C8DA6E01C /* Resources */,
+				83FC0E22BA0358F524D9EA5D /* Sources */,
+				817570B4292F2DEB7FE43F90 /* Frameworks */,
+				F3DFDCE1FD99A0E3F5807E1B /* Resources */,
+				E9C790C233B0BAC7AA63EA39 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0D8720ADE63E635DBCF1B9FA /* PBXTargetDependency */,
+				F846258696987D02FF464442 /* PBXTargetDependency */,
+			);
+			name = XiangqiCoach;
+			productName = XiangqiCoach;
+			productReference = E384AD406CCE2B31559D3B63 /* XiangqiCoach.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4A6AD22776BBC1A46B53E316 /* XiangqiCoachTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0143D9C11D2BC43C26DAE9B5 /* Build configuration list for PBXNativeTarget "XiangqiCoachTests" */;
+			buildPhases = (
+				4E611215B31E2C687C31332B /* Sources */,
+				449029552C466F0E5D4118E5 /* Frameworks */,
+				163C2B06BE1F43654513E0A4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DA8B167F2D56608FB0C420BF /* PBXTargetDependency */,
 			);
 			name = XiangqiCoachTests;
 			productName = XiangqiCoachTests;
-			productReference = E7EDF69C8982D51AD4D9B14E /* XiangqiCoachTests.xctest */;
+			productReference = 53940BD8B632F718D41AA87F /* XiangqiCoachTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		B0E499E3CD1AF75ED105B6A3 /* XiangqiCoachBroadcast */ = {
+		4E230DDFE7E95727EFF6DDAF /* XiangqiCoachBroadcast */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2E2FEBEBEA5BA2CF312CDDE9 /* Build configuration list for PBXNativeTarget "XiangqiCoachBroadcast" */;
+			buildConfigurationList = 276CE04AC7310D1F472C899F /* Build configuration list for PBXNativeTarget "XiangqiCoachBroadcast" */;
 			buildPhases = (
-				C99A54073FAA2429633295BE /* Sources */,
-				542B5DE4D1CF76934853F789 /* Frameworks */,
-				2A7B095F0A622EE0487730AA /* Resources */,
+				B933F17A155F7BC5AD5448FE /* Sources */,
+				EEDADB6D4FC28885B3A9D8C3 /* Frameworks */,
+				18831EED3B0B47AF6E0FA041 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -431,38 +456,19 @@
 			);
 			name = XiangqiCoachBroadcast;
 			productName = XiangqiCoachBroadcast;
-			productReference = E49800AB528BCD25736CF04C /* XiangqiCoachBroadcast.appex */;
+			productReference = 904C36C70E3808D965AB0BF0 /* XiangqiCoachBroadcast.appex */;
 			productType = "com.apple.product-type.app-extension";
-		};
-		C38A38DD7B66F4A4CCBBAA6E /* XiangqiCoach */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3D83054AEC7505DFEAA873AC /* Build configuration list for PBXNativeTarget "XiangqiCoach" */;
-			buildPhases = (
-				586A9EC88CE099CF8CA8E81D /* Sources */,
-				E5CBDD1A7FE197510241CC98 /* Frameworks */,
-				0C84CAE9AE105A23DF6E8D0D /* Resources */,
-				7135C73F0C4700B5451376EC /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4817A8B08098C9EB81247518 /* PBXTargetDependency */,
-			);
-			name = XiangqiCoach;
-			productName = XiangqiCoach;
-			productReference = 578C049C53CD55D49001D29B /* XiangqiCoach.app */;
-			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		5FCD1E6F030EA062C8AA9162 /* Project object */ = {
+		45EFC8D801C1A13FB5BB5FAC /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 			};
-			buildConfigurationList = 99A8071EA685C739A8C3E6C2 /* Build configuration list for PBXProject "XiangqiCoach" */;
+			buildConfigurationList = EB04E0365BA24F8A61A751E8 /* Build configuration list for PBXProject "XiangqiCoach" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -470,162 +476,325 @@
 				en,
 				Base,
 			);
-			mainGroup = 76D2556200B855421880CC43;
+			mainGroup = 9CC9C67E382FB573D2D3CA7E;
 			minimizedProjectReferenceProxies = 0;
 			preferredProjectObjectVersion = 100;
-			productRefGroup = 74ECF179086B26F86C0735A7 /* Products */;
+			productRefGroup = D643D9DD51D4247A6E01D582 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C38A38DD7B66F4A4CCBBAA6E /* XiangqiCoach */,
-				B0E499E3CD1AF75ED105B6A3 /* XiangqiCoachBroadcast */,
-				2EECA31DF4AE78CBDF42C69C /* XiangqiCoachTests */,
+				34C1E5F44133EB42F8B3994E /* XiangqiCoach */,
+				4E230DDFE7E95727EFF6DDAF /* XiangqiCoachBroadcast */,
+				4A6AD22776BBC1A46B53E316 /* XiangqiCoachTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		0C84CAE9AE105A23DF6E8D0D /* Resources */ = {
+		163C2B06BE1F43654513E0A4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F61E5B07B26E679538A83A1 /* ProUI in Resources */,
-				646928878E33F93D6A502727 /* board-template-black.png in Resources */,
-				F90A82B918E4C76D12D6AA49 /* board-template-red.png in Resources */,
-				6AB695A1B4050AF06EE872FB /* Pikafish in Resources */,
+				C2B4AB26422CCFB396C4C2BD /* Fixtures in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1555268AF05B638C8DA6E01C /* Resources */ = {
+		18831EED3B0B47AF6E0FA041 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9CCEC5550A498292074CD4 /* Fixtures in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2A7B095F0A622EE0487730AA /* Resources */ = {
+		F3DFDCE1FD99A0E3F5807E1B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9043C707981EFD8473E93F00 /* ProUI in Resources */,
+				F80AE001CB22F0A8AC167306 /* board-template-black.png in Resources */,
+				2A709C308AAE81666CEF2FC5 /* board-template-red.png in Resources */,
+				75F0C34AEDC5F60C2A060437 /* Pikafish in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		586A9EC88CE099CF8CA8E81D /* Sources */ = {
+		4E611215B31E2C687C31332B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6A85B3F05D9DF82D04930E5C /* BoardLayout.swift in Sources */,
-				E39F37B3FFE41E9DEF39A396 /* BoardRecognizer.swift in Sources */,
-				AD22ED34858FCDC49094060E /* BoardTracker.swift in Sources */,
-				ADD67AEC4570384BCB02F6AB /* CoachAnalysisState.swift in Sources */,
-				5A8735C6D685B27D89A079E1 /* CoachDiagnostics.swift in Sources */,
-				1826EC9AD4F9D3B6A0B0F3B4 /* CoachSessionState.swift in Sources */,
-				3BB2BDC7ACF375B9F5507AA8 /* CoachViewModel.swift in Sources */,
-				A0FEE911F15432E69BAEA1F3 /* ContentView.swift in Sources */,
-				8CE5ACC83A4E66EA9BF9B46E /* XiangqiCoachApp.swift in Sources */,
-				B991B52D24F2C4A34DAFFAFE /* BroadcastPickerView.swift in Sources */,
-				87FA6A297494844737F7575A /* FrameReceiver.swift in Sources */,
-				A355EE26CF3A67C31A4D3FFD /* MoveNotation.swift in Sources */,
-				EB747D3DCAAA27DF55F97612 /* XiangqiEngine.swift in Sources */,
-				D583C9937ED6EFABDB424088 /* XiangqiPosition.swift in Sources */,
-				AE5EDD607F42E3BC3460675B /* CoachBoardRenderer.swift in Sources */,
-				C5D4460EB1D9A3E8005631FE /* PiPCoachController.swift in Sources */,
-				0C7A78E752946BF089DF2069 /* FrameProtocol.swift in Sources */,
-				25263D9E0E502F45244FC9B1 /* XQPikafishEngine.mm in Sources */,
-				DAA9387CA05F77691C605774 /* benchmark.cpp in Sources */,
-				9EA9825DA94435AD89A31A3A /* bitboard.cpp in Sources */,
-				6B173E2851A3D2067FE1171D /* engine.cpp in Sources */,
-				B3469D1A350E5808EE48A05A /* evaluate.cpp in Sources */,
-				0307C37B29F53E1D6B2E5CE0 /* debug.cpp in Sources */,
-				FDBFCC4DCEC1AB4DA27E9CA8 /* entropy_common.cpp in Sources */,
-				6E05BEA13B0D8853C32933F2 /* error_private.cpp in Sources */,
-				A10E00C87C04EFB8BB42722A /* fse_decompress.cpp in Sources */,
-				F6589CE9F12C0DE598593EDF /* pool.cpp in Sources */,
-				9081F1D18422169B3C1286FB /* threading.cpp in Sources */,
-				AECC440C3D64AA2081278FEA /* xxhash.cpp in Sources */,
-				766180E8F145DF6029BBDBA1 /* zstd_common.cpp in Sources */,
-				11D6B2EB38414D850DCB2C55 /* huf_decompress.cpp in Sources */,
-				84F6094AD56D0FFE0098CCAC /* zstd_ddict.cpp in Sources */,
-				02AB211E88F2040223D58AD6 /* zstd_decompress.cpp in Sources */,
-				0FF007AD24958ED4D67E3706 /* zstd_decompress_block.cpp in Sources */,
-				41122D58B6E9961B73D725E3 /* memory.cpp in Sources */,
-				E574CD60C42073D0FD1A39BF /* misc.cpp in Sources */,
-				3139822670370AC22AA92CFD /* movegen.cpp in Sources */,
-				97D2962F79BAADB6C5BA8CB6 /* movepick.cpp in Sources */,
-				E12C3D786F69BE60EF6B2A2C /* half_ka_v2_hm.cpp in Sources */,
-				E442E443269793A18D2194E3 /* network.cpp in Sources */,
-				8132A6BA9AFCA1EFAA89254D /* nnue_accumulator.cpp in Sources */,
-				652864609607E04B562E30E2 /* nnue_misc.cpp in Sources */,
-				21C163855B5EB4E14F5B580E /* position.cpp in Sources */,
-				9B499B4CED62D603C623BA0A /* score.cpp in Sources */,
-				C58F148A0118B88FA4DA7C12 /* search.cpp in Sources */,
-				734DD74F9F3FF290096A18C7 /* thread.cpp in Sources */,
-				24F5E7313855D4242FAC7956 /* timeman.cpp in Sources */,
-				5BAA104C6D2321BF755939BD /* tt.cpp in Sources */,
-				96ACC8C0EFB3723E65F43362 /* tune.cpp in Sources */,
-				BFCF38089BA6CEFD7AA6AAAB /* uci.cpp in Sources */,
-				3FEAEDAFEDE5DF234FE95720 /* ucioption.cpp in Sources */,
-				28ADA573CD119102FCD672BB /* CoachMoveRecallState.swift in Sources */,
-				24FB4A0FEA718EED6FDCDCEF /* BoardMoveEvidence.swift in Sources */,
-				825A673DE6021EC8410E7C28 /* LastMoveRecognizer.swift in Sources */,
-				EE01F29E46880A3117CAAB2E /* LatestRecognitionFrame.swift in Sources */,
+				88F74051EE8274377B5A652E /* BoardPipelineTests.swift in Sources */,
+				C639A1394128EB87AC98C429 /* BoardRecognizerTests.swift in Sources */,
+				B54C745FB036A22D79FDA261 /* BoardTrackerTests.swift in Sources */,
+				39F9F647CAFEAA3781099F33 /* BroadcastPickerTests.swift in Sources */,
+				6CED105FA8DB043080E5BD40 /* CoachAnalysisStateTests.swift in Sources */,
+				B5718C4AF9463B54679E1379 /* CoachBoardRendererTests.swift in Sources */,
+				B1C8837AF9D090D8DD4600E8 /* CoachMoveRecallStateTests.swift in Sources */,
+				D20637158A0A7AD4C2B7DB75 /* CoachSessionStateTests.swift in Sources */,
+				2CD0B8AD8A75E5D3A7CE980B /* FramePipelineTests.swift in Sources */,
+				C5D25C0651A4B2CE7EB2CD4A /* FrameReceiverTests.swift in Sources */,
+				EAC372A096C32B077F2CD35F /* LatestRecognitionFrameTests.swift in Sources */,
+				340AF0C2EA64BE81B831AF5A /* LiveBoardRecognizerTests.swift in Sources */,
+				206F1A708BEB25B016BAE56C /* PiPStartStateTests.swift in Sources */,
+				D4AF86DDA641BF3D2D724B8A /* PikafishEngineTests.swift in Sources */,
+				DC7207D5B123D1D71A8536FF /* XiangqiPositionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7DBF2B7563AAC5614846ABE1 /* Sources */ = {
+		83FC0E22BA0358F524D9EA5D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB0AF41405EF3FB8AD7B0E8F /* BoardPipelineTests.swift in Sources */,
-				ECA1453A483F111823D4065F /* BoardRecognizerTests.swift in Sources */,
-				A567A93F29CE908F7E8D78FD /* BoardTrackerTests.swift in Sources */,
-				B5F89DFB3DCDC7FC339741ED /* BroadcastPickerTests.swift in Sources */,
-				F74A1906E4A15653BBB1B4D3 /* CoachAnalysisStateTests.swift in Sources */,
-				687FD10CDA0F87CC66AEEC42 /* CoachBoardRendererTests.swift in Sources */,
-				52B3494A87854C730E9F7AAD /* CoachSessionStateTests.swift in Sources */,
-				C292F68DB93CFFFD5604D161 /* FramePipelineTests.swift in Sources */,
-				5F2632989F982075DBCD5BB8 /* FrameReceiverTests.swift in Sources */,
-				4C73EA6F933D891DC29D9D07 /* PikafishEngineTests.swift in Sources */,
-				BF2B0E21864F0C0E4F42C9F1 /* XiangqiPositionTests.swift in Sources */,
-				21F6EFD0D549BE9DF4006955 /* LiveBoardRecognizerTests.swift in Sources */,
-				F617DB320F6496CD8C9FD7BE /* CoachMoveRecallStateTests.swift in Sources */,
-				B5879A21DB82652357E32469 /* LatestRecognitionFrameTests.swift in Sources */,
+				63D79FE11F2EC89430E9DDA6 /* BoardLayout.swift in Sources */,
+				1347772633A129D95D2296E1 /* BoardMoveEvidence.swift in Sources */,
+				7B0937A6109405894C35BE54 /* BoardRecognizer.swift in Sources */,
+				B15F231A97BAA30519428533 /* BoardTracker.swift in Sources */,
+				C2A66CF6FF5248E5F50BFA8C /* LastMoveRecognizer.swift in Sources */,
+				E6D330C5A0B970D6A7AFE652 /* CoachAnalysisState.swift in Sources */,
+				97F8F18CAB022EE9236A6DB2 /* CoachDiagnostics.swift in Sources */,
+				E0961ACBE9C25F09D460515C /* CoachMoveRecallState.swift in Sources */,
+				148710F2576DF4A23DE8F2C5 /* CoachSessionState.swift in Sources */,
+				0306DE88AFE7222C6390589F /* CoachViewModel.swift in Sources */,
+				2A2D5758633518C6EC2E93A2 /* ContentView.swift in Sources */,
+				2326C1A9C7ED5861FF953FE5 /* LatestRecognitionFrame.swift in Sources */,
+				D12668DD5AD89FC5B3B927F5 /* XiangqiCoachApp.swift in Sources */,
+				0A461091C660596E81EBDBFB /* BroadcastPickerView.swift in Sources */,
+				5E218C20B8D63F9017C1FEFC /* FrameReceiver.swift in Sources */,
+				645EB14F7D65DAEF414615E1 /* MoveNotation.swift in Sources */,
+				70D84768863E419D815ABE4F /* XiangqiEngine.swift in Sources */,
+				9613C5EC8F7F71FD85EA0288 /* XiangqiPosition.swift in Sources */,
+				46B2A3652548E953FA17807F /* CoachBoardRenderer.swift in Sources */,
+				86CA8CCF05153B285475BBC4 /* PiPCoachController.swift in Sources */,
+				C9D21E78B9503A489B8BB5F4 /* PiPStartState.swift in Sources */,
+				51980F7F7240A93B46A8A52F /* FrameProtocol.swift in Sources */,
+				3E5C6841B39B7ED3791B0F6D /* XQPikafishEngine.mm in Sources */,
+				338ECE294980790B56BF157D /* benchmark.cpp in Sources */,
+				0DB9B11622309280CFDACCCB /* bitboard.cpp in Sources */,
+				332B1B1828DE470D06FA3163 /* engine.cpp in Sources */,
+				86444CB8F35515FED6BB1DD5 /* evaluate.cpp in Sources */,
+				94E33CD7FBF3450D2F78A0FA /* debug.cpp in Sources */,
+				446ECF7BADE7D52E085DE167 /* entropy_common.cpp in Sources */,
+				40118CA8A39D51BB10D5A659 /* error_private.cpp in Sources */,
+				17FD7BDE89F536228FD9DBF2 /* fse_decompress.cpp in Sources */,
+				A3452F7AABDFF951F677814E /* pool.cpp in Sources */,
+				A39B33E69497CF387B339706 /* threading.cpp in Sources */,
+				F8C6A941176FDAC70D2648C0 /* xxhash.cpp in Sources */,
+				C4D825C094F0FC79532A64E7 /* zstd_common.cpp in Sources */,
+				1D910608C7777FB3DC7DCD83 /* huf_decompress.cpp in Sources */,
+				DBDE424C187A73128E9517E3 /* zstd_ddict.cpp in Sources */,
+				855D8623BB01DF08CC49EDAA /* zstd_decompress.cpp in Sources */,
+				A8155B9DA5DEF6DDA613E312 /* zstd_decompress_block.cpp in Sources */,
+				CD42CDC9B5D38054675AFE33 /* memory.cpp in Sources */,
+				2BF770B9354A1C9DD42A464A /* misc.cpp in Sources */,
+				B44F009D1877FF878D56EE85 /* movegen.cpp in Sources */,
+				504D68A2F5B81F22C33F0943 /* movepick.cpp in Sources */,
+				C81811B2419D43F0C232D731 /* half_ka_v2_hm.cpp in Sources */,
+				0C64DB77E88DB5A6B91C44F9 /* network.cpp in Sources */,
+				E6AFB47A7286846F2507FFDA /* nnue_accumulator.cpp in Sources */,
+				7E24E1B5A4C2CEC1DF7C232E /* nnue_misc.cpp in Sources */,
+				C15291BBB762DCD9A047D5BB /* position.cpp in Sources */,
+				6EDCC354C9BCEB23447A42FF /* score.cpp in Sources */,
+				1D51A7442DA4E8B44CB87E93 /* search.cpp in Sources */,
+				0D757EFA3717645FC9D82126 /* thread.cpp in Sources */,
+				5171CB004A1E23A2E05FD395 /* timeman.cpp in Sources */,
+				F007C219A92DA44DBF6FF30B /* tt.cpp in Sources */,
+				8D6919B3E5DDD714F89AA888 /* tune.cpp in Sources */,
+				667EBB73D6A55583EC825454 /* uci.cpp in Sources */,
+				6DB5EA0A699511CA327E8FF1 /* ucioption.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C99A54073FAA2429633295BE /* Sources */ = {
+		B933F17A155F7BC5AD5448FE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1636B346485585FA0A42A5EC /* FrameSender.swift in Sources */,
-				1710D2153E0D9AF616E48AE8 /* SampleHandler.swift in Sources */,
-				0B350A8D4DFEE93D8E86A968 /* FrameProtocol.swift in Sources */,
+				3E6FF75C7AD7283FE67EFB9D /* FrameSender.swift in Sources */,
+				3D2921447913433CCF28B9ED /* SampleHandler.swift in Sources */,
+				CD1848C53335FFBDD5ADB901 /* FrameProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0D8720ADE63E635DBCF1B9FA /* PBXTargetDependency */ = {
+		DA8B167F2D56608FB0C420BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = XiangqiCoach;
-			target = C38A38DD7B66F4A4CCBBAA6E /* XiangqiCoach */;
-			targetProxy = 8B271C8E9D2F8CF4454FBBF0 /* PBXContainerItemProxy */;
+			target = 34C1E5F44133EB42F8B3994E /* XiangqiCoach */;
+			targetProxy = E8095EBAB7EA118E28BA5E01 /* PBXContainerItemProxy */;
 		};
-		4817A8B08098C9EB81247518 /* PBXTargetDependency */ = {
+		F846258696987D02FF464442 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = XiangqiCoachBroadcast;
-			target = B0E499E3CD1AF75ED105B6A3 /* XiangqiCoachBroadcast */;
-			targetProxy = AAC5A1C66FD986915AFD31A9 /* PBXContainerItemProxy */;
+			target = 4E230DDFE7E95727EFF6DDAF /* XiangqiCoachBroadcast */;
+			targetProxy = 4A2B1D22F8F9C6E3D8AE0FC8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1DA4A8FCE9543DD03F477FED /* Release */ = {
+		0AA66573D1C324DEA5EA0A5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026091504;
+				DEVELOPMENT_TEAM = UG5D6JZ378;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XiangqiCoachTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach.tests;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/XiangqiCoach.app/XiangqiCoach";
+			};
+			name = Debug;
+		};
+		56F1940F1028D8A5D94AF2F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026091504;
+				DEVELOPMENT_TEAM = UG5D6JZ378;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XiangqiCoachBroadcast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach.broadcast;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		886ED9CD8B01D3E173BA1771 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026091504;
+				DEVELOPMENT_TEAM = UG5D6JZ378;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					IS_64BIT,
+					USE_POPCNT,
+					"ZSTD_DISABLE_ASM=1",
+					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=arm64]" = (
+					"$(inherited)",
+					IS_64BIT,
+					USE_POPCNT,
+					"ZSTD_DISABLE_ASM=1",
+					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
+					"USE_NEON=8",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XiangqiCoach/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-O3",
+					"-DNDEBUG",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_OBJC_BRIDGING_HEADER = "XiangqiCoach/Engine/Native/XiangqiCoach-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		89A34F64DDE917876A872EDA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026091504;
+				DEVELOPMENT_TEAM = UG5D6JZ378;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					IS_64BIT,
+					USE_POPCNT,
+					"ZSTD_DISABLE_ASM=1",
+					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
+				);
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=arm64]" = (
+					"$(inherited)",
+					IS_64BIT,
+					USE_POPCNT,
+					"ZSTD_DISABLE_ASM=1",
+					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
+					"USE_NEON=8",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XiangqiCoach/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-O3",
+					"-DNDEBUG",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_OBJC_BRIDGING_HEADER = "XiangqiCoach/Engine/Native/XiangqiCoach-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8FACF0223F54D4131BBDBA2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2026091504;
+				DEVELOPMENT_TEAM = UG5D6JZ378;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = XiangqiCoachBroadcast/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach.broadcast;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BAE5867D6FA6D93FD02EADE8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -679,7 +848,7 @@
 			};
 			name = Release;
 		};
-		2CBA96CB38757998C4F4CF05 /* Debug */ = {
+		C1CEF644B78F1911930E43CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -740,129 +909,14 @@
 			};
 			name = Debug;
 		};
-		83A4E4AE516B5D7EA156DC98 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091503;
-				DEVELOPMENT_TEAM = UG5D6JZ378;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					IS_64BIT,
-					USE_POPCNT,
-					"ZSTD_DISABLE_ASM=1",
-					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
-				);
-				"GCC_PREPROCESSOR_DEFINITIONS[arch=arm64]" = (
-					"$(inherited)",
-					IS_64BIT,
-					USE_POPCNT,
-					"ZSTD_DISABLE_ASM=1",
-					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
-					"USE_NEON=8",
-				);
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = XiangqiCoach/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(inherited)",
-					"-O3",
-					"-DNDEBUG",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_OBJC_BRIDGING_HEADER = "XiangqiCoach/Engine/Native/XiangqiCoach-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		B4B5AAB053B4A7CA10907154 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091503;
-				DEVELOPMENT_TEAM = UG5D6JZ378;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = XiangqiCoachBroadcast/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach.broadcast;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		BCB20EB603260A3783419005 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091503;
-				DEVELOPMENT_TEAM = UG5D6JZ378;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					IS_64BIT,
-					USE_POPCNT,
-					"ZSTD_DISABLE_ASM=1",
-					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
-				);
-				"GCC_PREPROCESSOR_DEFINITIONS[arch=arm64]" = (
-					"$(inherited)",
-					IS_64BIT,
-					USE_POPCNT,
-					"ZSTD_DISABLE_ASM=1",
-					"PIKAFISH_DISABLE_SHARED_MEMORY=1",
-					"USE_NEON=8",
-				);
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = XiangqiCoach/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1;
-				OTHER_CPLUSPLUSFLAGS = (
-					"$(inherited)",
-					"-O3",
-					"-DNDEBUG",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_OBJC_BRIDGING_HEADER = "XiangqiCoach/Engine/Native/XiangqiCoach-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		D454061A9BC8844A6DC5FB83 /* Release */ = {
+		E0D78ECF46F542F76B4F1332 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGNING_ALLOWED = NO;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091503;
+				CURRENT_PROJECT_VERSION = 2026091504;
 				DEVELOPMENT_TEAM = UG5D6JZ378;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -878,93 +932,47 @@
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
-		};
-		D87072270BD153257531607E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091503;
-				DEVELOPMENT_TEAM = UG5D6JZ378;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = XiangqiCoachBroadcast/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach.broadcast;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		E9EB03AC04769658205F98F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2026091503;
-				DEVELOPMENT_TEAM = UG5D6JZ378;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = XiangqiCoachTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MARKETING_VERSION = 1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.lgj.xiangqicoach.tests;
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/XiangqiCoach.app/XiangqiCoach";
-			};
-			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2E2FEBEBEA5BA2CF312CDDE9 /* Build configuration list for PBXNativeTarget "XiangqiCoachBroadcast" */ = {
+		0143D9C11D2BC43C26DAE9B5 /* Build configuration list for PBXNativeTarget "XiangqiCoachTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D87072270BD153257531607E /* Release */,
-				B4B5AAB053B4A7CA10907154 /* Debug */,
+				E0D78ECF46F542F76B4F1332 /* Release */,
+				0AA66573D1C324DEA5EA0A5D /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3D83054AEC7505DFEAA873AC /* Build configuration list for PBXNativeTarget "XiangqiCoach" */ = {
+		276CE04AC7310D1F472C899F /* Build configuration list for PBXNativeTarget "XiangqiCoachBroadcast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				83A4E4AE516B5D7EA156DC98 /* Release */,
-				BCB20EB603260A3783419005 /* Debug */,
+				56F1940F1028D8A5D94AF2F3 /* Release */,
+				8FACF0223F54D4131BBDBA2E /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		468C09F80800E53D92737FF6 /* Build configuration list for PBXNativeTarget "XiangqiCoachTests" */ = {
+		7B201237EF9E305CE84DFB3F /* Build configuration list for PBXNativeTarget "XiangqiCoach" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D454061A9BC8844A6DC5FB83 /* Release */,
-				E9EB03AC04769658205F98F0 /* Debug */,
+				89A34F64DDE917876A872EDA /* Release */,
+				886ED9CD8B01D3E173BA1771 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		99A8071EA685C739A8C3E6C2 /* Build configuration list for PBXProject "XiangqiCoach" */ = {
+		EB04E0365BA24F8A61A751E8 /* Build configuration list for PBXProject "XiangqiCoach" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2CBA96CB38757998C4F4CF05 /* Debug */,
-				1DA4A8FCE9543DD03F477FED /* Release */,
+				C1CEF644B78F1911930E43CB /* Debug */,
+				BAE5867D6FA6D93FD02EADE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 5FCD1E6F030EA062C8AA9162 /* Project object */;
+	rootObject = 45EFC8D801C1A13FB5BB5FAC /* Project object */;
 }

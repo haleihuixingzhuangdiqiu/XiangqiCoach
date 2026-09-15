@@ -6,15 +6,12 @@ import UIKit
 @MainActor
 final class CoachViewModel: ObservableObject {
     @Published private(set) var turnStatus = "等待棋盘"
-    @Published var voiceEnabled = true
-    @Published var autoStartPictureInPicture = true
 
     @Published private(set) var isRecognizerReady = false
     @Published private(set) var recognitionPreparationStatus = "正在准备棋盘识别…"
     @Published private(set) var captureStatus = "等待系统录屏"
     @Published private(set) var recognitionStatus = "尚未收到画面"
     @Published private(set) var latencyStatus = "等待录屏画面"
-    @Published private(set) var livePreview: UIImage?
     @Published private(set) var recommendation = "等待棋盘"
     @Published private(set) var recommendationDetail = "正在准备棋盘识别"
     @Published private(set) var receivedFrameCount = 0
@@ -33,7 +30,6 @@ final class CoachViewModel: ObservableObject {
     private var receiverStatus = "正在启动录屏接收器"
     private var recognizer: BoardRecognizer?
     private var recognitionFrames = LatestRecognitionFrame<CGImage>()
-    private var lastPreviewAt = -Double.infinity
     private var totalReceivedFrames = 0
     private var lastDiagnosticsUIAt = -Double.infinity
     private var boardTracker = BoardTracker()
@@ -48,6 +44,10 @@ final class CoachViewModel: ObservableObject {
     private var recognizerGeneration = 0
     private var session = CoachSessionState()
     private var captureObserver: NSObjectProtocol?
+    private var foregroundObserver: NSObjectProtocol?
+    private var guidanceRequested = false
+    /// 一段录屏只自动请求一次；用户关闭浮窗后不会被后续每一帧重新拉起。
+    private var didRequestPiPForCapture = false
     private var freshnessTimer: Timer?
     /// 全链路使用开机后的单调时间；超过一秒的画面不能继续提供落子指引。
     private let maximumFrameAge: TimeInterval = 1
@@ -87,16 +87,18 @@ final class CoachViewModel: ObservableObject {
             Task { @MainActor in
                 guard let self else { return }
                 self.updateCaptureState(UIScreen.main.isCaptured)
-                if self.isScreenCaptured, self.autoStartPictureInPicture {
-                    // 系统录屏必须由用户确认；确认完成后自动悬浮，减少切换 App 前的额外操作。
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
-                        guard let self, self.isScreenCaptured, !self.pipController.isPictureInPictureActive else { return }
-                        self.pipController.start()
-                    }
-                }
             }
         }
 
+        foregroundObserver = NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                self.updateCaptureState(UIScreen.main.isCaptured)
+                if self.isScreenCaptured, self.guidanceRequested { self.requestPiPIfNeeded() }
+            }
+        }
         prepareRecognizer()
         freshnessTimer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.checkFrameFreshness() }
@@ -106,17 +108,37 @@ final class CoachViewModel: ObservableObject {
 
     deinit {
         if let captureObserver { NotificationCenter.default.removeObserver(captureObserver) }
+        if let foregroundObserver { NotificationCenter.default.removeObserver(foregroundObserver) }
         freshnessTimer?.invalidate()
     }
 
-    func startPictureInPicture() {
-        updateCaptureState(UIScreen.main.isCaptured)
-        updateOverlay()
-        pipController.start()
+    var startupStatus: String {
+        if !isRecognizerReady { return recognitionPreparationStatus }
+        if !isScreenCaptured { return "准备就绪" }
+        return session.hasReceivedFrame ? "已就绪，切回天天象棋" : "正在连接录屏画面"
     }
 
-    func stopPictureInPicture() {
-        pipController.stop()
+    /// 原生录屏按钮的同一次点击先准备应用，录屏权限仍由系统面板确认。
+    func prepareToStart() {
+        updateCaptureState(UIScreen.main.isCaptured)
+        guidanceRequested = true
+        receiver.start()
+        if session.preparationFailed { prepareRecognizer() }
+        if isScreenCaptured { requestPiPIfNeeded() }
+    }
+
+    /// 当前录屏保持不变，仅恢复用户关闭或未能开启的悬浮指导。
+    func resumeGuidance() {
+        didRequestPiPForCapture = false
+        prepareToStart()
+        if analysisState.hasFailure { invalidateAnalysis() }
+    }
+
+    private func requestPiPIfNeeded() {
+        guard isScreenCaptured, !didRequestPiPForCapture else { return }
+        didRequestPiPForCapture = true
+        updateOverlay()
+        pipController.start()
     }
 
     private func prepareRecognizer() {
@@ -160,12 +182,8 @@ final class CoachViewModel: ObservableObject {
             return
         }
         lastFrameCapturedAt = capturedAt
-        // 截图缩略图只服务前台诊断，不让后台录屏每帧触发 SwiftUI 图片重绑。
-        let now = ProcessInfo.processInfo.systemUptime
-        if UIApplication.shared.applicationState == .active, now - lastPreviewAt >= 0.5 {
-            livePreview = UIImage(cgImage: image)
-            lastPreviewAt = now
-        }
+        // 首帧来自本扩展；即使 App 打开前已录屏，或通知先后顺序变化，也补齐自动启动。
+        requestPiPIfNeeded()
         if captureStatus != "录屏中 · 已收到画面" { captureStatus = "录屏中 · 已收到画面" }
         guard let recognizer else {
             recognitionStatus = recognitionPreparationStatus
@@ -246,6 +264,13 @@ final class CoachViewModel: ObservableObject {
             recognitionStatus = "局面稳定 · \(recognition.qualityText)"
             analyzeIfNeeded(position)
         case let .accepted(position, reason):
+            switch reason {
+            case .takeback, .restoredHistory:
+                // 悔棋恢复了不同的实际历史；旧 FEN 的排队任务、回看和播报均不能复用。
+                invalidateAnalysis()
+            case .newGame, .legalMoves, .lastMoveMarker:
+                break
+            }
             // 已证明实际走子后立即删除原记录，即使仍需确认朝向也不能套用旧走法。
             moveRecall.confirm(position: position, boardAtBottom: recognition.boardAtBottom)
             speech.stopSpeaking(at: .immediate)
@@ -260,6 +285,10 @@ final class CoachViewModel: ObservableObject {
                 recognitionStatus = "已识别新局 · 红方先行"
             case let .legalMoves(count):
                 recognitionStatus = "已同步\(count)步 · \(position.sideToMove.displayName)走"
+            case let .takeback(count):
+                recognitionStatus = "已同步悔棋\(count)步 · \(position.sideToMove.displayName)走"
+            case .restoredHistory:
+                recognitionStatus = "已恢复悔棋前局面 · \(position.sideToMove.displayName)走"
             case .lastMoveMarker:
                 recognitionStatus = "已根据上一步自动同步 · \(position.sideToMove.displayName)走"
             }
@@ -372,7 +401,7 @@ final class CoachViewModel: ObservableObject {
         session.advance(to: .recommendation, generation: session.generation)
         updateOverlay()
 
-        if voiceEnabled, position.sideToMove == recognizedBoardAtBottom, !didAnnounceRecommendation {
+        if position.sideToMove == recognizedBoardAtBottom, !didAnnounceRecommendation {
             didAnnounceRecommendation = true
             speech.stopSpeaking(at: .word)
             let utterance = AVSpeechUtterance(string: notation)
@@ -386,15 +415,20 @@ final class CoachViewModel: ObservableObject {
         if isScreenCaptured != captured { isScreenCaptured = captured }
         guard session.setCaptureActive(captured) else { return }
         resetRecognition()
+        didRequestPiPForCapture = false
+        if !captured {
+            guidanceRequested = false
+            pipController.stop()
+        }
         captureStatus = captured ? "系统录屏已开启" : "录屏已停止"
         recognitionStatus = captured ? "等待录屏画面" : "识别已暂停"
         updateOverlay()
+        if captured, guidanceRequested { requestPiPIfNeeded() }
     }
 
     private func resetRecognition() {
         invalidateAnalysis()
         recognitionFrames.reset()
-        lastPreviewAt = -Double.infinity
         turnStatus = "等待棋盘"
         boardTracker.reset()
         recognizedBoardAtBottom = nil
@@ -553,6 +587,7 @@ final class CoachViewModel: ObservableObject {
         case .recordingStopped:
             state = CoachOverlayState(title: "录屏已停止", move: "指导已暂停", detail: "返回教练重新开启“棋研录屏”", accent: .systemOrange)
         }
+        state.showsStartScreen = !session.isCapturing
         // 棋盘是独立于搜索状态的持久内容；等待识别/思考不再把整个浮窗切成白底。
         state.position = session.isCapturing && recognizedBoardAtBottom != nil ? currentPosition : nil
         state.boardIsCurrent = lastConfirmedFrameAt.map(isFresh) ?? false

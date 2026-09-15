@@ -126,6 +126,32 @@ final class CoachAnalysisStateTests: XCTestCase {
         return SearchResult(move: move, score: 10, depth: 16, principalVariation: [move], elapsedMilliseconds: 800, nodesVisited: 1000)
     }
 
+    func testTakebackToSameFENRejectsBothAbandonedSearchResults() throws {
+        var tracker = BoardTracker()
+        _ = tracker.observe(.standard)
+        _ = tracker.observe(.standard)
+        var analysis = CoachAnalysisState()
+        let before = try start(&analysis, position: .standard, now: 1)
+        let move = XiangqiMove(from: Square(row: 6, column: 0), to: Square(row: 5, column: 0))
+        let advanced = XiangqiPosition.standard.applying(move)
+        _ = tracker.observe(advanced)
+        _ = tracker.observe(advanced)
+        let abandoned = try start(&analysis, position: advanced, now: 2)
+        _ = tracker.observe(.standard)
+        guard case let .accepted(restored, .takeback(1)) = tracker.observe(.standard) else {
+            return XCTFail("应从可信历史恢复悔棋前的局面")
+        }
+        // 与 ViewModel 的悔棋接入契约一致：新历史必须废弃旧 work，即便 FEN 曾经相同。
+        analysis.reset()
+        let resumed = try start(&analysis, position: restored, now: 3)
+        XCTAssertFalse(analysis.complete(before, outcome: .init(result: nil, error: "旧搜索")))
+        XCTAssertFalse(analysis.complete(abandoned, outcome: .init(result: nil, error: "已撤回的搜索")))
+        XCTAssertTrue(analysis.isInFlight)
+        XCTAssertTrue(analysis.complete(resumed, outcome: .init(result: nil, error: nil)))
+        XCTAssertFalse(analysis.isInFlight)
+        XCTAssertEqual(tracker.analysisHistory?.moves, [])
+    }
+
     private func start(_ state: inout CoachAnalysisState, position: XiangqiPosition, now: Double) throws -> CoachAnalysisState.Work {
         guard case let .start(work) = state.request(position: position, now: now) else {
             throw NSError(domain: "CoachAnalysisStateTests", code: 1)

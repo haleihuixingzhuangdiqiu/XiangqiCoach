@@ -3,199 +3,226 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var model: CoachViewModel
     @ObservedObject private var pip: PiPCoachController
+    @State private var showsHelp = false
+
+    private let ink = Color(red: 0.13, green: 0.17, blue: 0.15)
+    private let green = Color(red: 0.10, green: 0.32, blue: 0.25)
 
     init(model: CoachViewModel) {
         self.model = model
         self.pip = model.pipController
     }
 
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 16) {
-                    heroCard
-                    practiceSettingsCard
-                    startCard
-                    diagnosticsCard
-                }
-                .padding(16)
-            }
-            .background(Color(red: 0.035, green: 0.047, blue: 0.067).ignoresSafeArea())
-            .navigationTitle("棋研悬浮教练")
-            .navigationBarTitleDisplayMode(.inline)
-        }
+    private var guidanceTitle: String {
+        guard model.isScreenCaptured else { return "从这里开始" }
+        if pip.isPictureInPictureActive { return "实时指导中" }
+        if pip.errorMessage != nil { return "点继续指导重试" }
+        return pip.needsExplicitResume ? "点继续指导恢复" : "正在准备指导"
     }
 
-    private var heroCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
+    private var guidanceStatus: String {
+        if let error = pip.errorMessage { return error }
+        if model.isScreenCaptured, pip.needsExplicitResume { return "录屏仍在运行，悬浮窗已关闭" }
+        return model.startupStatus
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
             HStack {
-                Image(systemName: "scope")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundStyle(.green)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("对局棋盘，实时给招")
-                        .font(.title3.bold())
-                    Text("录屏帧、局面和计算全部留在本机")
+                Text("棋研悬浮教练")
+                    .font(.headline)
+                    .foregroundStyle(ink)
+                Spacer()
+                Button("使用帮助") { showsHelp = true }
+                    .font(.subheadline)
+                    .foregroundStyle(green)
+                    .buttonStyle(.plain)
+                    .frame(minHeight: 44)
+                    .accessibilityIdentifier("coach.help")
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 8)
+
+            GeometryReader { geometry in
+                let previewWidth = min(max(geometry.size.width - 40, 1), 440)
+                VStack(spacing: 0) {
+                    Spacer(minLength: 12)
+                    VStack(spacing: 12) {
+                        Rectangle()
+                            .fill(green)
+                            .frame(width: 28, height: 2)
+                        Text(guidanceTitle)
+                            .font(.title2.weight(.semibold))
+                            .foregroundStyle(ink)
+                        Text(guidanceStatus)
+                            .font(.subheadline)
+                            .foregroundStyle(pip.errorMessage == nil ? Color.secondary : Color(red: 0.67, green: 0.23, blue: 0.17))
+                            .multilineTextAlignment(.center)
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.8)
+                            .frame(minHeight: 36)
+                            .accessibilityIdentifier("coach.status")
+                    }
+                    .padding(.horizontal, 24)
+                    Spacer(minLength: 12)
+
+                    ZStack {
+                        // 这是实际 PiP 来源，始终保持可见、非零尺寸和相同视图身份。
+                        // 未录屏时 controller 输出纯白画面；帮助以 sheet 呈现，不移除此来源。
+                        CoachPiPPreview(controller: pip)
+                            .frame(width: previewWidth, height: previewWidth / CoachBoardRenderer.aspectRatio)
+                            .allowsHitTesting(false)
+                            .accessibilityLabel("棋盘指导预览")
+                            .accessibilityIdentifier("coach.preview")
+                        if !model.isScreenCaptured {
+                            BroadcastPickerView(title: "开始", isEnabled: true, onTap: model.prepareToStart)
+                                .frame(width: 220, height: 68)
+                        }
+                    }
+                    .frame(width: previewWidth, height: previewWidth / CoachBoardRenderer.aspectRatio)
+
+                    // 固定操作区域，录屏开始/结束只切换按钮，不重建或隐藏上面的显示层。
+                    ZStack {
+                        if model.isScreenCaptured {
+                            Button(action: model.resumeGuidance) {
+                                Text("继续指导")
+                                    .font(.system(size: 23, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .frame(width: 220, height: 68)
+                                    .background(green)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("coach.resume")
+                        }
+                    }
+                    .frame(height: 68)
+                    .padding(.top, 16)
+
+                    Spacer(minLength: 12)
+                    Text(model.isScreenCaptured ? "跟随悬浮窗里的箭头，继续对局" : "开始后确认系统录屏，即可切回棋盘")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 24)
                 }
-                Spacer()
-                Circle()
-                    .fill(model.isRecognizerReady ? Color.green : Color.orange)
-                    .frame(width: 10, height: 10)
-            }
-
-            HStack(spacing: 8) {
-                statusPill(model.isRecognizerReady ? "识别就绪" : "准备中", color: model.isRecognizerReady ? .green : .orange)
-                statusPill(model.isScreenCaptured ? "录屏中" : "未录屏", color: model.isScreenCaptured ? .red : .gray)
-                statusPill(model.pipController.isPictureInPictureActive ? "悬浮中" : "未悬浮", color: model.pipController.isPictureInPictureActive ? .blue : .gray)
-            }
-            Text(model.recognitionPreparationStatus)
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
-        .cardStyle()
-    }
-
-    private var practiceSettingsCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Label("指导设置", systemImage: "slider.horizontal.3")
-                .font(.headline)
-
-            Text("仅支持指定的木纹对局棋盘。红黑朝向和当前轮次自动识别，无需手动同步。")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-
-            Toggle("播报我方着法", isOn: $model.voiceEnabled)
-            Text("对手回合也显示走法箭头，不播放语音。")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
-        .cardStyle()
-    }
-
-    private var startCard: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Label("开始指导", systemImage: "play.circle.fill")
-                .font(.headline)
-
-            HStack(spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color.red.opacity(0.18))
-                    BroadcastPickerView()
-                        .frame(width: BroadcastPickerView.buttonSize, height: BroadcastPickerView.buttonSize)
-                }
-                .frame(width: 66, height: 66)
-
-                VStack(alignment: .leading, spacing: 3) {
-                    Text("① 点红色录屏按钮")
-                        .font(.headline)
-                    Text(model.autoStartPictureInPicture ? "确认开始后会自动打开悬浮指导" : "选择“棋研录屏”并点开始直播")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-                Spacer()
-            }
-
-            CoachPiPPreview(controller: model.pipController)
-                .aspectRatio(CoachBoardRenderer.aspectRatio, contentMode: .fit)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 14)
-                        .stroke(Color.white.opacity(0.08), lineWidth: 1)
-                }
-
-            Toggle("录屏开始后自动悬浮", isOn: $model.autoStartPictureInPicture)
-
-            Button {
-                if model.pipController.isPictureInPictureActive {
-                    model.stopPictureInPicture()
-                } else {
-                    model.startPictureInPicture()
-                }
-            } label: {
-                Label(
-                    model.pipController.isPictureInPictureActive ? "关闭悬浮指导" : "手动开启悬浮指导",
-                    systemImage: model.pipController.isPictureInPictureActive ? "pip.exit" : "pip.enter"
-                )
-                .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(model.pipController.isPictureInPictureActive ? .gray : .green)
-
-            if let error = model.pipController.errorMessage {
-                Label(error, systemImage: "exclamationmark.triangle.fill")
-                    .font(.footnote)
-                    .foregroundStyle(.orange)
-            }
-
-            Text("确认“棋研录屏”后会自动开启悬浮窗，再切到指定的对局棋盘并露出全部棋子。")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-        }
-        .cardStyle()
-    }
-
-    private var diagnosticsCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label("实时状态", systemImage: "waveform.path.ecg")
-                .font(.headline)
-            detailRow("录屏", model.captureStatus)
-            detailRow("识别", model.recognitionStatus)
-            detailRow("轮次", model.turnStatus)
-            detailRow("收到画面", "\(model.receivedFrameCount) 帧")
-            detailRow("延迟", model.latencyStatus)
-
-            Divider()
-            Text(model.recommendation)
-                .font(.system(size: 34, weight: .heavy, design: .rounded))
-                .foregroundStyle(.green)
-            Text(model.recommendationDetail)
-                .font(.system(.footnote, design: .monospaced))
-                .foregroundStyle(.secondary)
-
-            if let preview = model.livePreview {
-                Image(uiImage: preview)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxHeight: 180)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .cardStyle()
-    }
-
-    private func statusPill(_ text: String, color: Color) -> some View {
-        Text(text)
-            .font(.caption.bold())
-            .foregroundStyle(color)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
-            .background(color.opacity(0.14), in: Capsule())
-    }
-
-    private func detailRow(_ label: String, _ value: String) -> some View {
-        HStack(alignment: .top) {
-            Text(label)
-                .foregroundStyle(.secondary)
-                .frame(width: 72, alignment: .leading)
-            Text(value)
-                .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.white.ignoresSafeArea())
+        .preferredColorScheme(.light)
+        .sheet(isPresented: $showsHelp) {
+            CoachHelpView(model: model, pip: pip)
+                .presentationCornerRadius(0)
         }
-        .font(.footnote)
     }
 }
 
-private extension View {
-    func cardStyle() -> some View {
-        padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.white.opacity(0.055), in: RoundedRectangle(cornerRadius: 18))
-            .overlay {
-                RoundedRectangle(cornerRadius: 18)
-                    .stroke(Color.white.opacity(0.07), lineWidth: 1)
-                    .allowsHitTesting(false)
+/// 二级帮助独立滚动，首页保持单入口；不提供会改变识别/录屏行为的设置开关。
+private struct CoachHelpView: View {
+    @ObservedObject var model: CoachViewModel
+    @ObservedObject var pip: PiPCoachController
+    @Environment(\.dismiss) private var dismiss
+
+    private let green = Color(red: 0.10, green: 0.32, blue: 0.25)
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 28) {
+                    VStack(alignment: .leading, spacing: 20) {
+                        sectionTitle("开始使用")
+                        step("01", title: "点击首页“开始”", detail: "在系统面板中选择“棋研录屏”，再点“开始直播”。iOS 的录屏确认必须由你完成，应用无法跳过。")
+                        step("02", title: "切回你的棋盘", detail: "录屏开启后会自动显示悬浮指导。进入对局，保持整张棋盘和棋子清晰可见。")
+                        step("03", title: "跟着箭头落子", detail: "我方回合显示绿色指引并播报；对手回合显示蓝色分析，不播报。选子时仍可回看上一条走法。")
+                        step("04", title: "恢复或结束指导", detail: "关掉悬浮窗后，可回首页点“继续指导”。要结束本次指导，请在 iOS 录屏控制里停止直播。")
+                    }
+                    Divider()
+                    VStack(alignment: .leading, spacing: 12) {
+                        sectionTitle("指定木纹棋盘")
+                        Text("仅支持指定木纹棋盘。请使用之前确认过的木纹主题和棋子样式。红黑朝向与当前轮次自动判断，无需校准或手动同步。")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Divider()
+                    VStack(alignment: .leading, spacing: 12) {
+                        sectionTitle("悔棋与恢复")
+                        Text("我方或对方悔棋后，保持棋盘稳定，自动恢复已记录的局面和轮次；超出已记录历史时需等待可信上一步标记。")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    Divider()
+                    VStack(alignment: .leading, spacing: 14) {
+                        sectionTitle("诊断信息")
+                        diagnosticRow("准备", model.recognitionPreparationStatus)
+                        diagnosticRow("录屏", model.captureStatus)
+                        diagnosticRow("悬浮", pip.isPictureInPictureActive ? "运行中" : "未开启")
+                        diagnosticRow("识别", model.recognitionStatus)
+                        diagnosticRow("轮次", model.turnStatus)
+                        diagnosticRow("收到画面", "\(model.receivedFrameCount) 帧")
+                        diagnosticRow("延迟", model.latencyStatus)
+                        if let error = pip.errorMessage { diagnosticRow("提示", error) }
+                        diagnosticRow("当前建议", model.recommendation)
+                        Text(model.recommendationDetail)
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(24)
+                .frame(maxWidth: 600, alignment: .leading)
+                .frame(maxWidth: .infinity)
             }
+            .background(Color.white)
+            .navigationTitle("使用帮助")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("完成") { dismiss() }
+                        .foregroundStyle(green)
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("coach.help.done")
+                }
+            }
+        }
+        .preferredColorScheme(.light)
+    }
+
+    private func sectionTitle(_ title: String) -> some View {
+        Text(title)
+            .font(.headline)
+            .foregroundStyle(green)
+            .accessibilityAddTraits(.isHeader)
+    }
+
+    private func step(_ number: String, title: String, detail: String) -> some View {
+        HStack(alignment: .top, spacing: 14) {
+            Text(number)
+                .font(.system(.caption, design: .monospaced).weight(.medium))
+                .foregroundStyle(green)
+                .padding(.top, 3)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title).font(.subheadline.weight(.semibold))
+                Text(detail)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+    }
+
+    private func diagnosticRow(_ title: String, _ detail: String) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 12) {
+            Text(title)
+                .foregroundStyle(.secondary)
+                .frame(width: 70, alignment: .leading)
+            Text(detail)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .font(.footnote)
     }
 }

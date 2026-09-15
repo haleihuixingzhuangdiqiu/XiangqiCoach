@@ -1,11 +1,41 @@
 appId: com.lgj.xiangqicoach
 ---
 - launchApp
-- assertVisible: "棋盘识别已就绪"
-- assertVisible: "对局棋盘，实时给招"
-- assertVisible: "指导设置"
-- assertNotVisible: "我执"
-- assertNotVisible: "练习设置"
-- assertNotVisible: "当前轮到"
-- assertVisible: "仅支持指定的木纹对局棋盘。红黑朝向和当前轮次自动识别，无需手动同步。"
-- takeScreenshot: "build/auto-turn/home"
+- assertVisible: "棋研悬浮教练"
+- assertVisible:
+    id: "coach.start"
+- assertVisible:
+    id: "coach.help"
+- assertNotVisible: "指导设置"
+- assertNotVisible: "播报我方着法"
+- assertNotVisible: "录屏开始后自动悬浮"
+- assertNotVisible: "手动开启悬浮指导"
+- takeScreenshot: "build/minimal-home/home"
+- tapOn:
+    id: "coach.help"
+- assertVisible: "开始使用"
+- scrollUntilVisible:
+    element:
+      text: "指定木纹棋盘"
+    direction: DOWN
+- assertVisible: "仅支持指定木纹棋盘。请使用之前确认过的木纹主题和棋子样式。红黑朝向与当前轮次自动判断，无需校准或手动同步。"
+- scrollUntilVisible:
+    element:
+      text: "悔棋与恢复"
+    direction: DOWN
+- assertVisible: "我方或对方悔棋后，保持棋盘稳定，自动恢复已记录的局面和轮次；超出已记录历史时需等待可信上一步标记。"
+- scrollUntilVisible:
+    element:
+      text: "诊断信息"
+    direction: DOWN
+- scrollUntilVisible:
+    element:
+      text: "收到画面"
+    direction: DOWN
+- assertVisible: "收到画面"
+- takeScreenshot: "build/minimal-home/help"
+- tapOn:
+    id: "coach.help.done"
+- assertVisible:
+    id: "coach.start"
+- assertVisible: "从这里开始"

@@ -58,7 +58,7 @@ enum CoachBoardRenderer {
     static let grid = CGRect(x: 44, y: 38, width: 464, height: 522)
 
     private static let boardPanel = CGRect(x: 12, y: 8, width: 528, height: 584)
-    private static let paper = UIColor(red: 0.96, green: 0.94, blue: 0.89, alpha: 1)
+    private static let paper = UIColor(red: 0.985, green: 0.983, blue: 0.970, alpha: 1)
     private static let ink = UIColor(red: 0.19, green: 0.22, blue: 0.20, alpha: 1)
     private static let secondaryInk = UIColor(red: 0.45, green: 0.46, blue: 0.40, alpha: 1)
     private static let boardInk = UIColor(red: 0.43, green: 0.28, blue: 0.13, alpha: 1)
@@ -85,6 +85,11 @@ enum CoachBoardRenderer {
         format.scale = 1
         format.opaque = true
         return UIGraphicsImageRenderer(size: canvasSize, format: format).image { context in
+            if state.showsStartScreen {
+                UIColor.white.setFill()
+                context.fill(CGRect(origin: .zero, size: canvasSize))
+                return
+            }
             paper.setFill()
             context.fill(CGRect(origin: .zero, size: canvasSize))
             if let position = state.position {
@@ -204,14 +209,12 @@ enum CoachBoardRenderer {
 
     private static func drawWoodPanel(in context: CGContext) {
         context.saveGState()
-        context.setShadow(offset: CGSize(width: 0, height: 3), blur: 7,
-                          color: UIColor(red: 0.30, green: 0.20, blue: 0.10, alpha: 0.22).cgColor)
         UIColor(red: 0.49, green: 0.32, blue: 0.15, alpha: 1).setFill()
-        UIBezierPath(roundedRect: boardPanel, cornerRadius: 15).fill()
+        UIBezierPath(rect: boardPanel).fill()
         context.restoreGState()
 
         context.saveGState()
-        UIBezierPath(roundedRect: boardPanel.insetBy(dx: 1, dy: 1), cornerRadius: 14).addClip()
+        UIBezierPath(rect: boardPanel.insetBy(dx: 1, dy: 1)).addClip()
         gradient(in: boardPanel, colors: [
             UIColor(red: 0.91, green: 0.78, blue: 0.57, alpha: 1),
             UIColor(red: 0.64, green: 0.45, blue: 0.23, alpha: 1),
@@ -221,7 +224,7 @@ enum CoachBoardRenderer {
 
         let face = boardPanel.insetBy(dx: 5, dy: 5).offsetBy(dx: 0, dy: -1)
         context.saveGState()
-        UIBezierPath(roundedRect: face, cornerRadius: 10).addClip()
+        UIBezierPath(rect: face).addClip()
         if let woodTexture { UIColor(patternImage: woodTexture).setFill() }
         else { UIColor(red: 0.81, green: 0.66, blue: 0.43, alpha: 1).setFill() }
         context.fill(face)
@@ -229,7 +232,7 @@ enum CoachBoardRenderer {
                                    UIColor(red: 0.36, green: 0.20, blue: 0.07, alpha: 0.12)], context: context)
         context.restoreGState()
         UIColor.white.withAlphaComponent(0.40).setStroke()
-        let rim = UIBezierPath(roundedRect: face.insetBy(dx: 0.7, dy: 0.7), cornerRadius: 9)
+        let rim = UIBezierPath(rect: face.insetBy(dx: 0.7, dy: 0.7))
         rim.lineWidth = 1.1
         rim.stroke()
     }
@@ -334,7 +337,7 @@ enum CoachBoardRenderer {
              size: 20, weight: .semibold, color: ink)
         if isRecall {
             recallGuide.withAlphaComponent(0.10).setFill()
-            UIBezierPath(roundedRect: CGRect(x: x - 6, y: 90, width: width + 12, height: 38), cornerRadius: 8).fill()
+            UIBezierPath(rect: CGRect(x: x - 6, y: 90, width: width + 12, height: 38)).fill()
         }
         text(boardCaption(for: state), in: CGRect(x: x, y: 98, width: width, height: 25),
              size: isRecall ? 18 : 16, weight: isRecall ? .semibold : .medium, color: isRecall ? recallGuide : secondaryInk)
@@ -363,8 +366,8 @@ enum CoachBoardRenderer {
             text(state.boardIsCurrent ? "显示已确认的实际局面" : "更新前暂不提供落子指令", in: CGRect(x: x, y: 430, width: width, height: 56),
                  size: 18, weight: .regular, color: secondaryInk)
         }
-        UIColor(red: 0.87, green: 0.90, blue: 0.84, alpha: 1).setFill()
-        UIBezierPath(roundedRect: CGRect(x: x - 2, y: 538, width: width + 4, height: 36), cornerRadius: 9).fill()
+        markerColor.withAlphaComponent(0.08).setFill()
+        UIBezierPath(rect: CGRect(x: x - 2, y: 538, width: width + 4, height: 36)).fill()
         text("\(state.boardAtBottom.displayName)在下 · \(isRecall ? "上次局面" : "自动对齐")", in: CGRect(x: x + 3, y: 545, width: width - 6, height: 25),
              size: 17, weight: .medium, color: ink, alignment: .center)
     }
@@ -372,9 +375,9 @@ enum CoachBoardRenderer {
     private static func drawWaitingState(_ state: CoachOverlayState, in context: CGContext) {
         let panel = CGRect(x: 26, y: 26, width: 748, height: 548)
         UIColor.white.withAlphaComponent(0.50).setFill()
-        UIBezierPath(roundedRect: panel, cornerRadius: 24).fill()
+        UIBezierPath(rect: panel).fill()
         UIColor(red: 0.82, green: 0.73, blue: 0.56, alpha: 0.50).setStroke()
-        let border = UIBezierPath(roundedRect: panel, cornerRadius: 24)
+        let border = UIBezierPath(rect: panel)
         border.lineWidth = 1
         border.stroke()
         disc(at: CGPoint(x: 66, y: 88), radius: 5, fill: state.accent, in: context)

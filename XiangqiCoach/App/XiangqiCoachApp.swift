@@ -12,7 +12,7 @@ struct XiangqiCoachApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(model: model)
-                .preferredColorScheme(.dark)
+                .preferredColorScheme(.light)
         }
     }
 }

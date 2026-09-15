@@ -1,7 +1,13 @@
 appId: com.lgj.xiangqicoach
 ---
 - launchApp
-- assertVisible: "棋盘识别已就绪"
-- assertNotVisible: "我执"
-- tapOn: "开启棋研录屏"
+- assertVisible: "棋研悬浮教练"
+- assertVisible:
+    id: "coach.start"
+- assertVisible: "开始后确认系统录屏，即可切回棋盘"
+- assertNotVisible: "指导设置"
+- assertNotVisible: "手动开启悬浮指导"
+# 模拟器覆盖入口点击；ReplayKit 系统面板与连续录屏须另在真机验收。
+- tapOn:
+    id: "coach.start"
 - takeScreenshot: "build/regression/recording-entry"

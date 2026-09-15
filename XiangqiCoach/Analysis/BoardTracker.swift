@@ -12,6 +12,10 @@ struct BoardTracker {
     enum Acceptance: Equatable {
         case newGame
         case legalMoves(Int)
+        /// 撤回的实际步数（半回合）；上层必须使旧搜索与语音失效，再分析恢复的历史局面。
+        case takeback(Int)
+        /// 跨过未记录的走子恢复已确认历史段，无法准确统计撤回步数；上层同样撤销旧搜索和语音。
+        case restoredHistory
         case lastMoveMarker
     }
 
@@ -32,6 +36,16 @@ struct BoardTracker {
     private var rejectedEvidence = false
     /// 已确认的最后一步跨遮挡保留，不能用同一个陈旧标记为后来未知的棋盘反转轮次。
     private var confirmedLastMove: BoardMoveEvidence?
+    /// 未知中局可从标记建立历史根；悔棋到根时恢复这个已有证据，不能捏造根之前的走子。
+    private var historyRootLastMove: BoardMoveEvidence?
+    private struct HistorySegment {
+        let position: XiangqiPosition
+        let history: AnalysisHistory
+        let rootLastMove: BoardMoveEvidence?
+    }
+    /// 当前段之外最多保留十五段；段间缺口始终未知，不能拼接成引擎可重放的走子历史。
+    private var earlierSegments: [HistorySegment] = []
+    private static let maximumHistorySegments = 16
 
     mutating func observe(_ recognized: XiangqiPosition, lastMove: BoardMoveEvidence? = nil) -> Observation {
         let sameCandidate = candidate?.hasSameBoard(as: recognized) == true
@@ -69,11 +83,41 @@ struct BoardTracker {
                 }
                 return .accepted(transition.position, .legalMoves(transition.moves.count))
             }
-            // 双方退马等合法返回开局先走上述历史分支；其余标准摆位作为红先新局。
+            // 同盘可能是真实循环，所以上述向前走子先于悔棋；只有不能向前证明时才匹配历史。
+            if let history = analysisHistory, let current = position,
+               let restored = Self.previousPosition(matching: recognized, in: history, current: current) {
+                let removedCount = history.moves.count - restored.moveCount
+                let remainingMoves = Array(history.moves.prefix(restored.moveCount))
+                position = restored.position
+                analysisHistory = AnalysisHistory(root: history.root, moves: remainingMoves)
+                confirmedLastMove = remainingMoves.last.map {
+                    BoardMoveEvidence(move: $0, movedSide: restored.position.sideToMove.opponent)
+                } ?? historyRootLastMove
+                return .accepted(restored.position, .takeback(removedCount))
+            }
+            // 重锚定只中断连续走子链，不抹掉之前真正确认过的历史段；优先恢复最近的一段。
+            for index in earlierSegments.indices.reversed() {
+                let segment = earlierSegments[index]
+                guard let restored = Self.previousPosition(matching: recognized, in: segment.history,
+                                                           current: segment.position, includingEnd: true) else { continue }
+                let remainingMoves = Array(segment.history.moves.prefix(restored.moveCount))
+                position = restored.position
+                analysisHistory = AnalysisHistory(root: segment.history.root, moves: remainingMoves)
+                historyRootLastMove = segment.rootLastMove
+                confirmedLastMove = remainingMoves.last.map {
+                    BoardMoveEvidence(move: $0, movedSide: restored.position.sideToMove.opponent)
+                } ?? historyRootLastMove
+                // 被撤销的当前段和后续旧段全部丢弃，之后改走另一分支不能再自动跳回旧未来。
+                earlierSegments = Array(earlierSegments.prefix(index))
+                return .accepted(restored.position, .restoredHistory)
+            }
+            // 无法从当前历史匹配的标准摆位才建立红先新局；历史中的真实循环不被当作重新开局。
             if recognized.hasSameBoard(as: .standard) {
                 position = .standard
                 analysisHistory = AnalysisHistory(root: .standard, moves: [])
                 confirmedLastMove = nil
+                historyRootLastMove = nil
+                earlierSegments.removeAll(keepingCapacity: true)
                 return .accepted(.standard, .newGame)
             }
             rejectedTransition = true
@@ -85,10 +129,16 @@ struct BoardTracker {
             rejectedEvidence = true
             return .waitingForMoveEvidence
         }
+        if let current = position, let history = analysisHistory {
+            earlierSegments.append(HistorySegment(position: current, history: history, rootLastMove: historyRootLastMove))
+            let overflow = earlierSegments.count - (Self.maximumHistorySegments - 1)
+            if overflow > 0 { earlierSegments.removeFirst(overflow) }
+        }
         position = anchored
         // 吃子类型仅用于证明存在合法前态，不把猜测的前态写进实际走子历史。
         analysisHistory = AnalysisHistory(root: anchored, moves: [])
         confirmedLastMove = lastMove
+        historyRootLastMove = lastMove
         return .accepted(anchored, .lastMoveMarker)
     }
 
@@ -106,7 +156,24 @@ struct BoardTracker {
         position = nil
         analysisHistory = nil
         confirmedLastMove = nil
+        historyRootLastMove = nil
+        earlierSegments.removeAll(keepingCapacity: true)
         loseBoard()
+    }
+
+    /// 只重放已确认的合法历史，取最近一次相同摆位；轮次来自当时局面而非识别默认值。
+    /// 当前段排除其末态；旧段包含已确认的末态。不枚举任何历史根之前的可能前态。
+    private static func previousPosition(matching observed: XiangqiPosition, in history: AnalysisHistory,
+                                         current: XiangqiPosition, includingEnd: Bool = false) -> (position: XiangqiPosition, moveCount: Int)? {
+        var replay = history.root
+        var matched: (position: XiangqiPosition, moveCount: Int)?
+        for (index, move) in history.moves.enumerated() {
+            if replay.hasSameBoard(as: observed) { matched = (replay, index) }
+            replay = replay.applying(move)
+        }
+        guard replay == current else { return nil }
+        if includingEnd, replay.hasSameBoard(as: observed) { matched = (replay, history.moves.count) }
+        return matched
     }
 
     /// 上一步必须能逆推为合法走子，不能只凭落点颜色宣布轮次。

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C38A38DD7B66F4A4CCBBAA6E"
+               BlueprintIdentifier = "34C1E5F44133EB42F8B3994E"
                BuildableName = "XiangqiCoach.app"
                BlueprintName = "XiangqiCoach"
                ReferencedContainer = "container:XiangqiCoach.xcodeproj">
@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B0E499E3CD1AF75ED105B6A3"
+               BlueprintIdentifier = "4E230DDFE7E95727EFF6DDAF"
                BuildableName = "XiangqiCoachBroadcast.appex"
                BlueprintName = "XiangqiCoachBroadcast"
                ReferencedContainer = "container:XiangqiCoach.xcodeproj">
@@ -44,7 +44,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C38A38DD7B66F4A4CCBBAA6E"
+            BlueprintIdentifier = "34C1E5F44133EB42F8B3994E"
             BuildableName = "XiangqiCoach.app"
             BlueprintName = "XiangqiCoach"
             ReferencedContainer = "container:XiangqiCoach.xcodeproj">
@@ -55,7 +55,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2EECA31DF4AE78CBDF42C69C"
+               BlueprintIdentifier = "4A6AD22776BBC1A46B53E316"
                BuildableName = "XiangqiCoachTests.xctest"
                BlueprintName = "XiangqiCoachTests"
                ReferencedContainer = "container:XiangqiCoach.xcodeproj">
@@ -77,7 +77,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C38A38DD7B66F4A4CCBBAA6E"
+            BlueprintIdentifier = "34C1E5F44133EB42F8B3994E"
             BuildableName = "XiangqiCoach.app"
             BlueprintName = "XiangqiCoach"
             ReferencedContainer = "container:XiangqiCoach.xcodeproj">
@@ -94,7 +94,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C38A38DD7B66F4A4CCBBAA6E"
+            BlueprintIdentifier = "34C1E5F44133EB42F8B3994E"
             BuildableName = "XiangqiCoach.app"
             BlueprintName = "XiangqiCoach"
             ReferencedContainer = "container:XiangqiCoach.xcodeproj">
