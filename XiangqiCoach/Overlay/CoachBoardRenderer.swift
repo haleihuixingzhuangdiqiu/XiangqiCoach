@@ -63,6 +63,7 @@ enum CoachBoardRenderer {
     private static let secondaryInk = UIColor(red: 0.45, green: 0.46, blue: 0.40, alpha: 1)
     private static let boardInk = UIColor(red: 0.43, green: 0.28, blue: 0.13, alpha: 1)
     private static let guide = UIColor(red: 0.16, green: 0.72, blue: 0.58, alpha: 1)
+    private static let recallGuide = UIColor(red: 0.65, green: 0.39, blue: 0.10, alpha: 1)
     private static let woodTexture = mirroredWoodTile()
     private static let pieceImages: [Piece: UIImage] = {
         var images: [Piece: UIImage] = [:]
@@ -102,27 +103,44 @@ enum CoachBoardRenderer {
         return move
     }
 
-    /// 文案与箭头共用合法性门禁；过期局面只供查看，不能显示原来的落子指令。
+    /// 回看必须绑定原推荐的完整局面和方向；当前有效建议优先，不能把旧箭头套在新棋盘上。
+    static func displayedRecall(for state: CoachOverlayState) -> CoachMoveRecall? {
+        guard displayedMove(for: state) == nil, let recall = state.previousSuggestion,
+              state.position == recall.position, state.boardAtBottom == recall.boardAtBottom,
+              recall.move.from.isOnBoard, recall.move.to.isOnBoard,
+              recall.position.legalMoves().contains(recall.move) else { return nil }
+        return recall
+    }
+
+    /// 实时建议与上一条走法采用相同坐标和短着法，但来源标识、箭头和状态各自明确。
     static func guidanceText(for state: CoachOverlayState) -> String {
-        guard state.boardIsCurrent else { return "等待棋盘更新" }
         if let position = state.position, let move = displayedMove(for: state) {
             return MoveNotation.chinese(move, in: position)
         }
+        if let recall = displayedRecall(for: state) {
+            return MoveNotation.chinese(recall.move, in: recall.position)
+        }
+        guard state.boardIsCurrent else { return "等待棋盘更新" }
         return state.suggestedMove == nil ? state.move : "等待最新建议"
     }
 
     static func boardCaption(for state: CoachOverlayState) -> String {
+        if displayedRecall(for: state) != nil { return "上一条走法" }
         guard state.boardIsCurrent else { return "上次确认局面" }
         return displayedMove(for: state) == nil ? "实时棋局" : "推荐走法"
     }
 
     static func guidanceDetail(for state: CoachOverlayState) -> String {
+        if displayedRecall(for: state) != nil { return "等待落子确认，选子后仍可回看这条建议" }
         guard state.boardIsCurrent else { return "保留棋盘供查看，确认最新局面后再显示落子建议" }
         return state.suggestedMove != nil && displayedMove(for: state) == nil
             ? "局面已变化，正在更新建议" : state.detail
     }
 
     static func instructionLines(for state: CoachOverlayState) -> [String] {
+        if displayedRecall(for: state) != nil {
+            return ["原起点：圈选棋子", "原落点：箭头位置", "对应上次确认的局面"]
+        }
         guard displayedMove(for: state) != nil else { return [] }
         return ["先点圈选棋子", "再点箭头落点", "落子由你操作"]
     }
@@ -167,7 +185,11 @@ enum CoachBoardRenderer {
                                       width: width, height: width * image.size.height / image.size.width))
             }
         }
-        if let move = displayedMove(for: state) { drawMove(move, geometry: geometry, in: context) }
+        if let move = displayedMove(for: state) {
+            drawMove(move, geometry: geometry, recalled: false, in: context)
+        } else if let recall = displayedRecall(for: state) {
+            drawMove(recall.move, geometry: geometry, recalled: true, in: context)
+        }
     }
 
     private static func drawWoodPanel(in context: CGContext) {
@@ -249,35 +271,63 @@ enum CoachBoardRenderer {
         }
     }
 
-    private static func drawMove(_ move: XiangqiMove, geometry: CoachBoardGeometry, in context: CGContext) {
+    private static func drawMove(_ move: XiangqiMove, geometry: CoachBoardGeometry, recalled: Bool, in context: CGContext) {
         let origin = geometry.point(for: move.from)
         let target = geometry.point(for: move.to)
+        let color = recalled ? recallGuide : guide
         ring(at: origin, radius: geometry.cellSize * 0.47, color: UIColor.white.withAlphaComponent(0.70), width: 4, in: context)
-        ring(at: origin, radius: geometry.cellSize * 0.47, color: guide, width: 2.1, in: context)
+        context.saveGState()
+        if recalled { context.setLineDash(phase: 0, lengths: [5, 3]) }
+        ring(at: origin, radius: geometry.cellSize * 0.47, color: color, width: 2.4, in: context)
+        context.restoreGState()
         let points = geometry.arrowPoints(for: move)
         guard let first = points.first else { return }
-        let arrow = UIBezierPath()
-        arrow.move(to: first)
-        points.dropFirst().forEach { arrow.addLine(to: $0) }
-        arrow.close()
-        UIColor.white.withAlphaComponent(0.58).setStroke()
-        arrow.lineWidth = 1
-        arrow.lineJoinStyle = .round
-        arrow.stroke()
-        guide.withAlphaComponent(0.92).setFill()
-        arrow.fill()
-        disc(at: target, radius: geometry.cellSize * 0.12, fill: guide.withAlphaComponent(0.78), in: context)
-        ring(at: target, radius: geometry.cellSize * 0.17, color: guide.withAlphaComponent(0.54), width: 1.4, in: context)
+        if recalled {
+            // 棕色虚线明确表示上一条；保留同一个起点、落点和箭头方向帮助记忆。
+            context.saveGState()
+            context.setStrokeColor(color.cgColor)
+            context.setLineWidth(geometry.cellSize * 0.065)
+            context.setLineDash(phase: 0, lengths: [7, 4])
+            line(from: CGPoint(x: (points[0].x + points[6].x) / 2, y: (points[0].y + points[6].y) / 2),
+                 to: CGPoint(x: (points[1].x + points[5].x) / 2, y: (points[1].y + points[5].y) / 2), in: context)
+            context.restoreGState()
+            let head = UIBezierPath()
+            head.move(to: points[2])
+            head.addLine(to: points[3])
+            head.addLine(to: points[4])
+            head.close()
+            color.setFill()
+            head.fill()
+        } else {
+            let arrow = UIBezierPath()
+            arrow.move(to: first)
+            points.dropFirst().forEach { arrow.addLine(to: $0) }
+            arrow.close()
+            UIColor.white.withAlphaComponent(0.58).setStroke()
+            arrow.lineWidth = 1
+            arrow.lineJoinStyle = .round
+            arrow.stroke()
+            color.withAlphaComponent(0.92).setFill()
+            arrow.fill()
+        }
+        disc(at: target, radius: geometry.cellSize * 0.12, fill: color.withAlphaComponent(0.78), in: context)
+        ring(at: target, radius: geometry.cellSize * 0.20, color: color.withAlphaComponent(0.65), width: 1.8, in: context)
     }
 
     private static func drawGuidance(_ state: CoachOverlayState, position: XiangqiPosition, in context: CGContext) {
         let x: CGFloat = 558
         let width: CGFloat = 220
-        disc(at: CGPoint(x: x + 4, y: 39), radius: 3.5, fill: state.accent, in: context)
-        text(state.title, in: CGRect(x: x + 16, y: 24, width: width - 16, height: 58),
+        let isRecall = displayedRecall(for: state) != nil
+        let markerColor = isRecall ? recallGuide : guide
+        disc(at: CGPoint(x: x + 4, y: 39), radius: 3.5, fill: isRecall ? recallGuide : state.accent, in: context)
+        text(isRecall ? "等待落子确认" : state.title, in: CGRect(x: x + 16, y: 24, width: width - 16, height: 58),
              size: 20, weight: .semibold, color: ink)
+        if isRecall {
+            recallGuide.withAlphaComponent(0.10).setFill()
+            UIBezierPath(roundedRect: CGRect(x: x - 6, y: 90, width: width + 12, height: 38), cornerRadius: 8).fill()
+        }
         text(boardCaption(for: state), in: CGRect(x: x, y: 98, width: width, height: 25),
-             size: 16, weight: .medium, color: secondaryInk)
+             size: isRecall ? 18 : 16, weight: isRecall ? .semibold : .medium, color: isRecall ? recallGuide : secondaryInk)
         let guidance = guidanceText(for: state)
         text(guidance, in: CGRect(x: x - 1, y: 132, width: width + 2, height: 93),
              size: 36, weight: .semibold, color: ink)
@@ -289,10 +339,10 @@ enum CoachBoardRenderer {
 
         let instructions = instructionLines(for: state)
         if instructions.count == 3 {
-            ring(at: CGPoint(x: x + 11, y: 388), radius: 8, color: guide, width: 2.2, in: context)
+            ring(at: CGPoint(x: x + 11, y: 388), radius: 8, color: markerColor, width: 2.2, in: context)
             text(instructions[0], in: CGRect(x: x + 31, y: 372, width: width - 31, height: 34),
                  size: 20, weight: .medium, color: ink)
-            disc(at: CGPoint(x: x + 11, y: 442), radius: 7, fill: guide, in: context)
+            disc(at: CGPoint(x: x + 11, y: 442), radius: 7, fill: markerColor, in: context)
             text(instructions[1], in: CGRect(x: x + 31, y: 426, width: width - 31, height: 34),
                  size: 20, weight: .medium, color: ink)
             text(instructions[2], in: CGRect(x: x, y: 480, width: width, height: 27),
@@ -305,7 +355,7 @@ enum CoachBoardRenderer {
         }
         UIColor(red: 0.87, green: 0.90, blue: 0.84, alpha: 1).setFill()
         UIBezierPath(roundedRect: CGRect(x: x - 2, y: 538, width: width + 4, height: 36), cornerRadius: 9).fill()
-        text("\(state.boardAtBottom.displayName)在下 · 自动对齐", in: CGRect(x: x + 3, y: 545, width: width - 6, height: 25),
+        text("\(state.boardAtBottom.displayName)在下 · \(isRecall ? "上次局面" : "自动对齐")", in: CGRect(x: x + 3, y: 545, width: width - 6, height: 25),
              size: 17, weight: .medium, color: ink, alignment: .center)
     }
 

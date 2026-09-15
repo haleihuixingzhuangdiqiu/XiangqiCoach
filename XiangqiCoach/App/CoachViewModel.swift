@@ -37,6 +37,7 @@ final class CoachViewModel: ObservableObject {
     private var turnSynchronization = TurnSynchronizationState()
     private var currentPosition: XiangqiPosition? { boardTracker.position }
     private var suggestedMove: XiangqiMove?
+    private var moveRecall = CoachMoveRecallState()
     private var analysisState = CoachAnalysisState()
     private var analysisTicket: AnalysisTicket?
     private var engineFailureMessage: String?
@@ -264,6 +265,8 @@ final class CoachViewModel: ObservableObject {
             recognitionStatus = "局面稳定 · \(recognition.qualityText)"
             analyzeIfNeeded(position)
         case let .accepted(position, reason):
+            // 已证明实际走子后立即删除原记录，即使仍需确认朝向也不能套用旧走法。
+            moveRecall.confirm(position: position, boardAtBottom: recognition.boardAtBottom)
             manualSideToMove = position.sideToMove
             guard confirmObservedSide(recognition.boardAtBottom) else {
                 showRecognitionWait(.confirmingBoard, detail: "正在确认棋盘朝向，请保持画面稳定")
@@ -385,6 +388,9 @@ final class CoachViewModel: ObservableObject {
 
         let notation = MoveNotation.chinese(result.move, in: position)
         suggestedMove = result.move
+        if let recognizedBoardAtBottom {
+            moveRecall.remember(result.move, in: position, boardAtBottom: recognizedBoardAtBottom)
+        }
         let scoreText = String(format: "%+.2f", Double(result.score) / 100)
         recommendation = notation
         recommendationDetail = "\(result.move.iccs()) · 深度 \(result.depth) · 评分 \(scoreText)"
@@ -394,7 +400,7 @@ final class CoachViewModel: ObservableObject {
         if voiceEnabled && !didAnnounceRecommendation {
             didAnnounceRecommendation = true
             speech.stopSpeaking(at: .word)
-            let utterance = AVSpeechUtterance(string: "建议，\(notation)")
+            let utterance = AVSpeechUtterance(string: notation)
             utterance.voice = AVSpeechSynthesisVoice(language: "zh-CN")
             utterance.rate = 0.46
             speech.speak(utterance)
@@ -434,6 +440,7 @@ final class CoachViewModel: ObservableObject {
         analysisTicket?.cancel()
         analysisTicket = nil
         analysisState.reset()
+        moveRecall.reset()
         engineFailureMessage = nil
         didAnnounceRecommendation = false
         suggestedMove = nil
@@ -445,8 +452,8 @@ final class CoachViewModel: ObservableObject {
         detail: String = "请打开指定的对局棋盘，并露出全部棋子",
         requiresSynchronization: Bool = false
     ) {
-        // 画面暂不可信只撤销落子指引，仍显示上次确认棋盘并让同局计算完成。
-        // 必须清确认时间，防止遮挡期间搜索刚完成就把旧箭头重新显示出来。
+        // 画面暂不可信只撤销当前指引，保留原局面及明确标注的“上一条走法”，同局计算继续。
+        // 必须清确认时间，防止回看或刚完成的搜索被误当成最新画面的有效建议。
         lastConfirmedFrameAt = nil
         suggestedMove = nil
         recognitionWaitDetail = detail
@@ -570,6 +577,10 @@ final class CoachViewModel: ObservableObject {
         state.boardIsCurrent = lastConfirmedFrameAt.map(isFresh) ?? false
         state.suggestedMove = session.phase == .recommendation ? suggestedMove : nil
         if let recognizedBoardAtBottom { state.boardAtBottom = recognizedBoardAtBottom }
+        state.previousSuggestion = moveRecall.previousSuggestion(
+            for: state.position, boardAtBottom: recognizedBoardAtBottom,
+            hasCurrentSuggestion: state.boardIsCurrent && state.suggestedMove != nil
+        )
         if recommendation != state.move { recommendation = state.move }
         if recommendationDetail != state.detail { recommendationDetail = state.detail }
         pipController.update(state)

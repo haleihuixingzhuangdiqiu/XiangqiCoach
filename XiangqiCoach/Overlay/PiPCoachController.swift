@@ -15,6 +15,8 @@ struct CoachOverlayState: Equatable, Sendable {
     var boardAtBottom: Side = .red
     /// false 时保留上次确认棋盘供查看，但不可据此显示实时落子指令。
     var boardIsCurrent = true
+    /// 短暂选子/识别等待期间保留的上一条走法；只供回看，不能替代当前有效建议。
+    var previousSuggestion: CoachMoveRecall? = nil
 }
 
 @MainActor

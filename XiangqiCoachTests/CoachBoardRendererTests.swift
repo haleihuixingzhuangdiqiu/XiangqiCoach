@@ -140,6 +140,99 @@ final class CoachBoardRendererTests: XCTestCase {
         }
     }
 
+    func testSelectionWaitKeepsPreviousMoveWithoutCallingItLive() {
+        let move = XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4))
+        let recall = CoachMoveRecall(position: .standard, move: move, boardAtBottom: .red)
+        let state = CoachOverlayState(
+            title: "暂时无法确认棋盘", move: "等待重新识别", detail: "选子动画", accent: .systemOrange,
+            position: .standard, boardAtBottom: .red, boardIsCurrent: false, previousSuggestion: recall
+        )
+        XCTAssertNil(CoachBoardRenderer.displayedMove(for: state), "旧建议不能冒充实时建议")
+        XCTAssertEqual(CoachBoardRenderer.displayedRecall(for: state), recall)
+        XCTAssertEqual(CoachBoardRenderer.guidanceText(for: state), "炮二平五")
+        XCTAssertEqual(CoachBoardRenderer.boardCaption(for: state), "上一条走法")
+        XCTAssertTrue(CoachBoardRenderer.guidanceDetail(for: state).contains("等待落子确认"))
+        XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state), ["原起点：圈选棋子", "原落点：箭头位置", "对应上次确认的局面"])
+    }
+
+    func testRecallMustMatchOriginalBoardAndOrientationEvenWhenMoveRemainsLegal() {
+        let move = XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4))
+        let recall = CoachMoveRecall(position: .standard, move: move, boardAtBottom: .red)
+        var state = CoachOverlayState(position: .standard, boardIsCurrent: false, previousSuggestion: recall)
+        let redPawn = XiangqiMove(from: Square(row: 6, column: 0), to: Square(row: 5, column: 0))
+        let blackPawn = XiangqiMove(from: Square(row: 3, column: 0), to: Square(row: 4, column: 0))
+        let changed = XiangqiPosition.standard.applying(redPawn).applying(blackPawn)
+        XCTAssertTrue(changed.legalMoves().contains(move))
+        state.position = changed
+        XCTAssertNil(CoachBoardRenderer.displayedRecall(for: state), "同一着法仍合法，也不能套在已经变化的棋盘上")
+        XCTAssertEqual(CoachBoardRenderer.guidanceText(for: state), "等待棋盘更新")
+        state.position = .standard
+        state.boardAtBottom = .black
+        XCTAssertNil(CoachBoardRenderer.displayedRecall(for: state))
+        state.boardAtBottom = .red
+        state.position = nil
+        XCTAssertNil(CoachBoardRenderer.displayedRecall(for: state))
+    }
+
+    func testCurrentRecommendationTakesPrecedenceOverRecall() {
+        let previous = XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4))
+        let current = XiangqiMove(from: Square(row: 7, column: 1), to: Square(row: 7, column: 4))
+        let state = CoachOverlayState(
+            position: .standard, suggestedMove: current,
+            previousSuggestion: CoachMoveRecall(position: .standard, move: previous, boardAtBottom: .red)
+        )
+        XCTAssertEqual(CoachBoardRenderer.displayedMove(for: state), current)
+        XCTAssertNil(CoachBoardRenderer.displayedRecall(for: state))
+        XCTAssertEqual(CoachBoardRenderer.boardCaption(for: state), "推荐走法")
+        XCTAssertEqual(CoachBoardRenderer.guidanceText(for: state), "炮八平五")
+        XCTAssertEqual(CoachBoardRenderer.instructionLines(for: state).first, "先点圈选棋子")
+    }
+
+    func testRecallRejectsIllegalOrOffBoardMoves() {
+        for move in [
+            XiangqiMove(from: Square(row: 9, column: 0), to: Square(row: 0, column: 0)),
+            XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 9)),
+            XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 7)),
+        ] {
+            let state = CoachOverlayState(
+                position: .standard, boardIsCurrent: false,
+                previousSuggestion: CoachMoveRecall(position: .standard, move: move, boardAtBottom: .red)
+            )
+            XCTAssertNil(CoachBoardRenderer.displayedRecall(for: state))
+            XCTAssertTrue(CoachBoardRenderer.instructionLines(for: state).isEmpty)
+        }
+    }
+
+    @MainActor
+    func testRetainedGuidanceVisualAcceptanceForBothSides() throws {
+        XCTAssertTrue(CoachBoardRenderer.hasCompleteProAssets)
+        for side in Side.allCases {
+            var position = XiangqiPosition.standard
+            position.sideToMove = side
+            let move = side == .red
+                ? XiangqiMove(from: Square(row: 7, column: 7), to: Square(row: 7, column: 4))
+                : XiangqiMove(from: Square(row: 0, column: 1), to: Square(row: 2, column: 2))
+            let state = CoachOverlayState(
+                title: "等待落子确认", move: "选子中", detail: "暂时等待画面稳定", accent: .systemOrange,
+                position: position, boardAtBottom: side, boardIsCurrent: false,
+                previousSuggestion: CoachMoveRecall(position: position, move: move, boardAtBottom: side)
+            )
+            let image = CoachBoardRenderer.image(for: state)
+            var noRecall = state
+            noRecall.previousSuggestion = nil
+            let noRecallImage = CoachBoardRenderer.image(for: noRecall)
+            let boardRect = CGRect(x: 12, y: 8, width: 528, height: 584)
+            let recalledBoard = try XCTUnwrap(image.cgImage?.cropping(to: boardRect))
+            let plainBoard = try XCTUnwrap(noRecallImage.cgImage?.cropping(to: boardRect))
+            XCTAssertNotEqual(UIImage(cgImage: recalledBoard).pngData(), UIImage(cgImage: plainBoard).pngData(), "上一条走法必须真的绘制到棋盘，而非仅保留文字")
+            XCTAssertEqual(image.size, CoachBoardRenderer.canvasSize)
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "图形指导-上一条走法-\(side.displayName)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
     @MainActor
     func testRenderVisualAcceptanceAttachments() {
         XCTAssertTrue(CoachBoardRenderer.hasCompleteProAssets)

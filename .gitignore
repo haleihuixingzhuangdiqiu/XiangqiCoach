@@ -3,3 +3,11 @@ recovery/
 .DS_Store
 *.xcuserstate
 xcuserdata/
+*.mobileprovision
+*.provisionprofile
+*.p12
+*.p8
+*.xcarchive
+*.ipa
+.env
+.env.*

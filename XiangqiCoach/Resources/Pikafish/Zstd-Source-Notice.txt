@@ -1,0 +1,35 @@
+Zstandard 第三方授权与来源记录
+核对日期：2026-09-15
+
+本项目保留 Pikafish vendored Zstandard 文件原有的 Meta Platforms, Inc. and affiliates 版权声明。
+该源码头允许在 BSD-style 与 GPLv2 两项许可中选择。本项目就这些 Zstandard 文件采用 BSD 选项，完整条款保持上游原文，不修改版权、再分发条件或免责声明。
+
+完整 BSD 许可：
+- 源码目录：XiangqiCoach/Vendor/Pikafish/src/external/LICENSE
+- 随 App 打包：XiangqiCoach/Resources/Pikafish/Zstd-BSD-LICENSE.txt
+
+Pikafish 直接来源：
+提交：2b6cf79d55d9d168604cf42ce61b517653d6f2fc
+文件：https://github.com/official-pikafish/Pikafish/blob/2b6cf79d55d9d168604cf42ce61b517653d6f2fc/src/external/zstd.h
+本地 zstd.h 与该固定提交文件逐字节一致。
+zstd.h SHA-256：39abfb6c6179dd87fe9e207dbac2f53b68764ea2a75c75dc41d21d3a7e5e4ee7
+该头文件声明版本宏 1.5.8；本记录不将它标成 v1.5.7 发布版。
+
+Zstandard 关联上游：
+仓库：https://github.com/facebook/zstd
+提交：cd8ca9d92e6fb3a4c962f8f6f50c3ee467177e06
+提交日期：2025-03-20
+文件：https://github.com/facebook/zstd/blob/cd8ca9d92e6fb3a4c962f8f6f50c3ee467177e06/lib/zstd.h
+上游原始头 SHA-256：9e132ed39fc7cf224e1a54ff8c09c98898169208bdf66258ad15b6d7710d096e
+关联验证：分别移除反斜杠与随后的换行，再移除空白字符，两个完整头文件所得 UTF-8 文本完全一致。
+上述归一化文本 SHA-256：358011a306f23ee5ef157a3f5acb25474d7c6943fa88b5a7972bc89880ceba73
+这证明该头文件的来源关联；不宣称本地整个 external 目录与该上游提交逐文件完全相同。
+
+BSD 许可固定来源：
+https://github.com/facebook/zstd/blob/cd8ca9d92e6fb3a4c962f8f6f50c3ee467177e06/LICENSE
+原始文本：https://raw.githubusercontent.com/facebook/zstd/cd8ca9d92e6fb3a4c962f8f6f50c3ee467177e06/LICENSE
+字节数：1549
+SHA-256：7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8
+源码与 App 中的两份 BSD 许可均与以上固定 URL 的原始文本逐字节一致。
+
+Pikafish 自身的 GPL v3 许可和 NNUE 权重的独立条款保持适用，分别见 GPL-3.0.txt 与 NNUE-License.md；此 BSD 文件只补足 Zstandard 的第三方许可材料。
